@@ -66,6 +66,7 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Registrar Imóvel");
         setMinimumSize(new java.awt.Dimension(700, 440));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 

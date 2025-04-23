@@ -124,6 +124,43 @@ public class RentalDAO {
 
         return contracts;
     }
+    
+    public List<RentalModel> getAllByPropertyId(int propertyId) {
+        List<RentalModel> contracts = new ArrayList<>();
+        String sql = "SELECT * FROM rental_contracts WHERE property_id = ?";
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, propertyId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                RentalModel rental = new RentalModel(
+                    rs.getInt("id"),
+                    rs.getString("contract_date"),
+                    rs.getInt("payment_base_date"),
+                    rs.getDouble("rent_value"),
+                    rs.getString("landlord_name"),
+                    rs.getString("landlord_cpf"),
+                    rs.getString("landlord_phone"),
+                    rs.getString("landlord_email"),
+                    rs.getString("tenant_name"),
+                    rs.getString("tenant_cpf"),
+                    rs.getString("tenant_phone"),
+                    rs.getString("tenant_email"),
+                    rs.getInt("duration_months"),
+                    rs.getString("due_date"),
+                    rs.getInt("property_id"),
+                    rs.getString("status")
+                );
+                contracts.add(rental);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return contracts;
+    }
 
     public void update(RentalModel contract) {
         String sql = """

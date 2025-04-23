@@ -11,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 
 import com.mycompany.imobiliaria.controllers.RealEstateController;
 import com.mycompany.imobiliaria.models.RealEstateModel;
-import com.mycompany.imobiliaria.views.RealEstate;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -20,7 +19,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
@@ -51,17 +49,28 @@ public class RealEstates extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         contentPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         propertiesTable = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         updateButton = new javax.swing.JButton();
         registerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("imobiliária");
+        setFont(new java.awt.Font("Nimbus Sans L", 0, 14)); // NOI18N
         setMinimumSize(new java.awt.Dimension(700, 440));
         setPreferredSize(new java.awt.Dimension(1200, 600));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+
+        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
+        jLabel1.setText("Imóveis");
+        jPanel2.add(jLabel1);
+
+        getContentPane().add(jPanel2);
 
         contentPanel.setLayout(new java.awt.BorderLayout());
 
@@ -94,8 +103,11 @@ public class RealEstates extends javax.swing.JFrame {
         jScrollPane1.setViewportView(propertiesTable);
 
         contentPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        contentPanel.add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(contentPanel);
+
+        menuPanel.setOpaque(false);
 
         updateButton.setText("Atualizar");
         updateButton.setMaximumSize(new java.awt.Dimension(150, 30));
@@ -224,6 +236,9 @@ public class RealEstates extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JTable propertiesTable;

@@ -35,11 +35,9 @@ public class PaymentRegister extends javax.swing.JFrame {
         RealEstateController realEstateController = new RealEstateController();   
         RealEstateModel property = realEstateController.getPropertyById(this.rental.getPropertyId());
         
-        String address = property.getAddress() + ", " + property.getNumber();
+        String address = property.getAddress() + ", " + property.getNumber() + "\n" + 
+                property.getNeighborhood() + " - " + property.getCity();;
         addressTextArea.setText(address);
-        
-        String neighborhood = property.getNeighborhood() + " - " + property.getCity();
-        neighborhoodTextArea.setText(neighborhood);
         
         this.updateTable();
     }
@@ -99,12 +97,15 @@ public class PaymentRegister extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         addressTextArea = new javax.swing.JTextArea();
-        neighborhoodTextArea = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         paymentDateTextField = new javax.swing.JFormattedTextField();
+        jPanel4 = new javax.swing.JPanel();
         registerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pagamentos");
         setMinimumSize(new java.awt.Dimension(700, 400));
         setPreferredSize(new java.awt.Dimension(700, 400));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -144,44 +145,54 @@ public class PaymentRegister extends javax.swing.JFrame {
 
         addressTextArea.setEditable(false);
         addressTextArea.setColumns(5);
+        addressTextArea.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        addressTextArea.setLineWrap(true);
         addressTextArea.setRows(4);
         addressTextArea.setText("Rua São João Benedito das Areias Cristalinas, 758\n");
         addressTextArea.setWrapStyleWord(true);
+        addressTextArea.setAutoscrolls(false);
+        addressTextArea.setFocusable(false);
         addressTextArea.setMaximumSize(new java.awt.Dimension(250, 100));
         addressTextArea.setMinimumSize(new java.awt.Dimension(250, 40));
-        addressTextArea.setPreferredSize(new java.awt.Dimension(250, 40));
+        addressTextArea.setOpaque(false);
         jPanel2.add(addressTextArea);
-
-        neighborhoodTextArea.setEditable(false);
-        neighborhoodTextArea.setColumns(5);
-        neighborhoodTextArea.setRows(4);
-        neighborhoodTextArea.setText("Rua São João Benedito das Areias Cristalinas, 758\n");
-        neighborhoodTextArea.setWrapStyleWord(true);
-        neighborhoodTextArea.setMaximumSize(new java.awt.Dimension(250, 100));
-        neighborhoodTextArea.setMinimumSize(new java.awt.Dimension(250, 40));
-        neighborhoodTextArea.setPreferredSize(new java.awt.Dimension(250, 40));
-        jPanel2.add(neighborhoodTextArea);
 
         jPanel1.add(jPanel2);
 
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 50));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
 
-        paymentDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        paymentDateTextField.setMaximumSize(new java.awt.Dimension(200, 30));
-        paymentDateTextField.setMinimumSize(new java.awt.Dimension(200, 30));
-        paymentDateTextField.setPreferredSize(new java.awt.Dimension(200, 30));
+        jPanel5.setMaximumSize(new java.awt.Dimension(10000, 30));
+        jPanel5.setMinimumSize(new java.awt.Dimension(100, 30));
+        jPanel5.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        jLabel1.setText("Novo Pagamento");
+        jPanel5.add(jLabel1);
+
+        jPanel3.add(jPanel5);
+
+        try {
+            paymentDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        paymentDateTextField.setMaximumSize(new java.awt.Dimension(250, 30));
+        paymentDateTextField.setMinimumSize(new java.awt.Dimension(250, 30));
+        paymentDateTextField.setName(""); // NOI18N
+        paymentDateTextField.setPreferredSize(new java.awt.Dimension(250, 30));
         jPanel3.add(paymentDateTextField);
 
         registerButton.setText("Cadastrar");
-        registerButton.setMaximumSize(new java.awt.Dimension(90, 30));
-        registerButton.setMinimumSize(new java.awt.Dimension(90, 30));
-        registerButton.setPreferredSize(new java.awt.Dimension(90, 30));
+        registerButton.setMaximumSize(new java.awt.Dimension(150, 30));
+        registerButton.setMinimumSize(new java.awt.Dimension(150, 30));
+        registerButton.setPreferredSize(new java.awt.Dimension(150, 30));
         registerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(registerButton);
+        jPanel4.add(registerButton);
+
+        jPanel3.add(jPanel4);
 
         jPanel1.add(jPanel3);
 
@@ -194,6 +205,11 @@ public class PaymentRegister extends javax.swing.JFrame {
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
         String date = paymentDateTextField.getText();
         
+        if ("  /  /    ".equals(date)) {
+            JOptionPane.showMessageDialog(null, "Insira uma data de pagamento válida");
+            return;
+        }
+
         String[] paymentDate = date.split("/");
 
         List<PaymentModel> payments = paymentController.getAllPayments(rental.getId());
@@ -276,11 +292,13 @@ public class PaymentRegister extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea addressTextArea;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea neighborhoodTextArea;
     private javax.swing.JFormattedTextField paymentDateTextField;
     private javax.swing.JTable paymentTable;
     private javax.swing.JButton registerButton;

@@ -8,7 +8,6 @@ import com.mycompany.imobiliaria.controllers.RealEstateController;
 import com.mycompany.imobiliaria.controllers.RentalController;
 import com.mycompany.imobiliaria.models.RealEstateModel;
 import com.mycompany.imobiliaria.models.RentalModel;
-import com.mycompany.imobiliaria.views.PaymentRegister;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -38,17 +37,17 @@ public class RealEstate extends javax.swing.JFrame {
     private static final RentalController rentalController = new RentalController();
     private String rentFormStatus = "Register";
     private int propertyId;
+    private int rentalId;
     
     /**
      * Creates new form RealEstate
      * @param propertyId
      */
-    public RealEstate(int propertyId) {
+    public RealEstate(int propertyId) {        
         initComponents();
         
         rentalFormPanel.setVisible(false);
-        updateTable();
-        
+
         try {
             RealEstateModel realEstate = realEstateController.getPropertyById(propertyId);
             
@@ -67,6 +66,8 @@ public class RealEstate extends javax.swing.JFrame {
             System.err.println(e);
             dispose();
         }
+        
+        updateTable();
     }
 
     /**
@@ -112,20 +113,24 @@ public class RealEstate extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
         rentalPanel = new javax.swing.JPanel();
         rentalsPanel = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         rentTable = new javax.swing.JTable();
         actionPanel = new javax.swing.JPanel();
         openRentFormButton = new javax.swing.JButton();
         rentalFormPanel = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel27 = new javax.swing.JLabel();
         peoplePanel = new javax.swing.JPanel();
         landLordPanel = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         landLordNameTextField = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        landLordCPFTextField = new javax.swing.JTextField();
+        landLordCPFTextField = new javax.swing.JFormattedTextField();
         jLabel13 = new javax.swing.JLabel();
-        landLordPhoneTextField = new javax.swing.JTextField();
+        landLordPhoneTextField = new javax.swing.JFormattedTextField();
         jLabel14 = new javax.swing.JLabel();
         landLordEmailTextField = new javax.swing.JTextField();
         tenantPanel = new javax.swing.JPanel();
@@ -133,9 +138,9 @@ public class RealEstate extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         tenantNameTextField = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        tenantCPFTextField = new javax.swing.JTextField();
+        tenantCPFTextField = new javax.swing.JFormattedTextField();
         jLabel19 = new javax.swing.JLabel();
-        tenantPhoneTextField = new javax.swing.JTextField();
+        tenantPhoneTextField = new javax.swing.JFormattedTextField();
         jLabel20 = new javax.swing.JLabel();
         tenantEmailTextField = new javax.swing.JTextField();
         contractPane = new javax.swing.JPanel();
@@ -156,8 +161,10 @@ public class RealEstate extends javax.swing.JFrame {
         submitRentButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1000, 500));
-        setPreferredSize(new java.awt.Dimension(1000, 500));
+        setTitle("Atualizar Imóvel");
+        setBackground(new java.awt.Color(38, 116, 255));
+        setMinimumSize(new java.awt.Dimension(1000, 550));
+        setPreferredSize(new java.awt.Dimension(1000, 550));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         realEstatePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 0, 10));
@@ -272,7 +279,7 @@ public class RealEstate extends javax.swing.JFrame {
         });
         bottomMenuPanel.add(deleteButton);
 
-        saveButton.setText("Atualizar");
+        saveButton.setText("Salvar");
         saveButton.setPreferredSize(new java.awt.Dimension(100, 30));
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -289,6 +296,12 @@ public class RealEstate extends javax.swing.JFrame {
         rentalPanel.setLayout(new javax.swing.BoxLayout(rentalPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         rentalsPanel.setLayout(new javax.swing.BoxLayout(rentalsPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jLabel26.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        jLabel26.setText("Contratos");
+        jPanel8.add(jLabel26);
+
+        rentalsPanel.add(jPanel8);
 
         rentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -319,6 +332,12 @@ public class RealEstate extends javax.swing.JFrame {
 
         rentalFormPanel.setLayout(new javax.swing.BoxLayout(rentalFormPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
+        jLabel27.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        jLabel27.setText("Novo Contrato");
+        jPanel9.add(jLabel27);
+
+        rentalFormPanel.add(jPanel9);
+
         peoplePanel.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
 
         landLordPanel.setLayout(new java.awt.GridLayout(9, 0));
@@ -334,10 +353,22 @@ public class RealEstate extends javax.swing.JFrame {
 
         jLabel12.setText("CPF");
         landLordPanel.add(jLabel12);
+
+        try {
+            landLordCPFTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         landLordPanel.add(landLordCPFTextField);
 
         jLabel13.setText("Telefone");
         landLordPanel.add(jLabel13);
+
+        try {
+            landLordPhoneTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         landLordPanel.add(landLordPhoneTextField);
 
         jLabel14.setText("Email");
@@ -359,10 +390,22 @@ public class RealEstate extends javax.swing.JFrame {
 
         jLabel18.setText("CPF");
         tenantPanel.add(jLabel18);
+
+        try {
+            tenantCPFTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         tenantPanel.add(tenantCPFTextField);
 
         jLabel19.setText("Telefone");
         tenantPanel.add(jLabel19);
+
+        try {
+            tenantPhoneTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         tenantPanel.add(tenantPhoneTextField);
 
         jLabel20.setText("Email");
@@ -380,7 +423,11 @@ public class RealEstate extends javax.swing.JFrame {
         jLabel24.setText("Data do Contrato");
         jPanel6.add(jLabel24);
 
-        contractDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        try {
+            contractDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         jPanel6.add(contractDateTextField);
 
         jLabel21.setText("Dia do Pagamento");
@@ -390,9 +437,10 @@ public class RealEstate extends javax.swing.JFrame {
         jPanel6.add(paymentBaseDateTextField);
 
         jLabel23.setText("Valor do aluguel");
+        jLabel23.setToolTipText("");
         jPanel6.add(jLabel23);
 
-        rentValueTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        rentValueTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#.00"))));
         jPanel6.add(rentValueTextField);
 
         contractPane.add(jPanel6);
@@ -402,7 +450,7 @@ public class RealEstate extends javax.swing.JFrame {
         jLabel22.setText("Duração");
         jPanel7.add(jLabel22);
 
-        durationTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("###0"))));
+        durationTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         jPanel7.add(durationTextField);
 
         jLabel25.setText("Status");
@@ -464,35 +512,35 @@ public class RealEstate extends javax.swing.JFrame {
             if (addressTextField.getText().length() == 0) {
                 addressTextField.setBackground(Color.RED);
                 addressTextField.setToolTipText("Campo obrigatório");
-                System.out.println("Required field");
+                System.err.println("Required field");
                 return;
             }
             
             if (neighborhoodTextField.getText().length() == 0) {
                 neighborhoodTextField.setBackground(Color.RED);
                 neighborhoodTextField.setToolTipText("Campo obrigatório");
-                System.out.println("Required field");
+                System.err.println("Required field");
                 return;
             }
             
             if (cityTextField.getText().length() == 0) {
                 cityTextField.setBackground(Color.RED);
                 cityTextField.setToolTipText("Campo obrigatório");
-                System.out.println("Required field");
+                System.err.println("Required field");
                 return;
             }
             
             if (!isValidDouble(areaTextField.getText().replace(",", "."))) {
                 areaTextField.setBackground(Color.RED);
                 areaTextField.setToolTipText("Valor invalido, formato: 0,00");
-                System.out.println("Invalid area value");
+                System.err.println("Invalid area value");
                 return;
             }
             
             if (!isValidDouble(valueTextField.getText().replace(",", "."))) {
                 valueTextField.setBackground(Color.RED);
                 valueTextField.setToolTipText("Valor invalido, formato: 0,00");
-                System.out.println("Invalid value");
+                System.err.println("Invalid value");
                 return;
             }
             
@@ -513,16 +561,29 @@ public class RealEstate extends javax.swing.JFrame {
             realEstateController.updateProperty(realEstate);
             
             JOptionPane.showMessageDialog(null, "Imóvel atualizado com sucesso");
-            dispose();
         } catch(Exception e) {
-            System.out.println("Error: " + e);
+            System.err.println("Error: " + e);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void openRentFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openRentFormButtonActionPerformed
         rentalsPanel.setVisible(false);
         rentalFormPanel.setVisible(true);
-        rentFormStatus = "Register";
+        this.rentFormStatus = "Register";
+        
+         contractDateTextField.setText("");
+        paymentBaseDateTextField.setText("");
+        rentValueTextField.setText("");
+        landLordNameTextField.setText("");
+        landLordCPFTextField.setText("");
+        landLordPhoneTextField.setText("");
+        landLordEmailTextField.setText("");
+        tenantNameTextField.setText("");
+        tenantCPFTextField.setText("");
+        tenantPhoneTextField.setText("");
+        tenantEmailTextField.setText("");
+        durationTextField.setText("");
+        statusComboBox.setSelectedIndex(0);
     }//GEN-LAST:event_openRentFormButtonActionPerformed
 
     private void closeRentFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeRentFormButtonActionPerformed
@@ -532,26 +593,30 @@ public class RealEstate extends javax.swing.JFrame {
 
     private void submitRentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitRentButtonActionPerformed
         try {
+            paymentBaseDateTextField.setBackground(Color.WHITE);
+            durationTextField.setBackground(Color.WHITE);
+            rentValueTextField.setBackground(Color.WHITE);
+            
             if (!isValidInteger(paymentBaseDateTextField.getText()) ||
                 Integer.parseInt(paymentBaseDateTextField.getText()) < 1 ||
                 Integer.parseInt(paymentBaseDateTextField.getText()) > 28) {
                 paymentBaseDateTextField.setBackground(Color.RED);
                 paymentBaseDateTextField.setToolTipText("Campo númerico entre 1 e 28");
-                System.out.println("Payment day field must be an integer");
+                System.err.println("Payment day field must be an integer");
                 return;
             }
             
             if (!isValidInteger(durationTextField.getText())) {
                 durationTextField.setBackground(Color.RED);
                 durationTextField.setToolTipText("Campo númerico");
-                System.out.println("Duration field must be an integer");
+                System.err.println("Duration field must be an integer");
                 return;
             }
             
             if (!isValidDouble(rentValueTextField.getText())) {
                 rentValueTextField.setBackground(Color.RED);
                 rentValueTextField.setToolTipText("Campo númerico, use o formato 0,00");
-                System.out.println("Duration field must be a double");
+                System.err.println("Duration field must be a double");
                 return;
             }
             
@@ -576,10 +641,10 @@ public class RealEstate extends javax.swing.JFrame {
                 statusComboBox.getSelectedItem().toString()
             );
             
-            if (rentFormStatus == "Register") {
+            if (this.rentFormStatus.equals("Register")) {
                 rentalController.addRental(rental);
             } else {
-                rental.setId(1);
+                rental.setId(this.rentalId);
                 rentalController.updateRental(rental);
             }
             
@@ -589,19 +654,24 @@ public class RealEstate extends javax.swing.JFrame {
             
             JOptionPane.showMessageDialog(null, "Aluguel cadastrado com sucesso");
         } catch(Exception e) {
-            System.out.println("Error: " + e);
+            System.err.println("Error: " + e);
         }
     }//GEN-LAST:event_submitRentButtonActionPerformed
 
-    public void openUpdateForm(int id) {
+    public void openUpdateForm(int rentalId) {
+        this.rentalId = rentalId;
         rentalsPanel.setVisible(false);
         rentalFormPanel.setVisible(true);
-        rentFormStatus = "Update";
+        this.rentFormStatus = "Update";
         
-        RentalModel rental = rentalController.getRentalById(id);
+
+        RentalModel rental = rentalController.getRentalById(rentalId);
+        
+        String rentValue = String.valueOf(rental.getRentValue());
+        
         contractDateTextField.setText(rental.getContractDate());
         paymentBaseDateTextField.setText(String.valueOf(rental.getPaymentBaseDate()));
-        rentValueTextField.setText(String.valueOf(rental.getRentValue()));
+        rentValueTextField.setText(rentValue);
         landLordNameTextField.setText(rental.getLandlordName());
         landLordCPFTextField.setText(rental.getLandlordCpf());
         landLordPhoneTextField.setText(rental.getLandlordPhone());
@@ -623,7 +693,7 @@ public class RealEstate extends javax.swing.JFrame {
             }
         };
         
-        for (RentalModel rental : rentalController.getAllRentals()) {
+        for (RentalModel rental : rentalController.getAllRentalsByPropertyId(this.propertyId)) {
             Object[] row = {
                 rental.getId(),
                 rental.getContractDate(),
@@ -742,6 +812,8 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -756,12 +828,14 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField landLordCPFTextField;
+    private javax.swing.JFormattedTextField landLordCPFTextField;
     private javax.swing.JTextField landLordEmailTextField;
     private javax.swing.JTextField landLordNameTextField;
     private javax.swing.JPanel landLordPanel;
-    private javax.swing.JTextField landLordPhoneTextField;
+    private javax.swing.JFormattedTextField landLordPhoneTextField;
     private javax.swing.JTextField neighborhoodTextField;
     private javax.swing.JTextField numberTextField;
     private javax.swing.JButton openRentFormButton;
@@ -780,11 +854,11 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JButton saveButton;
     private javax.swing.JComboBox<String> statusComboBox;
     private javax.swing.JButton submitRentButton;
-    private javax.swing.JTextField tenantCPFTextField;
+    private javax.swing.JFormattedTextField tenantCPFTextField;
     private javax.swing.JTextField tenantEmailTextField;
     private javax.swing.JTextField tenantNameTextField;
     private javax.swing.JPanel tenantPanel;
-    private javax.swing.JTextField tenantPhoneTextField;
+    private javax.swing.JFormattedTextField tenantPhoneTextField;
     private javax.swing.JComboBox<String> typeComboBox;
     private javax.swing.JTextField valueTextField;
     // End of variables declaration//GEN-END:variables

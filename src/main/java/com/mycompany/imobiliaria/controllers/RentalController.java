@@ -31,6 +31,10 @@ public class RentalController {
         return dao.getAll();
     }
 
+    public List<RentalModel> getAllRentalsByPropertyId(int propertyId) {
+        return dao.getAllByPropertyId(propertyId);
+    }
+
     public RentalModel getRentalById(int id) {
         return dao.getById(id);
     }
