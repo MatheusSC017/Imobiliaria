@@ -39,7 +39,7 @@ public class RentalDAO {
                 duration_months INTEGER,
                 due_date TEXT,
                 property_id INTEGER,
-                status TEXT DEFAULT 'active',
+                status TEXT DEFAULT 'ativo',
                 created_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (property_id) REFERENCES properties(id)
@@ -161,7 +161,43 @@ public class RentalDAO {
 
         return contracts;
     }
+    
+    public RentalModel getLastActiveContract(int propertyId) {
+        RentalModel rental = null;
+        String sql = "SELECT * FROM rental_contracts WHERE property_id = ? AND status = ? ORDER BY id DESC";
 
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, propertyId);
+            stmt.setString(2, "Ativo");
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            rental = new RentalModel(
+                rs.getInt("id"),
+                rs.getString("contract_date"),
+                rs.getInt("payment_base_date"),
+                rs.getDouble("rent_value"),
+                rs.getString("landlord_name"),
+                rs.getString("landlord_cpf"),
+                rs.getString("landlord_phone"),
+                rs.getString("landlord_email"),
+                rs.getString("tenant_name"),
+                rs.getString("tenant_cpf"),
+                rs.getString("tenant_phone"),
+                rs.getString("tenant_email"),
+                rs.getInt("duration_months"),
+                rs.getString("due_date"),
+                rs.getInt("property_id"),
+                rs.getString("status")
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rental;
+    }
+    
     public void update(RentalModel contract) {
         String sql = """
             UPDATE rental_contracts SET

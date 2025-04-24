@@ -81,31 +81,31 @@ public class RealEstate extends javax.swing.JFrame {
 
         realEstatePanel = new javax.swing.JPanel();
         addressPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        addressFirstColumnPanel = new javax.swing.JPanel();
+        addressLabel = new javax.swing.JLabel();
         addressTextField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        neighborhoodLabel = new javax.swing.JLabel();
         neighborhoodTextField = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        addressSecondColumnPanel = new javax.swing.JPanel();
+        numberLabel = new javax.swing.JLabel();
         numberTextField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
+        cityLabel = new javax.swing.JLabel();
         cityTextField = new javax.swing.JTextField();
         propertyPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
+        propertyFirstColumnPanel = new javax.swing.JPanel();
+        typeLabel = new javax.swing.JLabel();
         typeComboBox = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
+        roomsLabel = new javax.swing.JLabel();
         roomsComboBox = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        propertySecondColumnPanel = new javax.swing.JPanel();
+        bathroomsLabel = new javax.swing.JLabel();
         bathroomsComboBox = new javax.swing.JComboBox<>();
-        jLabel8 = new javax.swing.JLabel();
+        areaLabel = new javax.swing.JLabel();
         areaTextField = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
+        propertyThirdColumnPanel = new javax.swing.JPanel();
+        valueLabel = new javax.swing.JLabel();
         valueTextField = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
+        garageLabel = new javax.swing.JLabel();
         garageComboBox = new javax.swing.JComboBox<>();
         bottomMenuPanel = new javax.swing.JPanel();
         returnButton = new javax.swing.JButton();
@@ -113,9 +113,9 @@ public class RealEstate extends javax.swing.JFrame {
         saveButton = new javax.swing.JButton();
         rentalPanel = new javax.swing.JPanel();
         rentalsPanel = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel26 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        contractsTitlePanel = new javax.swing.JPanel();
+        contractsTitleLabel = new javax.swing.JLabel();
+        rentScrollPanel = new javax.swing.JScrollPane();
         rentTable = new javax.swing.JTable();
         actionPanel = new javax.swing.JPanel();
         openRentFormButton = new javax.swing.JButton();
@@ -124,37 +124,37 @@ public class RealEstate extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         peoplePanel = new javax.swing.JPanel();
         landLordPanel = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        landLordLabel = new javax.swing.JLabel();
+        landLordNameLabel = new javax.swing.JLabel();
         landLordNameTextField = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
+        landLordCPFLabel = new javax.swing.JLabel();
         landLordCPFTextField = new javax.swing.JFormattedTextField();
-        jLabel13 = new javax.swing.JLabel();
+        landLordPhoneLabel = new javax.swing.JLabel();
         landLordPhoneTextField = new javax.swing.JFormattedTextField();
-        jLabel14 = new javax.swing.JLabel();
+        landLordEmailLabel = new javax.swing.JLabel();
         landLordEmailTextField = new javax.swing.JTextField();
         tenantPanel = new javax.swing.JPanel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
+        tenantLabel = new javax.swing.JLabel();
+        tenantNameLabel = new javax.swing.JLabel();
         tenantNameTextField = new javax.swing.JTextField();
-        jLabel18 = new javax.swing.JLabel();
+        tenantCPFLabel = new javax.swing.JLabel();
         tenantCPFTextField = new javax.swing.JFormattedTextField();
-        jLabel19 = new javax.swing.JLabel();
+        tenantPhoneLabel = new javax.swing.JLabel();
         tenantPhoneTextField = new javax.swing.JFormattedTextField();
-        jLabel20 = new javax.swing.JLabel();
+        tenantEmailLabel = new javax.swing.JLabel();
         tenantEmailTextField = new javax.swing.JTextField();
         contractPane = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel24 = new javax.swing.JLabel();
+        contractFirstColumnPanel = new javax.swing.JPanel();
+        contractDateLabel = new javax.swing.JLabel();
         contractDateTextField = new javax.swing.JFormattedTextField();
-        jLabel21 = new javax.swing.JLabel();
+        paymentDayLabel = new javax.swing.JLabel();
         paymentBaseDateTextField = new javax.swing.JFormattedTextField();
-        jLabel23 = new javax.swing.JLabel();
+        rentValueLabel = new javax.swing.JLabel();
         rentValueTextField = new javax.swing.JFormattedTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel22 = new javax.swing.JLabel();
+        contractSecondColumnPanel = new javax.swing.JPanel();
+        durationLabel = new javax.swing.JLabel();
         durationTextField = new javax.swing.JFormattedTextField();
-        jLabel25 = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
         statusComboBox = new javax.swing.JComboBox<>();
         rentOptionsPanel = new javax.swing.JPanel();
         closeRentFormButton = new javax.swing.JButton();
@@ -176,31 +176,31 @@ public class RealEstate extends javax.swing.JFrame {
         addressPanel.setOpaque(false);
         addressPanel.setLayout(new java.awt.GridLayout(1, 2, 25, 0));
 
-        jPanel3.setOpaque(false);
-        jPanel3.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        addressFirstColumnPanel.setOpaque(false);
+        addressFirstColumnPanel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
-        jLabel1.setText("Endereço:");
-        jPanel3.add(jLabel1);
-        jPanel3.add(addressTextField);
+        addressLabel.setText("Endereço:");
+        addressFirstColumnPanel.add(addressLabel);
+        addressFirstColumnPanel.add(addressTextField);
 
-        jLabel2.setText("Bairro");
-        jPanel3.add(jLabel2);
-        jPanel3.add(neighborhoodTextField);
+        neighborhoodLabel.setText("Bairro");
+        addressFirstColumnPanel.add(neighborhoodLabel);
+        addressFirstColumnPanel.add(neighborhoodTextField);
 
-        addressPanel.add(jPanel3);
+        addressPanel.add(addressFirstColumnPanel);
 
-        jPanel4.setOpaque(false);
-        jPanel4.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        addressSecondColumnPanel.setOpaque(false);
+        addressSecondColumnPanel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
-        jLabel3.setText("Número:");
-        jPanel4.add(jLabel3);
-        jPanel4.add(numberTextField);
+        numberLabel.setText("Número:");
+        addressSecondColumnPanel.add(numberLabel);
+        addressSecondColumnPanel.add(numberTextField);
 
-        jLabel4.setText("Cidade");
-        jPanel4.add(jLabel4);
-        jPanel4.add(cityTextField);
+        cityLabel.setText("Cidade");
+        addressSecondColumnPanel.add(cityLabel);
+        addressSecondColumnPanel.add(cityTextField);
 
-        addressPanel.add(jPanel4);
+        addressPanel.add(addressSecondColumnPanel);
 
         realEstatePanel.add(addressPanel);
 
@@ -208,52 +208,52 @@ public class RealEstate extends javax.swing.JFrame {
         propertyPanel.setOpaque(false);
         propertyPanel.setLayout(new java.awt.GridLayout(1, 3, 25, 0));
 
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        propertyFirstColumnPanel.setOpaque(false);
+        propertyFirstColumnPanel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
-        jLabel5.setText("Tipo");
-        jPanel1.add(jLabel5);
+        typeLabel.setText("Tipo");
+        propertyFirstColumnPanel.add(typeLabel);
 
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casa", "Terreno", "Apartamento", "Chácara" }));
-        jPanel1.add(typeComboBox);
+        propertyFirstColumnPanel.add(typeComboBox);
 
-        jLabel6.setText("Números de quartos");
-        jPanel1.add(jLabel6);
+        roomsLabel.setText("Números de quartos");
+        propertyFirstColumnPanel.add(roomsLabel);
 
         roomsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 Quartos", "1 Quarto", "2 Quartos", "3 Quartos", "+4 Quartos" }));
-        jPanel1.add(roomsComboBox);
+        propertyFirstColumnPanel.add(roomsComboBox);
 
-        propertyPanel.add(jPanel1);
+        propertyPanel.add(propertyFirstColumnPanel);
 
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        propertySecondColumnPanel.setOpaque(false);
+        propertySecondColumnPanel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
-        jLabel7.setText("Números de banheiros");
-        jPanel2.add(jLabel7);
+        bathroomsLabel.setText("Números de banheiros");
+        propertySecondColumnPanel.add(bathroomsLabel);
 
         bathroomsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 Banheiros", "1 Banheiro", "2 Banheiros", "3 Banheiros", "+4 Banheiros" }));
-        jPanel2.add(bathroomsComboBox);
+        propertySecondColumnPanel.add(bathroomsComboBox);
 
-        jLabel8.setText("Área do imovel");
-        jPanel2.add(jLabel8);
-        jPanel2.add(areaTextField);
+        areaLabel.setText("Área do imovel");
+        propertySecondColumnPanel.add(areaLabel);
+        propertySecondColumnPanel.add(areaTextField);
 
-        propertyPanel.add(jPanel2);
+        propertyPanel.add(propertySecondColumnPanel);
 
-        jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        propertyThirdColumnPanel.setOpaque(false);
+        propertyThirdColumnPanel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
-        jLabel9.setText("Valor");
-        jPanel5.add(jLabel9);
-        jPanel5.add(valueTextField);
+        valueLabel.setText("Valor");
+        propertyThirdColumnPanel.add(valueLabel);
+        propertyThirdColumnPanel.add(valueTextField);
 
-        jLabel10.setText("Garagem");
-        jPanel5.add(jLabel10);
+        garageLabel.setText("Garagem");
+        propertyThirdColumnPanel.add(garageLabel);
 
         garageComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não", "1 Carro", "2 Carros", "3 Carros", "+4 Carros" }));
-        jPanel5.add(garageComboBox);
+        propertyThirdColumnPanel.add(garageComboBox);
 
-        propertyPanel.add(jPanel5);
+        propertyPanel.add(propertyThirdColumnPanel);
 
         realEstatePanel.add(propertyPanel);
 
@@ -297,11 +297,11 @@ public class RealEstate extends javax.swing.JFrame {
 
         rentalsPanel.setLayout(new javax.swing.BoxLayout(rentalsPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jLabel26.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
-        jLabel26.setText("Contratos");
-        jPanel8.add(jLabel26);
+        contractsTitleLabel.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        contractsTitleLabel.setText("Contratos");
+        contractsTitlePanel.add(contractsTitleLabel);
 
-        rentalsPanel.add(jPanel8);
+        rentalsPanel.add(contractsTitlePanel);
 
         rentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -314,9 +314,9 @@ public class RealEstate extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(rentTable);
+        rentScrollPanel.setViewportView(rentTable);
 
-        rentalsPanel.add(jScrollPane1);
+        rentalsPanel.add(rentScrollPanel);
 
         openRentFormButton.setText("Cadastrar");
         openRentFormButton.addActionListener(new java.awt.event.ActionListener() {
@@ -342,17 +342,17 @@ public class RealEstate extends javax.swing.JFrame {
 
         landLordPanel.setLayout(new java.awt.GridLayout(9, 0));
 
-        jLabel11.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("Locador");
-        landLordPanel.add(jLabel11);
+        landLordLabel.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
+        landLordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        landLordLabel.setText("Locador");
+        landLordPanel.add(landLordLabel);
 
-        jLabel15.setText("Nome");
-        landLordPanel.add(jLabel15);
+        landLordNameLabel.setText("Nome");
+        landLordPanel.add(landLordNameLabel);
         landLordPanel.add(landLordNameTextField);
 
-        jLabel12.setText("CPF");
-        landLordPanel.add(jLabel12);
+        landLordCPFLabel.setText("CPF");
+        landLordPanel.add(landLordCPFLabel);
 
         try {
             landLordCPFTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
@@ -361,8 +361,8 @@ public class RealEstate extends javax.swing.JFrame {
         }
         landLordPanel.add(landLordCPFTextField);
 
-        jLabel13.setText("Telefone");
-        landLordPanel.add(jLabel13);
+        landLordPhoneLabel.setText("Telefone");
+        landLordPanel.add(landLordPhoneLabel);
 
         try {
             landLordPhoneTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
@@ -371,25 +371,25 @@ public class RealEstate extends javax.swing.JFrame {
         }
         landLordPanel.add(landLordPhoneTextField);
 
-        jLabel14.setText("Email");
-        landLordPanel.add(jLabel14);
+        landLordEmailLabel.setText("Email");
+        landLordPanel.add(landLordEmailLabel);
         landLordPanel.add(landLordEmailTextField);
 
         peoplePanel.add(landLordPanel);
 
         tenantPanel.setLayout(new java.awt.GridLayout(9, 0));
 
-        jLabel16.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel16.setText("Locatário");
-        tenantPanel.add(jLabel16);
+        tenantLabel.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
+        tenantLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tenantLabel.setText("Locatário");
+        tenantPanel.add(tenantLabel);
 
-        jLabel17.setText("Nome");
-        tenantPanel.add(jLabel17);
+        tenantNameLabel.setText("Nome");
+        tenantPanel.add(tenantNameLabel);
         tenantPanel.add(tenantNameTextField);
 
-        jLabel18.setText("CPF");
-        tenantPanel.add(jLabel18);
+        tenantCPFLabel.setText("CPF");
+        tenantPanel.add(tenantCPFLabel);
 
         try {
             tenantCPFTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
@@ -398,8 +398,8 @@ public class RealEstate extends javax.swing.JFrame {
         }
         tenantPanel.add(tenantCPFTextField);
 
-        jLabel19.setText("Telefone");
-        tenantPanel.add(jLabel19);
+        tenantPhoneLabel.setText("Telefone");
+        tenantPanel.add(tenantPhoneLabel);
 
         try {
             tenantPhoneTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##) #####-####")));
@@ -408,8 +408,8 @@ public class RealEstate extends javax.swing.JFrame {
         }
         tenantPanel.add(tenantPhoneTextField);
 
-        jLabel20.setText("Email");
-        tenantPanel.add(jLabel20);
+        tenantEmailLabel.setText("Email");
+        tenantPanel.add(tenantEmailLabel);
         tenantPanel.add(tenantEmailTextField);
 
         peoplePanel.add(tenantPanel);
@@ -418,48 +418,48 @@ public class RealEstate extends javax.swing.JFrame {
 
         contractPane.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
 
-        jPanel6.setLayout(new java.awt.GridLayout(6, 0));
+        contractFirstColumnPanel.setLayout(new java.awt.GridLayout(6, 0));
 
-        jLabel24.setText("Data do Contrato");
-        jPanel6.add(jLabel24);
+        contractDateLabel.setText("Data do Contrato");
+        contractFirstColumnPanel.add(contractDateLabel);
 
         try {
             contractDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jPanel6.add(contractDateTextField);
+        contractFirstColumnPanel.add(contractDateTextField);
 
-        jLabel21.setText("Dia do Pagamento");
-        jPanel6.add(jLabel21);
+        paymentDayLabel.setText("Dia do Pagamento");
+        contractFirstColumnPanel.add(paymentDayLabel);
 
         paymentBaseDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("###0"))));
-        jPanel6.add(paymentBaseDateTextField);
+        contractFirstColumnPanel.add(paymentBaseDateTextField);
 
-        jLabel23.setText("Valor do aluguel");
-        jLabel23.setToolTipText("");
-        jPanel6.add(jLabel23);
+        rentValueLabel.setText("Valor do aluguel");
+        rentValueLabel.setToolTipText("");
+        contractFirstColumnPanel.add(rentValueLabel);
 
         rentValueTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#.00"))));
-        jPanel6.add(rentValueTextField);
+        contractFirstColumnPanel.add(rentValueTextField);
 
-        contractPane.add(jPanel6);
+        contractPane.add(contractFirstColumnPanel);
 
-        jPanel7.setLayout(new java.awt.GridLayout(6, 0));
+        contractSecondColumnPanel.setLayout(new java.awt.GridLayout(6, 0));
 
-        jLabel22.setText("Duração");
-        jPanel7.add(jLabel22);
+        durationLabel.setText("Duração");
+        contractSecondColumnPanel.add(durationLabel);
 
         durationTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        jPanel7.add(durationTextField);
+        contractSecondColumnPanel.add(durationTextField);
 
-        jLabel25.setText("Status");
-        jPanel7.add(jLabel25);
+        statusLabel.setText("Status");
+        contractSecondColumnPanel.add(statusLabel);
 
         statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ativo", "Cancelado", "Vencido" }));
-        jPanel7.add(statusComboBox);
+        contractSecondColumnPanel.add(statusComboBox);
 
-        contractPane.add(jPanel7);
+        contractPane.add(contractSecondColumnPanel);
 
         rentalFormPanel.add(contractPane);
 
@@ -782,84 +782,84 @@ public class RealEstate extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel actionPanel;
+    private javax.swing.JPanel addressFirstColumnPanel;
+    private javax.swing.JLabel addressLabel;
     private javax.swing.JPanel addressPanel;
+    private javax.swing.JPanel addressSecondColumnPanel;
     private javax.swing.JTextField addressTextField;
+    private javax.swing.JLabel areaLabel;
     private javax.swing.JTextField areaTextField;
     private javax.swing.JComboBox<String> bathroomsComboBox;
+    private javax.swing.JLabel bathroomsLabel;
     private javax.swing.JPanel bottomMenuPanel;
+    private javax.swing.JLabel cityLabel;
     private javax.swing.JTextField cityTextField;
     private javax.swing.JButton closeRentFormButton;
+    private javax.swing.JLabel contractDateLabel;
     private javax.swing.JFormattedTextField contractDateTextField;
+    private javax.swing.JPanel contractFirstColumnPanel;
     private javax.swing.JPanel contractPane;
+    private javax.swing.JPanel contractSecondColumnPanel;
+    private javax.swing.JLabel contractsTitleLabel;
+    private javax.swing.JPanel contractsTitlePanel;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JLabel durationLabel;
     private javax.swing.JFormattedTextField durationTextField;
     private javax.swing.JComboBox<String> garageComboBox;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel garageLabel;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel landLordCPFLabel;
     private javax.swing.JFormattedTextField landLordCPFTextField;
+    private javax.swing.JLabel landLordEmailLabel;
     private javax.swing.JTextField landLordEmailTextField;
+    private javax.swing.JLabel landLordLabel;
+    private javax.swing.JLabel landLordNameLabel;
     private javax.swing.JTextField landLordNameTextField;
     private javax.swing.JPanel landLordPanel;
+    private javax.swing.JLabel landLordPhoneLabel;
     private javax.swing.JFormattedTextField landLordPhoneTextField;
+    private javax.swing.JLabel neighborhoodLabel;
     private javax.swing.JTextField neighborhoodTextField;
+    private javax.swing.JLabel numberLabel;
     private javax.swing.JTextField numberTextField;
     private javax.swing.JButton openRentFormButton;
     private javax.swing.JFormattedTextField paymentBaseDateTextField;
+    private javax.swing.JLabel paymentDayLabel;
     private javax.swing.JPanel peoplePanel;
+    private javax.swing.JPanel propertyFirstColumnPanel;
     private javax.swing.JPanel propertyPanel;
+    private javax.swing.JPanel propertySecondColumnPanel;
+    private javax.swing.JPanel propertyThirdColumnPanel;
     private javax.swing.JPanel realEstatePanel;
     private javax.swing.JPanel rentOptionsPanel;
+    private javax.swing.JScrollPane rentScrollPanel;
     private javax.swing.JTable rentTable;
+    private javax.swing.JLabel rentValueLabel;
     private javax.swing.JFormattedTextField rentValueTextField;
     private javax.swing.JPanel rentalFormPanel;
     private javax.swing.JPanel rentalPanel;
     private javax.swing.JPanel rentalsPanel;
     private javax.swing.JButton returnButton;
     private javax.swing.JComboBox<String> roomsComboBox;
+    private javax.swing.JLabel roomsLabel;
     private javax.swing.JButton saveButton;
     private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JLabel statusLabel;
     private javax.swing.JButton submitRentButton;
+    private javax.swing.JLabel tenantCPFLabel;
     private javax.swing.JFormattedTextField tenantCPFTextField;
+    private javax.swing.JLabel tenantEmailLabel;
     private javax.swing.JTextField tenantEmailTextField;
+    private javax.swing.JLabel tenantLabel;
+    private javax.swing.JLabel tenantNameLabel;
     private javax.swing.JTextField tenantNameTextField;
     private javax.swing.JPanel tenantPanel;
+    private javax.swing.JLabel tenantPhoneLabel;
     private javax.swing.JFormattedTextField tenantPhoneTextField;
     private javax.swing.JComboBox<String> typeComboBox;
+    private javax.swing.JLabel typeLabel;
+    private javax.swing.JLabel valueLabel;
     private javax.swing.JTextField valueTextField;
     // End of variables declaration//GEN-END:variables
 }

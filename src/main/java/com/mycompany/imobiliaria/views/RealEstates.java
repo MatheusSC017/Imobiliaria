@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 
 import com.mycompany.imobiliaria.controllers.RealEstateController;
+import com.mycompany.imobiliaria.controllers.RentalController;
 import com.mycompany.imobiliaria.models.RealEstateModel;
+import com.mycompany.imobiliaria.models.RentalModel;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -30,6 +32,8 @@ import javax.swing.table.TableCellRenderer;
 public class RealEstates extends javax.swing.JFrame {
     private static JFrame propertyRegisterFrame = null;
     private static final RealEstateController realEstateController = new RealEstateController();
+    private static final RentalController rentalController = new RentalController();
+    
     
     /**
      * Creates new form RealEstates
@@ -49,8 +53,10 @@ public class RealEstates extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        titlePanel = new javax.swing.JPanel();
+        titleLabel = new javax.swing.JLabel();
+        filtersPanel = new javax.swing.JPanel();
+        searchButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         propertiesTable = new javax.swing.JTable();
@@ -66,11 +72,16 @@ public class RealEstates extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1200, 600));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        jLabel1.setText("Imóveis");
-        jPanel2.add(jLabel1);
+        titleLabel.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
+        titleLabel.setText("Imóveis");
+        titlePanel.add(titleLabel);
 
-        getContentPane().add(jPanel2);
+        getContentPane().add(titlePanel);
+
+        searchButton.setText("Pesquisar");
+        filtersPanel.add(searchButton);
+
+        getContentPane().add(filtersPanel);
 
         contentPanel.setLayout(new java.awt.BorderLayout());
 
@@ -163,15 +174,20 @@ public class RealEstates extends javax.swing.JFrame {
     }//GEN-LAST:event_registerButtonActionPerformed
 
     public void updateTable() {
-        String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Ações"};
+        String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 11;
+                return column == 13;
             }
         };
         
         for (RealEstateModel realEstate : realEstateController.getAllProperties()) {
+            RentalModel rent = rentalController.getLastActiveContract(realEstate.getId());
+            System.out.println(rent.getId());
+            String rentedProperty = (rent.getId() != 0) ? "Sim" : "Não";
+            String dueDate = (rent.getId() != 0) ? rent.getDueDate() : "";
+            
             Object[] row = {
                 realEstate.getId(),
                 realEstate.getAddress(),
@@ -184,6 +200,8 @@ public class RealEstates extends javax.swing.JFrame {
                 realEstate.getArea(),
                 realEstate.getValue(),
                 realEstate.getGarage(),
+                rentedProperty,
+                dueDate,
                 ""
             };
             tableModel.addRow(row);
@@ -193,7 +211,7 @@ public class RealEstates extends javax.swing.JFrame {
         propertiesTable.getColumn("Ações").setCellRenderer(new PropertyButtonRenderer());
         propertiesTable.getColumn("Ações").setCellEditor(new PropertyButtonEditor(new JCheckBox(), propertiesTable, this));
         
-        int[] preferredWidths = {40, 250, 150, 70, 80, 50, 60, 60, 60, 80, 80, 120};
+        int[] preferredWidths = {40, 200, 150, 70, 80, 50, 60, 60, 60, 80, 50, 50, 80, 120};
         for (int i = 0; i < preferredWidths.length; i++) {
             propertiesTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
         }
@@ -236,13 +254,15 @@ public class RealEstates extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPanel;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel filtersPanel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JTable propertiesTable;
     private javax.swing.JButton registerButton;
+    private javax.swing.JButton searchButton;
+    private javax.swing.JLabel titleLabel;
+    private javax.swing.JPanel titlePanel;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -68,7 +68,7 @@
             <Property name="rows" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel3">
+            <Container class="javax.swing.JPanel" name="addressFirstColumnPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -79,14 +79,14 @@
                 <Property name="verticalGap" type="int" value="5"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel1">
+                <Component class="javax.swing.JLabel" name="addressLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Endere&#xe7;o:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="addressTextField">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel2">
+                <Component class="javax.swing.JLabel" name="neighborhoodLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Bairro"/>
                   </Properties>
@@ -95,7 +95,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel4">
+            <Container class="javax.swing.JPanel" name="addressSecondColumnPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -106,14 +106,14 @@
                 <Property name="verticalGap" type="int" value="5"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel3">
+                <Component class="javax.swing.JLabel" name="numberLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="N&#xfa;mero:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="numberTextField">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel4">
+                <Component class="javax.swing.JLabel" name="cityLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cidade"/>
                   </Properties>
@@ -140,7 +140,7 @@
             <Property name="rows" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel1">
+            <Container class="javax.swing.JPanel" name="propertyFirstColumnPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -151,7 +151,7 @@
                 <Property name="verticalGap" type="int" value="5"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="typeLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Tipo"/>
                   </Properties>
@@ -171,7 +171,7 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel6">
+                <Component class="javax.swing.JLabel" name="roomsLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="N&#xfa;meros de quartos"/>
                   </Properties>
@@ -194,7 +194,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel2">
+            <Container class="javax.swing.JPanel" name="propertySecondColumnPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -205,7 +205,7 @@
                 <Property name="verticalGap" type="int" value="5"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel7">
+                <Component class="javax.swing.JLabel" name="bathroomsLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="N&#xfa;meros de banheiros"/>
                   </Properties>
@@ -226,7 +226,7 @@
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel8">
+                <Component class="javax.swing.JLabel" name="areaLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="&#xc1;rea do imovel"/>
                   </Properties>
@@ -235,7 +235,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel5">
+            <Container class="javax.swing.JPanel" name="propertyThirdColumnPanel">
               <Properties>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
@@ -246,14 +246,14 @@
                 <Property name="verticalGap" type="int" value="5"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel9">
+                <Component class="javax.swing.JLabel" name="valueLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Valor"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="valueTextField">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel10">
+                <Component class="javax.swing.JLabel" name="garageLabel">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Garagem"/>
                   </Properties>
@@ -350,11 +350,11 @@
             <Property name="axis" type="int" value="3"/>
           </Layout>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel8">
+            <Container class="javax.swing.JPanel" name="contractsTitlePanel">
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel26">
+                <Component class="javax.swing.JLabel" name="contractsTitleLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Liberation Sans" size="18" style="0"/>
@@ -364,7 +364,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+            <Container class="javax.swing.JScrollPane" name="rentScrollPanel">
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
               </AuxValues>
@@ -436,7 +436,7 @@
                     <Property name="rows" type="int" value="9"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel11">
+                    <Component class="javax.swing.JLabel" name="landLordLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Liberation Sans" size="24" style="0"/>
@@ -445,14 +445,14 @@
                         <Property name="text" type="java.lang.String" value="Locador"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel15">
+                    <Component class="javax.swing.JLabel" name="landLordNameLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Nome"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="landLordNameTextField">
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel12">
+                    <Component class="javax.swing.JLabel" name="landLordCPFLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="CPF"/>
                       </Properties>
@@ -464,7 +464,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel13">
+                    <Component class="javax.swing.JLabel" name="landLordPhoneLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Telefone"/>
                       </Properties>
@@ -476,7 +476,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel14">
+                    <Component class="javax.swing.JLabel" name="landLordEmailLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Email"/>
                       </Properties>
@@ -492,7 +492,7 @@
                     <Property name="rows" type="int" value="9"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel16">
+                    <Component class="javax.swing.JLabel" name="tenantLabel">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Liberation Sans" size="24" style="0"/>
@@ -501,14 +501,14 @@
                         <Property name="text" type="java.lang.String" value="Locat&#xe1;rio"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel17">
+                    <Component class="javax.swing.JLabel" name="tenantNameLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Nome"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="tenantNameTextField">
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel18">
+                    <Component class="javax.swing.JLabel" name="tenantCPFLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="CPF"/>
                       </Properties>
@@ -520,7 +520,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel19">
+                    <Component class="javax.swing.JLabel" name="tenantPhoneLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Telefone"/>
                       </Properties>
@@ -532,7 +532,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel20">
+                    <Component class="javax.swing.JLabel" name="tenantEmailLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Email"/>
                       </Properties>
@@ -551,14 +551,14 @@
                 <Property name="rows" type="int" value="1"/>
               </Layout>
               <SubComponents>
-                <Container class="javax.swing.JPanel" name="jPanel6">
+                <Container class="javax.swing.JPanel" name="contractFirstColumnPanel">
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="0"/>
                     <Property name="rows" type="int" value="6"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel24">
+                    <Component class="javax.swing.JLabel" name="contractDateLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Data do Contrato"/>
                       </Properties>
@@ -570,7 +570,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel21">
+                    <Component class="javax.swing.JLabel" name="paymentDayLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Dia do Pagamento"/>
                       </Properties>
@@ -582,7 +582,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel23">
+                    <Component class="javax.swing.JLabel" name="rentValueLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Valor do aluguel"/>
                         <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -597,14 +597,14 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="jPanel7">
+                <Container class="javax.swing.JPanel" name="contractSecondColumnPanel">
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="0"/>
                     <Property name="rows" type="int" value="6"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="jLabel22">
+                    <Component class="javax.swing.JLabel" name="durationLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Dura&#xe7;&#xe3;o"/>
                       </Properties>
@@ -616,7 +616,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel25">
+                    <Component class="javax.swing.JLabel" name="statusLabel">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Status"/>
                       </Properties>

@@ -38,4 +38,8 @@ public class RentalController {
     public RentalModel getRentalById(int id) {
         return dao.getById(id);
     }
+
+    public RentalModel getLastActiveContract(int id) {
+        return dao.getLastActiveContract(id);
+    }
 }
