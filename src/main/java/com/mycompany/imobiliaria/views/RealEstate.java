@@ -424,7 +424,7 @@ public class RealEstate extends javax.swing.JFrame {
         contractFirstColumnPanel.add(contractDateLabel);
 
         try {
-            contractDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+            contractDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -596,6 +596,7 @@ public class RealEstate extends javax.swing.JFrame {
             paymentBaseDateTextField.setBackground(Color.WHITE);
             durationTextField.setBackground(Color.WHITE);
             rentValueTextField.setBackground(Color.WHITE);
+            contractDateTextField.setBackground(Color.WHITE);
             
             if (!isValidInteger(paymentBaseDateTextField.getText()) ||
                 Integer.parseInt(paymentBaseDateTextField.getText()) < 1 ||
@@ -616,15 +617,28 @@ public class RealEstate extends javax.swing.JFrame {
             if (!isValidDouble(rentValueTextField.getText())) {
                 rentValueTextField.setBackground(Color.RED);
                 rentValueTextField.setToolTipText("Campo númerico, use o formato 0,00");
-                System.err.println("Duration field must be a double");
+                System.err.println("Rent Value field must be a double");
+                return;
+            }
+            
+            if (contractDateTextField.getText() == "  /    ") {
+                contractDateTextField.setBackground(Color.RED);
+                contractDateTextField.setToolTipText("Campo data, use o formato ##/####");
+                System.err.println("Contract Date must have format ##/####");
                 return;
             }
             
             int paymentDay = Integer.parseInt(paymentBaseDateTextField.getText());
             int duration = Integer.parseInt(durationTextField.getText());
             double rentValue = Double.parseDouble(rentValueTextField.getText());
+            
+            String[] contractDateParts = contractDateTextField.getText().split("/");
+            String dueDate = addMonthsToDate("01/" + contractDateTextField.getText(), duration);
+            String[] dueDateParts = dueDate.split("/");
+            
             RentalModel rental = new RentalModel(
-                contractDateTextField.getText(),
+                Integer.valueOf(contractDateParts[0]),
+                Integer.valueOf(contractDateParts[1]),
                 paymentDay,
                 rentValue,
                 landLordNameTextField.getText(),
@@ -636,7 +650,8 @@ public class RealEstate extends javax.swing.JFrame {
                 tenantPhoneTextField.getText(),
                 tenantEmailTextField.getText(),
                 duration,
-                addMonthsToDate(contractDateTextField.getText(), duration),
+                Integer.valueOf(dueDateParts[1]),
+                Integer.valueOf(dueDateParts[2]),
                 this.propertyId,
                 statusComboBox.getSelectedItem().toString()
             );
@@ -652,7 +667,7 @@ public class RealEstate extends javax.swing.JFrame {
             rentalsPanel.setVisible(true);
             rentalFormPanel.setVisible(false);
             
-            JOptionPane.showMessageDialog(null, "Aluguel cadastrado com sucesso");
+            JOptionPane.showMessageDialog(null, "Aluguel cadastrado/editado com sucesso");
         } catch(Exception e) {
             System.err.println("Error: " + e);
         }
@@ -669,7 +684,7 @@ public class RealEstate extends javax.swing.JFrame {
         
         String rentValue = String.valueOf(rental.getRentValue());
         
-        contractDateTextField.setText(rental.getContractDate());
+        contractDateTextField.setText(String.format("%02d/%04d", rental.getContractMonth(), rental.getContractYear()));
         paymentBaseDateTextField.setText(String.valueOf(rental.getPaymentBaseDate()));
         rentValueTextField.setText(rentValue);
         landLordNameTextField.setText(rental.getLandlordName());
@@ -696,8 +711,8 @@ public class RealEstate extends javax.swing.JFrame {
         for (RentalModel rental : rentalController.getAllRentalsByPropertyId(this.propertyId)) {
             Object[] row = {
                 rental.getId(),
-                rental.getContractDate(),
-                rental.getDueDate(),
+                String.format("%02d/%04d", rental.getContractMonth(), rental.getContractYear()),
+                String.format("%02d/%04d", rental.getDueMonth(), rental.getDueYear()),
                 rental.getStatus(),
                 "",
                 "",

@@ -17,32 +17,6 @@ import com.mycompany.imobiliaria.models.PaymentModel;
 public class PaymentDAO {
     private static final String DB_URL = "jdbc:sqlite:realestate.db";
 
-    public PaymentDAO() {
-        createTableIfNotExists();
-    }
-    
-    private void createTableIfNotExists() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS payments (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                payment_day INTEGER,
-                payment_month INTEGER,
-                payment_year INTEGER,
-                reference_month INTEGER,
-                reference_year INTEGER,
-                rental_id INTEGER,
-                FOREIGN KEY (rental_id) REFERENCES rental_contracts(id)
-            );
-        """;
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void insert(PaymentModel payment) {
         String sql = "INSERT INTO payments (payment_day, payment_month, payment_year, reference_month, reference_year, rental_id) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";

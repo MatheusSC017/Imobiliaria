@@ -10,7 +10,8 @@ package com.mycompany.imobiliaria.models;
  */
 public class RentalModel {
     private int id;
-    private String contractDate;
+    private int contractMonth;
+    private int contractYear;
     private int paymentBaseDate;
     private double rentValue;
     private String landlordName;
@@ -22,15 +23,17 @@ public class RentalModel {
     private String tenantPhone;
     private String tenantEmail;
     private int durationMonths;
-    private String dueDate;
+    private int dueMonth;
+    private int dueYear;
     private int propertyId;
     private String status;
 
-    public RentalModel(String contractDate, int paymentBaseDate, double rentValue,
+    public RentalModel(int contractMonth, int contractYear, int paymentBaseDate, double rentValue,
                             String landlordName, String landlordCpf, String landlordPhone, String landlordEmail,
                             String tenantName, String tenantCpf, String tenantPhone, String tenantEmail,
-                            int durationMonths, String dueDate, int propertyId, String status) {
-        setContractDate(contractDate);
+                            int durationMonths, int dueMonth, int dueYear, int propertyId, String status) {
+        setContractMonth(contractMonth);
+        setContractYear(contractYear);
         setPaymentBaseDate(paymentBaseDate);
         setRentValue(rentValue);
         setLandlordName(landlordName);
@@ -42,17 +45,19 @@ public class RentalModel {
         setTenantPhone(tenantPhone);
         setTenantEmail(tenantEmail);
         setDurationMonths(durationMonths);
-        setDueDate(dueDate);
+        setDueMonth(dueMonth);
+        setDueYear(dueYear);
         setPropertyId(propertyId);
         setStatus(status);
     }
     
-    public RentalModel(int id, String contractDate, int paymentBaseDate, double rentValue,
+    public RentalModel(int id, int contractMonth, int contractYear, int paymentBaseDate, double rentValue,
                             String landlordName, String landlordCpf, String landlordPhone, String landlordEmail,
                             String tenantName, String tenantCpf, String tenantPhone, String tenantEmail,
-                            int durationMonths, String dueDate, int propertyId, String status) {
+                            int durationMonths, int dueMonth, int dueYear, int propertyId, String status) {
         setId(id);
-        setContractDate(contractDate);
+        setContractMonth(contractMonth);
+        setContractYear(contractYear);
         setPaymentBaseDate(paymentBaseDate);
         setRentValue(rentValue);
         setLandlordName(landlordName);
@@ -64,7 +69,8 @@ public class RentalModel {
         setTenantPhone(tenantPhone);
         setTenantEmail(tenantEmail);
         setDurationMonths(durationMonths);
-        setDueDate(dueDate);
+        setDueMonth(dueMonth);
+        setDueYear(dueYear);
         setPropertyId(propertyId);
         setStatus(status);
     }
@@ -73,10 +79,14 @@ public class RentalModel {
         this.id = id;
     }
 
-    public void setContractDate(String contractDate) {
-        this.contractDate = contractDate;
+    public void setContractMonth(int contractMonth) {
+        this.contractMonth = contractMonth;
     }
 
+    public void setContractYear(int contractYear) {
+        this.contractYear = contractYear;
+    }
+   
     public void setPaymentBaseDate(int paymentBaseDate) {
         this.paymentBaseDate = paymentBaseDate;
     }
@@ -121,10 +131,14 @@ public class RentalModel {
         this.durationMonths = durationMonths;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public void setDueMonth(int dueMonth) {
+        this.dueMonth = dueMonth;
     }
 
+    public void setDueYear(int dueYear) {
+        this.dueYear = dueYear;
+    }
+    
     public void setPropertyId(int propertyId) {
         this.propertyId = propertyId;
     }
@@ -137,8 +151,12 @@ public class RentalModel {
         return id;
     }
 
-    public String getContractDate() {
-        return contractDate;
+    public int getContractMonth() {
+        return contractMonth;
+    }
+
+    public int getContractYear() {
+        return contractYear;
     }
 
     public int getPaymentBaseDate() {
@@ -185,8 +203,12 @@ public class RentalModel {
         return durationMonths;
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public int getDueMonth() {
+        return dueMonth;
+    }
+
+    public int getDueYear() {
+        return dueYear;
     }
 
     public int getPropertyId() {

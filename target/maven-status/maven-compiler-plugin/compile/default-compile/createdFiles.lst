@@ -17,6 +17,7 @@ com/mycompany/imobiliaria/models/PaymentModel.class
 com/mycompany/imobiliaria/dao/PaymentDAO.class
 com/mycompany/imobiliaria/views/PropertyButtonEditor$1.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister.class
+com/mycompany/imobiliaria/dao/InitDatabase.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister$2.class
 com/mycompany/imobiliaria/views/RealEstates$3.class
 com/mycompany/imobiliaria/dao/RentalDAO.class

@@ -13,6 +13,7 @@ import com.mycompany.imobiliaria.controllers.RealEstateController;
 import com.mycompany.imobiliaria.controllers.RentalController;
 import com.mycompany.imobiliaria.models.RealEstateModel;
 import com.mycompany.imobiliaria.models.RentalModel;
+import com.mycompany.imobiliaria.dao.InitDatabase;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,8 @@ public class RealEstates extends javax.swing.JFrame {
      * Creates new form RealEstates
      */
     public RealEstates() {
+        new InitDatabase();
+        
         initComponents();
         
         updateTable();
@@ -64,6 +67,9 @@ public class RealEstates extends javax.swing.JFrame {
         menuPanel = new javax.swing.JPanel();
         updateButton = new javax.swing.JButton();
         registerButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("imobiliária");
@@ -144,6 +150,14 @@ public class RealEstates extends javax.swing.JFrame {
 
         getContentPane().add(menuPanel);
 
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -184,9 +198,10 @@ public class RealEstates extends javax.swing.JFrame {
         
         for (RealEstateModel realEstate : realEstateController.getAllProperties()) {
             RentalModel rent = rentalController.getLastActiveContract(realEstate.getId());
-            System.out.println(rent.getId());
             String rentedProperty = (rent.getId() != 0) ? "Sim" : "Não";
-            String dueDate = (rent.getId() != 0) ? rent.getDueDate() : "";
+            String dueDate = "";
+            if (rent.getId() != 0) 
+                dueDate =  String.format("%02d/%04d", rent.getDueMonth(), rent.getDueYear());
             
             Object[] row = {
                 realEstate.getId(),
@@ -255,6 +270,9 @@ public class RealEstates extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPanel;
     private javax.swing.JPanel filtersPanel;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menuPanel;
@@ -325,7 +343,6 @@ class PropertyButtonEditor extends DefaultCellEditor {
     }
 
     private void openDetailsWindow(Object idObj) {
-        System.out.println(propertyUpdateFrame);
         if (propertyUpdateFrame != null) {
             propertyUpdateFrame.dispose();
         }

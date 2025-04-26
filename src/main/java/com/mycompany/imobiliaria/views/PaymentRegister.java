@@ -218,10 +218,8 @@ public class PaymentRegister extends javax.swing.JFrame {
         int referenceYear;
         
         if (payments.isEmpty()) {
-            String[] referenceDate = rental.getContractDate().split("/");
-            
-            referenceMonth = Integer.parseInt(referenceDate[1]) + 1;
-            referenceYear = Integer.parseInt(referenceDate[2]);
+            referenceMonth = rental.getContractMonth() + 1;
+            referenceYear = rental.getContractYear();
             
             if (referenceMonth > 12) {
                 referenceMonth = 1;

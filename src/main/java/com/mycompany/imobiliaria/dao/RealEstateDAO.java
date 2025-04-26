@@ -17,35 +17,6 @@ import java.util.List;
 public class RealEstateDAO {
     private static final String DB_URL = "jdbc:sqlite:realestate.db";
 
-    public RealEstateDAO() {
-        createTableIfNotExists();
-    }
-
-    private void createTableIfNotExists() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS properties (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                address TEXT,
-                neighborhood TEXT,
-                number TEXT,
-                city TEXT,
-                type TEXT,
-                rooms INTEGER,
-                bathrooms INTEGER,
-                area REAL,
-                value REAL,
-                garage TEXT
-            );
-        """;
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void insert(RealEstateModel property) {
         String sql = """
             INSERT INTO properties(address, neighborhood, number, city, type, rooms, bathrooms, area, value, garage)

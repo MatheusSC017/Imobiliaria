@@ -2,6 +2,7 @@
 /home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/controllers/PaymentController.java
 /home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/controllers/RealEstateController.java
 /home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/controllers/RentalController.java
+/home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/dao/InitDatabase.java
 /home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/dao/PaymentDAO.java
 /home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/dao/RealEstateDAO.java
 /home/user/NetBeansProjects/Imobiliaria/src/main/java/com/mycompany/imobiliaria/dao/RentalDAO.java
