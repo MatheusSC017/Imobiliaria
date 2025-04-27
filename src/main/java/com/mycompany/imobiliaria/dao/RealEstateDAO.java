@@ -43,37 +43,6 @@ public class RealEstateDAO {
         }
     }
 
-    public List<RealEstateModel> getAll() {
-        List<RealEstateModel> properties = new ArrayList<>();
-        String sql = "SELECT * FROM properties";
-
-        try (Connection conn = DriverManager.getConnection(DB_URL);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                RealEstateModel p = new RealEstateModel(
-                    rs.getInt("id"),
-                    rs.getString("address"),
-                    rs.getString("neighborhood"),
-                    rs.getString("number"),
-                    rs.getString("city"),
-                    rs.getString("type"),
-                    rs.getInt("rooms"),
-                    rs.getInt("bathrooms"),
-                    rs.getDouble("area"),
-                    rs.getDouble("value"),
-                    rs.getInt("garage")
-                );
-                properties.add(p);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return properties;
-    }
-
     public void update(RealEstateModel property) {
         String sql = """
             UPDATE properties
@@ -114,6 +83,38 @@ public class RealEstateDAO {
         }
     }
 
+    public List<RealEstateModel> getAll(String order_field, String order_direction) {
+        List<RealEstateModel> properties = new ArrayList<>();
+        String sql = "SELECT * FROM properties ORDER BY " + order_field + " " + order_direction;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                RealEstateModel p = new RealEstateModel(
+                    rs.getInt("id"),
+                    rs.getString("address"),
+                    rs.getString("neighborhood"),
+                    rs.getString("number"),
+                    rs.getString("city"),
+                    rs.getString("type"),
+                    rs.getInt("rooms"),
+                    rs.getInt("bathrooms"),
+                    rs.getDouble("area"),
+                    rs.getDouble("value"),
+                    rs.getInt("garage")
+                );
+                properties.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return properties;
+    }
+
+    
     public RealEstateModel getById(int id) {
         String sql = "SELECT * FROM properties WHERE id = ?";
         RealEstateModel property = null;

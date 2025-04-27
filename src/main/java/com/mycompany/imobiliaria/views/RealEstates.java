@@ -34,6 +34,9 @@ public class RealEstates extends javax.swing.JFrame {
     private static JFrame propertyRegisterFrame = null;
     private static final RealEstateController realEstateController = new RealEstateController();
     private static final RentalController rentalController = new RentalController();
+    private int orderField = 0;
+    private int orderDirection = 0;
+    private String selection = "All";
     
     
     /**
@@ -56,9 +59,20 @@ public class RealEstates extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rentedFilterButtonGroup = new javax.swing.ButtonGroup();
         titlePanel = new javax.swing.JPanel();
         titleLabel = new javax.swing.JLabel();
         filtersPanel = new javax.swing.JPanel();
+        orderPanel = new javax.swing.JPanel();
+        orderLabel = new javax.swing.JLabel();
+        orderFieldPanel = new javax.swing.JPanel();
+        orderFieldComboBox = new javax.swing.JComboBox<>();
+        orderDirectionComboBox = new javax.swing.JComboBox<>();
+        selectLabel = new javax.swing.JLabel();
+        rentedFilterPanel = new javax.swing.JPanel();
+        selectAllRadioButton = new javax.swing.JRadioButton();
+        selectRentedRadioButton = new javax.swing.JRadioButton();
+        selectFreeRadioButton = new javax.swing.JRadioButton();
         searchButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -67,9 +81,6 @@ public class RealEstates extends javax.swing.JFrame {
         menuPanel = new javax.swing.JPanel();
         updateButton = new javax.swing.JButton();
         registerButton = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("imobiliária");
@@ -84,7 +95,60 @@ public class RealEstates extends javax.swing.JFrame {
 
         getContentPane().add(titlePanel);
 
+        filtersPanel.setLayout(new javax.swing.BoxLayout(filtersPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        orderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 50));
+        orderPanel.setLayout(new javax.swing.BoxLayout(orderPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        orderLabel.setText("Ordenar por: ");
+        orderPanel.add(orderLabel);
+
+        orderFieldPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        orderFieldPanel.setLayout(new javax.swing.BoxLayout(orderFieldPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        orderFieldComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem" }));
+        orderFieldComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
+        orderFieldComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
+        orderFieldComboBox.setPreferredSize(new java.awt.Dimension(150, 30));
+        orderFieldPanel.add(orderFieldComboBox);
+
+        orderPanel.add(orderFieldPanel);
+
+        orderDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
+        orderDirectionComboBox.setLightWeightPopupEnabled(false);
+        orderDirectionComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
+        orderDirectionComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
+        orderPanel.add(orderDirectionComboBox);
+
+        filtersPanel.add(orderPanel);
+
+        selectLabel.setText("Selicionar Imóveis");
+        filtersPanel.add(selectLabel);
+
+        rentedFilterPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 50));
+        rentedFilterPanel.setLayout(new javax.swing.BoxLayout(rentedFilterPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        rentedFilterButtonGroup.add(selectAllRadioButton);
+        selectAllRadioButton.setSelected(true);
+        selectAllRadioButton.setText("Todos");
+        rentedFilterPanel.add(selectAllRadioButton);
+
+        rentedFilterButtonGroup.add(selectRentedRadioButton);
+        selectRentedRadioButton.setText("Alugados");
+        rentedFilterPanel.add(selectRentedRadioButton);
+
+        rentedFilterButtonGroup.add(selectFreeRadioButton);
+        selectFreeRadioButton.setText("Livres");
+        rentedFilterPanel.add(selectFreeRadioButton);
+
+        filtersPanel.add(rentedFilterPanel);
+
         searchButton.setText("Pesquisar");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
         filtersPanel.add(searchButton);
 
         getContentPane().add(filtersPanel);
@@ -150,19 +214,12 @@ public class RealEstates extends javax.swing.JFrame {
 
         getContentPane().add(menuPanel);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        this.orderField = orderFieldComboBox.getSelectedIndex();
         updateTable();
     }//GEN-LAST:event_updateButtonActionPerformed
 
@@ -187,6 +244,23 @@ public class RealEstates extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_registerButtonActionPerformed
 
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        this.orderField = orderFieldComboBox.getSelectedIndex();
+        this.orderDirection = orderDirectionComboBox.getSelectedIndex();
+        
+        if (rentedFilterButtonGroup.getSelection() != null) {
+            if (selectAllRadioButton.isSelected()) {
+                this.selection = "All";
+            } else if (selectRentedRadioButton.isSelected()) {
+                this.selection = "Rented";
+            } else {
+                this.selection = "Free";
+            }
+        }
+        
+        updateTable();
+    }//GEN-LAST:event_searchButtonActionPerformed
+
     public void updateTable() {
         String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
@@ -196,13 +270,17 @@ public class RealEstates extends javax.swing.JFrame {
             }
         };
         
-        for (RealEstateModel realEstate : realEstateController.getAllProperties()) {
+        for (RealEstateModel realEstate : realEstateController.getAllProperties(this.orderField, this.orderDirection)) {
             RentalModel rent = rentalController.getLastActiveContract(realEstate.getId());
             String rentedProperty = (rent.getId() != 0) ? "Sim" : "Não";
             String dueDate = "";
-            if (rent.getId() != 0) 
+            if (rent.getId() != 0) {
+                if (selection == "Free") continue;
                 dueDate =  String.format("%02d/%04d", rent.getDueMonth(), rent.getDueYear());
-            
+            } else {
+                if (selection == "Rented") continue;
+            }
+                
             Object[] row = {
                 realEstate.getId(),
                 realEstate.getAddress(),
@@ -270,15 +348,23 @@ public class RealEstates extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel contentPanel;
     private javax.swing.JPanel filtersPanel;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menuPanel;
+    private javax.swing.JComboBox<String> orderDirectionComboBox;
+    private javax.swing.JComboBox<String> orderFieldComboBox;
+    private javax.swing.JPanel orderFieldPanel;
+    private javax.swing.JLabel orderLabel;
+    private javax.swing.JPanel orderPanel;
     private javax.swing.JTable propertiesTable;
     private javax.swing.JButton registerButton;
+    private javax.swing.ButtonGroup rentedFilterButtonGroup;
+    private javax.swing.JPanel rentedFilterPanel;
     private javax.swing.JButton searchButton;
+    private javax.swing.JRadioButton selectAllRadioButton;
+    private javax.swing.JRadioButton selectFreeRadioButton;
+    private javax.swing.JLabel selectLabel;
+    private javax.swing.JRadioButton selectRentedRadioButton;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel titlePanel;
     private javax.swing.JButton updateButton;
