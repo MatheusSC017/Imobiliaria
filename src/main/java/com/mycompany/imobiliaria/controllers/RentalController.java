@@ -27,10 +27,6 @@ public class RentalController {
         dao.update(rental);
     }
 
-    public List<RentalModel> getAllRentals() {
-        return dao.getAll();
-    }
-
     public List<RentalModel> getAllRentalsByPropertyId(int propertyId) {
         return dao.getAllByPropertyId(propertyId);
     }
@@ -41,5 +37,9 @@ public class RentalController {
 
     public RentalModel getLastActiveContract(int id) {
         return dao.getLastActiveContract(id);
+    }
+    
+    public List<RentalModel> getCloseDueDateRentals() {
+        return dao.getCloseDueDate();
     }
 }

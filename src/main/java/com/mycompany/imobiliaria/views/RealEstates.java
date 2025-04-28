@@ -46,7 +46,7 @@ public class RealEstates extends javax.swing.JFrame {
         new InitDatabase();
         
         initComponents();
-        
+          
         updateTable();
     }
 
