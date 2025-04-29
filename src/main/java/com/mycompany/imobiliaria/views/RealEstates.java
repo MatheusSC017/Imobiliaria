@@ -46,6 +46,7 @@ public class RealEstates extends javax.swing.JFrame {
         new InitDatabase();
         
         initComponents();
+        
           
         updateTable();
     }
@@ -60,8 +61,6 @@ public class RealEstates extends javax.swing.JFrame {
     private void initComponents() {
 
         rentedFilterButtonGroup = new javax.swing.ButtonGroup();
-        titlePanel = new javax.swing.JPanel();
-        titleLabel = new javax.swing.JLabel();
         filtersPanel = new javax.swing.JPanel();
         orderPanel = new javax.swing.JPanel();
         orderLabel = new javax.swing.JLabel();
@@ -74,6 +73,9 @@ public class RealEstates extends javax.swing.JFrame {
         selectRentedRadioButton = new javax.swing.JRadioButton();
         selectFreeRadioButton = new javax.swing.JRadioButton();
         searchButton = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        alertPanel = new javax.swing.JPanel();
+        alertButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         propertiesTable = new javax.swing.JTable();
@@ -89,15 +91,9 @@ public class RealEstates extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(1200, 600));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
 
-        titleLabel.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        titleLabel.setText("Imóveis");
-        titlePanel.add(titleLabel);
-
-        getContentPane().add(titlePanel);
-
         filtersPanel.setLayout(new javax.swing.BoxLayout(filtersPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        orderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 50));
+        orderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 25, 0, 50));
         orderPanel.setLayout(new javax.swing.BoxLayout(orderPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         orderLabel.setText("Ordenar por: ");
@@ -143,13 +139,48 @@ public class RealEstates extends javax.swing.JFrame {
 
         filtersPanel.add(rentedFilterPanel);
 
-        searchButton.setText("Pesquisar");
+        searchButton.setMargin(new java.awt.Insets(12, 12, 12, 12));
+        searchButton.setMaximumSize(new java.awt.Dimension(36, 36));
+        searchButton.setMinimumSize(new java.awt.Dimension(36, 36));
+        searchButton.setPreferredSize(new java.awt.Dimension(36, 36));
         searchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchButtonActionPerformed(evt);
             }
         });
         filtersPanel.add(searchButton);
+        searchButton.setToolTipText("Filtrar imóveis");
+        ImageIcon searchIcon = new ImageIcon(getClass().getResource("/static/icons/search.png"));
+        searchButton.setIcon(searchIcon);
+        searchButton.setText("");
+        searchButton.setHorizontalAlignment(SwingConstants.CENTER);
+        searchButton.setBorderPainted(false);
+        searchButton.setContentAreaFilled(false);
+        searchButton.setBorderPainted(true);
+        filtersPanel.add(filler1);
+
+        alertPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 50));
+        alertPanel.setLayout(new javax.swing.BoxLayout(alertPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        alertButton.setMaximumSize(new java.awt.Dimension(36, 36));
+        alertButton.setMinimumSize(new java.awt.Dimension(36, 36));
+        alertButton.setPreferredSize(new java.awt.Dimension(36, 36));
+        alertButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alertButtonActionPerformed(evt);
+            }
+        });
+        alertPanel.add(alertButton);
+        alertButton.setToolTipText("Alugueis próximos do vencimento");
+        ImageIcon scheduleIcon = new ImageIcon(getClass().getResource("/static/icons/schedule.png"));
+        alertButton.setIcon(scheduleIcon);
+        alertButton.setText("");
+        alertButton.setHorizontalAlignment(SwingConstants.CENTER);
+        alertButton.setBorderPainted(false);
+        alertButton.setContentAreaFilled(false);
+        alertButton.setBorderPainted(true);
+
+        filtersPanel.add(alertPanel);
 
         getContentPane().add(filtersPanel);
 
@@ -261,6 +292,48 @@ public class RealEstates extends javax.swing.JFrame {
         updateTable();
     }//GEN-LAST:event_searchButtonActionPerformed
 
+    private void alertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alertButtonActionPerformed
+        String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"};
+        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 13;
+            }
+        };
+        
+        for (RentalModel rent : rentalController.getCloseDueDateRentals()) {
+            RealEstateModel realEstate = realEstateController.getPropertyById(rent.getPropertyId());
+    
+                
+            Object[] row = {
+                realEstate.getId(),
+                realEstate.getAddress(),
+                realEstate.getNeighborhood(),
+                realEstate.getNumber(),
+                realEstate.getCity(),
+                realEstate.getType(),
+                realEstate.getRooms(),
+                realEstate.getBathrooms(),
+                realEstate.getArea(),
+                realEstate.getValue(),
+                realEstate.getGarage(),
+                "Sim",
+                String.format("%02d/%04d", rent.getDueMonth(), rent.getDueYear()),
+                ""
+            };
+            tableModel.addRow(row);
+        }
+        
+        propertiesTable.setModel(tableModel);
+        propertiesTable.getColumn("Ações").setCellRenderer(new PropertyButtonRenderer());
+        propertiesTable.getColumn("Ações").setCellEditor(new PropertyButtonEditor(new JCheckBox(), propertiesTable, this));
+        
+        int[] preferredWidths = {40, 200, 150, 70, 80, 50, 60, 60, 60, 80, 50, 50, 80, 120};
+        for (int i = 0; i < preferredWidths.length; i++) {
+            propertiesTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
+        }
+    }//GEN-LAST:event_alertButtonActionPerformed
+
     public void updateTable() {
         String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
@@ -346,7 +419,10 @@ public class RealEstates extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton alertButton;
+    private javax.swing.JPanel alertPanel;
     private javax.swing.JPanel contentPanel;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel filtersPanel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -365,8 +441,6 @@ public class RealEstates extends javax.swing.JFrame {
     private javax.swing.JRadioButton selectFreeRadioButton;
     private javax.swing.JLabel selectLabel;
     private javax.swing.JRadioButton selectRentedRadioButton;
-    private javax.swing.JLabel titleLabel;
-    private javax.swing.JPanel titlePanel;
     private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

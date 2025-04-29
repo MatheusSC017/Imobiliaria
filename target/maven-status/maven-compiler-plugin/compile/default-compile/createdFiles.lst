@@ -2,6 +2,7 @@ com/mycompany/imobiliaria/views/RealEstates$1.class
 com/mycompany/imobiliaria/views/PaymentRegister$1.class
 com/mycompany/imobiliaria/views/PaymentRegister.class
 com/mycompany/imobiliaria/models/RentalModel.class
+com/mycompany/imobiliaria/views/RealEstates$8.class
 com/mycompany/imobiliaria/views/PropertyButtonRenderer.class
 com/mycompany/imobiliaria/views/RealEstate$3.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister$4.class
@@ -17,6 +18,7 @@ com/mycompany/imobiliaria/models/PaymentModel.class
 com/mycompany/imobiliaria/dao/PaymentDAO.class
 com/mycompany/imobiliaria/views/PropertyButtonEditor$1.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister.class
+com/mycompany/imobiliaria/views/RealEstates$9.class
 com/mycompany/imobiliaria/dao/InitDatabase.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister$2.class
 com/mycompany/imobiliaria/views/RealEstates$3.class
