@@ -16,6 +16,7 @@ import com.mycompany.imobiliaria.models.RentalModel;
 import com.mycompany.imobiliaria.dao.InitDatabase;
 
 import java.awt.Component;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultCellEditor;
@@ -37,6 +38,7 @@ public class RealEstates extends javax.swing.JFrame {
     private int orderField = 0;
     private int orderDirection = 0;
     private String selection = "All";
+    private Image backgroundImage;
     
     
     /**
@@ -47,6 +49,14 @@ public class RealEstates extends javax.swing.JFrame {
         
         initComponents();
         
+        setLayout(null);
+        backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 40);
+        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+        
+        backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
+        
+        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
           
         updateTable();
     }
@@ -61,6 +71,7 @@ public class RealEstates extends javax.swing.JFrame {
     private void initComponents() {
 
         rentedFilterButtonGroup = new javax.swing.ButtonGroup();
+        backgroundPanel = new javax.swing.JPanel();
         filtersPanel = new javax.swing.JPanel();
         orderPanel = new javax.swing.JPanel();
         orderLabel = new javax.swing.JLabel();
@@ -79,27 +90,43 @@ public class RealEstates extends javax.swing.JFrame {
         contentPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         propertiesTable = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         updateButton = new javax.swing.JButton();
         registerButton = new javax.swing.JButton();
+        backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("imobiliária");
         setFont(new java.awt.Font("Nimbus Sans L", 0, 14)); // NOI18N
-        setMinimumSize(new java.awt.Dimension(700, 440));
-        setPreferredSize(new java.awt.Dimension(1200, 600));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+        setMinimumSize(new java.awt.Dimension(900, 500));
+        setPreferredSize(new java.awt.Dimension(1200, 700));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        backgroundPanel.setOpaque(false);
+        backgroundPanel.setLayout(new javax.swing.BoxLayout(backgroundPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        filtersPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        filtersPanel.setMaximumSize(new java.awt.Dimension(33603, 100));
+        filtersPanel.setMinimumSize(new java.awt.Dimension(700, 100));
+        filtersPanel.setOpaque(false);
+        filtersPanel.setPreferredSize(new java.awt.Dimension(700, 100));
         filtersPanel.setLayout(new javax.swing.BoxLayout(filtersPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         orderPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 25, 0, 50));
+        orderPanel.setOpaque(false);
         orderPanel.setLayout(new javax.swing.BoxLayout(orderPanel, javax.swing.BoxLayout.LINE_AXIS));
 
+        orderLabel.setBackground(new java.awt.Color(0, 0, 0));
         orderLabel.setText("Ordenar por: ");
         orderPanel.add(orderLabel);
 
         orderFieldPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        orderFieldPanel.setOpaque(false);
         orderFieldPanel.setLayout(new javax.swing.BoxLayout(orderFieldPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         orderFieldComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem" }));
@@ -118,10 +145,12 @@ public class RealEstates extends javax.swing.JFrame {
 
         filtersPanel.add(orderPanel);
 
+        selectLabel.setBackground(new java.awt.Color(0, 0, 0));
         selectLabel.setText("Selicionar Imóveis");
         filtersPanel.add(selectLabel);
 
         rentedFilterPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 50));
+        rentedFilterPanel.setOpaque(false);
         rentedFilterPanel.setLayout(new javax.swing.BoxLayout(rentedFilterPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         rentedFilterButtonGroup.add(selectAllRadioButton);
@@ -160,6 +189,7 @@ public class RealEstates extends javax.swing.JFrame {
         filtersPanel.add(filler1);
 
         alertPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 50));
+        alertPanel.setOpaque(false);
         alertPanel.setLayout(new javax.swing.BoxLayout(alertPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         alertButton.setMaximumSize(new java.awt.Dimension(36, 36));
@@ -182,8 +212,9 @@ public class RealEstates extends javax.swing.JFrame {
 
         filtersPanel.add(alertPanel);
 
-        getContentPane().add(filtersPanel);
+        backgroundPanel.add(filtersPanel);
 
+        contentPanel.setOpaque(false);
         contentPanel.setLayout(new java.awt.BorderLayout());
 
         propertiesTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -215,10 +246,10 @@ public class RealEstates extends javax.swing.JFrame {
         jScrollPane1.setViewportView(propertiesTable);
 
         contentPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-        contentPanel.add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        getContentPane().add(contentPanel);
+        backgroundPanel.add(contentPanel);
 
+        menuPanel.setMaximumSize(new java.awt.Dimension(32767, 40));
         menuPanel.setOpaque(false);
 
         updateButton.setText("Atualizar");
@@ -243,7 +274,13 @@ public class RealEstates extends javax.swing.JFrame {
         });
         menuPanel.add(registerButton);
 
-        getContentPane().add(menuPanel);
+        backgroundPanel.add(menuPanel);
+
+        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1200, 600));
+
+        backgroundLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/static/icons/background.png"))); // NOI18N
+        backgroundLabel.setName("backgroundLabel"); // NOI18N
+        getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -334,6 +371,17 @@ public class RealEstates extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_alertButtonActionPerformed
 
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
+        
+        backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 40);
+        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+        
+        backgroundPanel.revalidate();
+        backgroundPanel.repaint();
+    }//GEN-LAST:event_formComponentResized
+
     public void updateTable() {
         String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
@@ -421,10 +469,11 @@ public class RealEstates extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton alertButton;
     private javax.swing.JPanel alertPanel;
+    private javax.swing.JLabel backgroundLabel;
+    private javax.swing.JPanel backgroundPanel;
     private javax.swing.JPanel contentPanel;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel filtersPanel;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JComboBox<String> orderDirectionComboBox;
