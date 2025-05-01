@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -83,12 +84,14 @@ public class RealEstates extends javax.swing.JFrame {
         selectAllRadioButton = new javax.swing.JRadioButton();
         selectRentedRadioButton = new javax.swing.JRadioButton();
         selectFreeRadioButton = new javax.swing.JRadioButton();
+        searchPanel = new javax.swing.JPanel();
         searchButton = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         alertPanel = new javax.swing.JPanel();
+        alertButtonPanel = new javax.swing.JPanel();
         alertButton = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        propertiesScrollPanel = new javax.swing.JScrollPane();
         propertiesTable = new javax.swing.JTable();
         menuPanel = new javax.swing.JPanel();
         updateButton = new javax.swing.JButton();
@@ -99,7 +102,6 @@ public class RealEstates extends javax.swing.JFrame {
         setTitle("imobiliária");
         setFont(new java.awt.Font("Nimbus Sans L", 0, 14)); // NOI18N
         setMinimumSize(new java.awt.Dimension(900, 500));
-        setPreferredSize(new java.awt.Dimension(1200, 700));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
@@ -122,6 +124,8 @@ public class RealEstates extends javax.swing.JFrame {
         orderPanel.setLayout(new javax.swing.BoxLayout(orderPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         orderLabel.setBackground(new java.awt.Color(0, 0, 0));
+        orderLabel.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        orderLabel.setForeground(new java.awt.Color(0, 0, 51));
         orderLabel.setText("Ordenar por: ");
         orderPanel.add(orderLabel);
 
@@ -129,23 +133,33 @@ public class RealEstates extends javax.swing.JFrame {
         orderFieldPanel.setOpaque(false);
         orderFieldPanel.setLayout(new javax.swing.BoxLayout(orderFieldPanel, javax.swing.BoxLayout.LINE_AXIS));
 
+        orderFieldComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        orderFieldComboBox.setForeground(new java.awt.Color(0, 0, 51));
         orderFieldComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem" }));
         orderFieldComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
         orderFieldComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
         orderFieldComboBox.setPreferredSize(new java.awt.Dimension(150, 30));
+        orderFieldComboBox.setBackground(new java.awt.Color(220, 220, 220, 80));
+        orderFieldComboBox.setBorder(null);
         orderFieldPanel.add(orderFieldComboBox);
 
         orderPanel.add(orderFieldPanel);
 
+        orderDirectionComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        orderDirectionComboBox.setForeground(new java.awt.Color(0, 0, 51));
         orderDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
         orderDirectionComboBox.setLightWeightPopupEnabled(false);
         orderDirectionComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
         orderDirectionComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
+        orderDirectionComboBox.setBackground(new java.awt.Color(220, 220, 220, 80));
+        orderDirectionComboBox.setBorder(null);
         orderPanel.add(orderDirectionComboBox);
 
         filtersPanel.add(orderPanel);
 
         selectLabel.setBackground(new java.awt.Color(0, 0, 0));
+        selectLabel.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        selectLabel.setForeground(new java.awt.Color(0, 0, 51));
         selectLabel.setText("Selicionar Imóveis");
         filtersPanel.add(selectLabel);
 
@@ -154,21 +168,40 @@ public class RealEstates extends javax.swing.JFrame {
         rentedFilterPanel.setLayout(new javax.swing.BoxLayout(rentedFilterPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         rentedFilterButtonGroup.add(selectAllRadioButton);
+        selectAllRadioButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        selectAllRadioButton.setForeground(new java.awt.Color(0, 0, 51));
         selectAllRadioButton.setSelected(true);
         selectAllRadioButton.setText("Todos");
+        selectAllRadioButton.setContentAreaFilled(false);
         rentedFilterPanel.add(selectAllRadioButton);
 
         rentedFilterButtonGroup.add(selectRentedRadioButton);
+        selectRentedRadioButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        selectRentedRadioButton.setForeground(new java.awt.Color(0, 0, 51));
         selectRentedRadioButton.setText("Alugados");
+        selectRentedRadioButton.setContentAreaFilled(false);
         rentedFilterPanel.add(selectRentedRadioButton);
 
         rentedFilterButtonGroup.add(selectFreeRadioButton);
+        selectFreeRadioButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        selectFreeRadioButton.setForeground(new java.awt.Color(0, 0, 51));
         selectFreeRadioButton.setText("Livres");
+        selectFreeRadioButton.setContentAreaFilled(false);
         rentedFilterPanel.add(selectFreeRadioButton);
 
         filtersPanel.add(rentedFilterPanel);
 
-        searchButton.setMargin(new java.awt.Insets(12, 12, 12, 12));
+        searchPanel.setBackground(new java.awt.Color(12, 120, 200, 40));
+        searchPanel.setBorder(null);
+        searchPanel.setMaximumSize(new java.awt.Dimension(36, 36));
+        searchPanel.setMinimumSize(new java.awt.Dimension(36, 36));
+        searchPanel.setPreferredSize(new java.awt.Dimension(36, 36));
+        searchPanel.setLayout(new java.awt.BorderLayout());
+
+        searchButton.setBackground(new java.awt.Color(204, 204, 204));
+        searchButton.setForeground(new java.awt.Color(0, 0, 0));
+        searchButton.setAlignmentY(0.0F);
+        searchButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
         searchButton.setMaximumSize(new java.awt.Dimension(36, 36));
         searchButton.setMinimumSize(new java.awt.Dimension(36, 36));
         searchButton.setPreferredSize(new java.awt.Dimension(36, 36));
@@ -177,7 +210,7 @@ public class RealEstates extends javax.swing.JFrame {
                 searchButtonActionPerformed(evt);
             }
         });
-        filtersPanel.add(searchButton);
+        searchPanel.add(searchButton, java.awt.BorderLayout.CENTER);
         searchButton.setToolTipText("Filtrar imóveis");
         ImageIcon searchIcon = new ImageIcon(getClass().getResource("/static/icons/search.png"));
         searchButton.setIcon(searchIcon);
@@ -186,12 +219,22 @@ public class RealEstates extends javax.swing.JFrame {
         searchButton.setBorderPainted(false);
         searchButton.setContentAreaFilled(false);
         searchButton.setBorderPainted(true);
+
+        filtersPanel.add(searchPanel);
         filtersPanel.add(filler1);
 
         alertPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 50));
         alertPanel.setOpaque(false);
         alertPanel.setLayout(new javax.swing.BoxLayout(alertPanel, javax.swing.BoxLayout.LINE_AXIS));
 
+        alertButtonPanel.setMaximumSize(new java.awt.Dimension(36, 36));
+        alertButtonPanel.setBackground(new java.awt.Color(12, 120, 200, 40));
+        alertButtonPanel.setBorder(null);
+        alertButtonPanel.setLayout(new java.awt.BorderLayout());
+
+        alertButton.setBackground(new java.awt.Color(204, 204, 204));
+        alertButton.setForeground(new java.awt.Color(0, 0, 0));
+        alertButton.setBorderPainted(false);
         alertButton.setMaximumSize(new java.awt.Dimension(36, 36));
         alertButton.setMinimumSize(new java.awt.Dimension(36, 36));
         alertButton.setPreferredSize(new java.awt.Dimension(36, 36));
@@ -200,7 +243,7 @@ public class RealEstates extends javax.swing.JFrame {
                 alertButtonActionPerformed(evt);
             }
         });
-        alertPanel.add(alertButton);
+        alertButtonPanel.add(alertButton, java.awt.BorderLayout.CENTER);
         alertButton.setToolTipText("Alugueis próximos do vencimento");
         ImageIcon scheduleIcon = new ImageIcon(getClass().getResource("/static/icons/schedule.png"));
         alertButton.setIcon(scheduleIcon);
@@ -210,13 +253,22 @@ public class RealEstates extends javax.swing.JFrame {
         alertButton.setContentAreaFilled(false);
         alertButton.setBorderPainted(true);
 
+        alertPanel.add(alertButtonPanel);
+
         filtersPanel.add(alertPanel);
 
         backgroundPanel.add(filtersPanel);
 
+        contentPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 25, 0, 25));
         contentPanel.setOpaque(false);
         contentPanel.setLayout(new java.awt.BorderLayout());
 
+        propertiesScrollPanel.setOpaque(false);
+        propertiesScrollPanel.getViewport().setBackground(new java.awt.Color(40, 40, 40, 80));
+        propertiesScrollPanel.getViewport().setBorder(null);
+
+        propertiesTable.setFont(new java.awt.Font("Abyssinica SIL", 0, 16)); // NOI18N
+        propertiesTable.setForeground(new java.awt.Color(255, 255, 255));
         propertiesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null, null},
@@ -243,15 +295,27 @@ public class RealEstates extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(propertiesTable);
+        propertiesTable.setRowHeight(25);
+        propertiesTable.getTableHeader().setReorderingAllowed(false);
+        propertiesTable.setOpaque(false);
+        ((DefaultTableCellRenderer)propertiesTable.getDefaultRenderer(Object.class)).setBackground(new java.awt.Color(120, 120, 160, 180));
+        ((DefaultTableCellRenderer)propertiesTable.getDefaultRenderer(Object.class)).setBorder(null);
+        propertiesTable.getTableHeader().setFont(new java.awt.Font("Abyssinica SIL", 0, 18)); // NOI18N
+        propertiesTable.getTableHeader().setForeground(new java.awt.Color(255, 255, 255));
+        propertiesTable.getTableHeader().setBackground(new java.awt.Color(40, 40, 80, 255));
+        propertiesTable.getTableHeader().setBorder(null);
+        propertiesScrollPanel.setViewportView(propertiesTable);
 
-        contentPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        contentPanel.add(propertiesScrollPanel, java.awt.BorderLayout.CENTER);
 
         backgroundPanel.add(contentPanel);
 
         menuPanel.setMaximumSize(new java.awt.Dimension(32767, 40));
         menuPanel.setOpaque(false);
 
+        updateButton.setBackground(new java.awt.Color(40, 40, 80));
+        updateButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        updateButton.setForeground(new java.awt.Color(255, 255, 255));
         updateButton.setText("Atualizar");
         updateButton.setMaximumSize(new java.awt.Dimension(150, 30));
         updateButton.setMinimumSize(new java.awt.Dimension(150, 30));
@@ -263,6 +327,9 @@ public class RealEstates extends javax.swing.JFrame {
         });
         menuPanel.add(updateButton);
 
+        registerButton.setBackground(new java.awt.Color(40, 40, 80));
+        registerButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        registerButton.setForeground(new java.awt.Color(255, 255, 255));
         registerButton.setText("Cadastrar");
         registerButton.setMaximumSize(new java.awt.Dimension(150, 30));
         registerButton.setMinimumSize(new java.awt.Dimension(150, 30));
@@ -468,24 +535,26 @@ public class RealEstates extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton alertButton;
+    private javax.swing.JPanel alertButtonPanel;
     private javax.swing.JPanel alertPanel;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JPanel contentPanel;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel filtersPanel;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JComboBox<String> orderDirectionComboBox;
     private javax.swing.JComboBox<String> orderFieldComboBox;
     private javax.swing.JPanel orderFieldPanel;
     private javax.swing.JLabel orderLabel;
     private javax.swing.JPanel orderPanel;
+    private javax.swing.JScrollPane propertiesScrollPanel;
     private javax.swing.JTable propertiesTable;
     private javax.swing.JButton registerButton;
     private javax.swing.ButtonGroup rentedFilterButtonGroup;
     private javax.swing.JPanel rentedFilterPanel;
     private javax.swing.JButton searchButton;
+    private javax.swing.JPanel searchPanel;
     private javax.swing.JRadioButton selectAllRadioButton;
     private javax.swing.JRadioButton selectFreeRadioButton;
     private javax.swing.JLabel selectLabel;
