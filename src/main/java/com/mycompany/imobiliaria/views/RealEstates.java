@@ -40,7 +40,7 @@ public class RealEstates extends javax.swing.JFrame {
     private int orderDirection = 0;
     private String selection = "All";
     private Image backgroundImage;
-    
+
     
     /**
      * Creates new form RealEstates
@@ -49,6 +49,9 @@ public class RealEstates extends javax.swing.JFrame {
         new InitDatabase();
         
         initComponents();
+        
+        propertiesTable.getColumn("Ações").setCellRenderer(new PropertyButtonRenderer());
+        propertiesTable.getColumn("Ações").setCellEditor(new PropertyButtonEditor(new JCheckBox(), propertiesTable, this));
         
         setLayout(null);
         backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 40);
@@ -264,27 +267,24 @@ public class RealEstates extends javax.swing.JFrame {
         contentPanel.setLayout(new java.awt.BorderLayout());
 
         propertiesScrollPanel.setOpaque(false);
-        propertiesScrollPanel.getViewport().setBackground(new java.awt.Color(40, 40, 40, 80));
+        propertiesScrollPanel.getViewport().setBackground(new java.awt.Color(40, 40, 40, 180));
         propertiesScrollPanel.getViewport().setBorder(null);
 
         propertiesTable.setFont(new java.awt.Font("Abyssinica SIL", 0, 16)); // NOI18N
         propertiesTable.setForeground(new java.awt.Color(255, 255, 255));
         propertiesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Ações"
+                "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Byte.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, true
+                false, false, false, false, false, false, false, false, false, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -305,6 +305,21 @@ public class RealEstates extends javax.swing.JFrame {
         propertiesTable.getTableHeader().setBackground(new java.awt.Color(40, 40, 80, 255));
         propertiesTable.getTableHeader().setBorder(null);
         propertiesScrollPanel.setViewportView(propertiesTable);
+        if (propertiesTable.getColumnModel().getColumnCount() > 0) {
+            propertiesTable.getColumnModel().getColumn(0).setPreferredWidth(40);
+            propertiesTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            propertiesTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+            propertiesTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            propertiesTable.getColumnModel().getColumn(4).setPreferredWidth(100);
+            propertiesTable.getColumnModel().getColumn(5).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(6).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(7).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(8).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(9).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(10).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(11).setPreferredWidth(60);
+            propertiesTable.getColumnModel().getColumn(12).setPreferredWidth(80);
+        }
 
         contentPanel.add(propertiesScrollPanel, java.awt.BorderLayout.CENTER);
 
@@ -450,23 +465,18 @@ public class RealEstates extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentResized
 
     public void updateTable() {
-        String[] columnNames = {"ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem", "Alugado", "Vencimento", "Ações"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 13;
-            }
-        };
+        DefaultTableModel tableModel = (DefaultTableModel) propertiesTable.getModel();
+        tableModel.setRowCount(0);
         
         for (RealEstateModel realEstate : realEstateController.getAllProperties(this.orderField, this.orderDirection)) {
             RentalModel rent = rentalController.getLastActiveContract(realEstate.getId());
             String rentedProperty = (rent.getId() != 0) ? "Sim" : "Não";
             String dueDate = "";
             if (rent.getId() != 0) {
-                if (selection == "Free") continue;
+                if ("Free".equals(selection)) continue;
                 dueDate =  String.format("%02d/%04d", rent.getDueMonth(), rent.getDueYear());
             } else {
-                if (selection == "Rented") continue;
+                if ("Rented".equals(selection)) continue;
             }
                 
             Object[] row = {
@@ -487,15 +497,8 @@ public class RealEstates extends javax.swing.JFrame {
             };
             tableModel.addRow(row);
         }
-        
-        propertiesTable.setModel(tableModel);
-        propertiesTable.getColumn("Ações").setCellRenderer(new PropertyButtonRenderer());
-        propertiesTable.getColumn("Ações").setCellEditor(new PropertyButtonEditor(new JCheckBox(), propertiesTable, this));
-        
-        int[] preferredWidths = {40, 200, 150, 70, 80, 50, 60, 60, 60, 80, 50, 50, 80, 120};
-        for (int i = 0; i < preferredWidths.length; i++) {
-            propertiesTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
-        }
+        propertiesTable.repaint();
+        propertiesTable.getParent().repaint();
     }
     
     /**
