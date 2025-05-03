@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 
 import com.mycompany.imobiliaria.models.RealEstateModel;
 import com.mycompany.imobiliaria.controllers.RealEstateController;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -22,6 +24,15 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
      */
     public RealEstateFormRegister() {
         initComponents();
+        
+        setLayout(null);
+        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+        
+        
+        Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
+        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+  
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
     }
 
     /**
@@ -33,29 +44,30 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        backgroundPanel = new javax.swing.JPanel();
         addressPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        addressColumn1Panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         addressTextField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         neighborhoodTextField = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
+        addressColumn2Panel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         numberTextField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         cityTextField = new javax.swing.JTextField();
         propertyPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        propertyColumn1Panel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         typeComboBox = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         roomsComboBox = new javax.swing.JComboBox<>();
-        jPanel2 = new javax.swing.JPanel();
+        propertyColumn2Panel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         bathroomsComboBox = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         areaTextField = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
+        propertyColumn3Panel = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         valueTextField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -64,103 +76,200 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         cleanButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrar Imóvel");
+        setMaximumSize(new java.awt.Dimension(700, 440));
         setMinimumSize(new java.awt.Dimension(700, 440));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.PAGE_AXIS));
+        setPreferredSize(new java.awt.Dimension(700, 440));
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        backgroundPanel.setMaximumSize(new java.awt.Dimension(700, 410));
+        backgroundPanel.setMinimumSize(new java.awt.Dimension(700, 410));
+        backgroundPanel.setPreferredSize(new java.awt.Dimension(700, 410));
+        backgroundPanel.setBackground(new java.awt.Color(40, 40, 40, 160));
+        backgroundPanel.setBorder(null);
+        backgroundPanel.setLayout(new javax.swing.BoxLayout(backgroundPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         addressPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(25, 25, 0, 25));
         addressPanel.setOpaque(false);
         addressPanel.setLayout(new java.awt.GridLayout(1, 2, 25, 0));
 
-        jPanel3.setOpaque(false);
-        jPanel3.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        addressColumn1Panel.setOpaque(false);
+        addressColumn1Panel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
+        jLabel1.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Endereço:");
-        jPanel3.add(jLabel1);
-        jPanel3.add(addressTextField);
+        addressColumn1Panel.add(jLabel1);
 
+        addressTextField.setBackground(new java.awt.Color(120, 120, 120));
+        addressTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        addressTextField.setForeground(new java.awt.Color(255, 255, 255));
+        addressTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        addressColumn1Panel.add(addressTextField);
+
+        jLabel2.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Bairro");
-        jPanel3.add(jLabel2);
-        jPanel3.add(neighborhoodTextField);
+        addressColumn1Panel.add(jLabel2);
 
-        addressPanel.add(jPanel3);
+        neighborhoodTextField.setBackground(new java.awt.Color(120, 120, 120));
+        neighborhoodTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        neighborhoodTextField.setForeground(new java.awt.Color(255, 255, 255));
+        neighborhoodTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        addressColumn1Panel.add(neighborhoodTextField);
 
-        jPanel4.setOpaque(false);
-        jPanel4.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        addressPanel.add(addressColumn1Panel);
 
+        addressColumn2Panel.setOpaque(false);
+        addressColumn2Panel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+
+        jLabel3.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Número:");
-        jPanel4.add(jLabel3);
-        jPanel4.add(numberTextField);
+        addressColumn2Panel.add(jLabel3);
 
+        numberTextField.setBackground(new java.awt.Color(120, 120, 120));
+        numberTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        numberTextField.setForeground(new java.awt.Color(255, 255, 255));
+        numberTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        addressColumn2Panel.add(numberTextField);
+
+        jLabel4.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Cidade");
-        jPanel4.add(jLabel4);
-        jPanel4.add(cityTextField);
+        addressColumn2Panel.add(jLabel4);
 
-        addressPanel.add(jPanel4);
+        cityTextField.setBackground(new java.awt.Color(120, 120, 120));
+        cityTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        cityTextField.setForeground(new java.awt.Color(255, 255, 255));
+        cityTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        addressColumn2Panel.add(cityTextField);
 
-        getContentPane().add(addressPanel);
+        addressPanel.add(addressColumn2Panel);
+
+        backgroundPanel.add(addressPanel);
 
         propertyPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 25, 25, 25));
         propertyPanel.setOpaque(false);
         propertyPanel.setLayout(new java.awt.GridLayout(1, 3, 25, 0));
 
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        propertyColumn1Panel.setOpaque(false);
+        propertyColumn1Panel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
+        jLabel5.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Tipo");
-        jPanel1.add(jLabel5);
+        propertyColumn1Panel.add(jLabel5);
 
+        typeComboBox.setBackground(new java.awt.Color(120, 120, 120));
+        typeComboBox.setEditable(true);
+        typeComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        typeComboBox.setForeground(new java.awt.Color(255, 255, 255));
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casa", "Terreno", "Apartamento", "Chácara" }));
-        jPanel1.add(typeComboBox);
+        typeComboBox.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        typeComboBox.getEditor().getEditorComponent().setBackground(new java.awt.Color(120, 120, 120));
+        typeComboBox.getEditor().getEditorComponent().setForeground(new java.awt.Color(255, 255, 255));
+        ((javax.swing.JComponent) typeComboBox.getEditor().getEditorComponent()).setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0));
+        propertyColumn1Panel.add(typeComboBox);
 
+        jLabel6.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Números de quartos");
-        jPanel1.add(jLabel6);
+        propertyColumn1Panel.add(jLabel6);
 
+        roomsComboBox.setBackground(new java.awt.Color(120, 120, 120));
+        roomsComboBox.setEditable(true);
+        roomsComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        roomsComboBox.setForeground(new java.awt.Color(255, 255, 255));
         roomsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 Quartos", "1 Quarto", "2 Quartos", "3 Quartos", "+4 Quartos" }));
-        jPanel1.add(roomsComboBox);
+        roomsComboBox.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        roomsComboBox.getEditor().getEditorComponent().setBackground(new java.awt.Color(120, 120, 120));
+        roomsComboBox.getEditor().getEditorComponent().setForeground(new java.awt.Color(255, 255, 255));
+        ((javax.swing.JComponent) roomsComboBox.getEditor().getEditorComponent()).setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0));
+        propertyColumn1Panel.add(roomsComboBox);
 
-        propertyPanel.add(jPanel1);
+        propertyPanel.add(propertyColumn1Panel);
 
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        propertyColumn2Panel.setOpaque(false);
+        propertyColumn2Panel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
 
+        jLabel7.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Números de banheiros");
-        jPanel2.add(jLabel7);
+        propertyColumn2Panel.add(jLabel7);
 
+        bathroomsComboBox.setBackground(new java.awt.Color(120, 120, 120));
+        bathroomsComboBox.setEditable(true);
+        bathroomsComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        bathroomsComboBox.setForeground(new java.awt.Color(255, 255, 255));
         bathroomsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 Banheiros", "1 Banheiro", "2 Banheiros", "3 Banheiros", "+4 Banheiros" }));
-        jPanel2.add(bathroomsComboBox);
+        bathroomsComboBox.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        bathroomsComboBox.getEditor().getEditorComponent().setBackground(new java.awt.Color(120, 120, 120));
+        bathroomsComboBox.getEditor().getEditorComponent().setForeground(new java.awt.Color(255, 255, 255));
+        ((javax.swing.JComponent) bathroomsComboBox.getEditor().getEditorComponent()).setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0));
+        propertyColumn2Panel.add(bathroomsComboBox);
 
+        jLabel8.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Área do imovel");
-        jPanel2.add(jLabel8);
-        jPanel2.add(areaTextField);
+        propertyColumn2Panel.add(jLabel8);
 
-        propertyPanel.add(jPanel2);
+        areaTextField.setBackground(new java.awt.Color(120, 120, 120));
+        areaTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        areaTextField.setForeground(new java.awt.Color(255, 255, 255));
+        areaTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        propertyColumn2Panel.add(areaTextField);
 
-        jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+        propertyPanel.add(propertyColumn2Panel);
 
+        propertyColumn3Panel.setOpaque(false);
+        propertyColumn3Panel.setLayout(new java.awt.GridLayout(4, 1, 0, 5));
+
+        jLabel9.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Valor");
-        jPanel5.add(jLabel9);
-        jPanel5.add(valueTextField);
+        propertyColumn3Panel.add(jLabel9);
 
+        valueTextField.setBackground(new java.awt.Color(120, 120, 120));
+        valueTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        valueTextField.setForeground(new java.awt.Color(255, 255, 255));
+        valueTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        propertyColumn3Panel.add(valueTextField);
+
+        jLabel10.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Garagem");
-        jPanel5.add(jLabel10);
+        propertyColumn3Panel.add(jLabel10);
 
+        garageComboBox.setBackground(new java.awt.Color(120, 120, 120));
+        garageComboBox.setEditable(true);
+        garageComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        garageComboBox.setForeground(new java.awt.Color(255, 255, 255));
         garageComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não", "1 Carro", "2 Carros", "3 Carros", "+4 Carros" }));
-        jPanel5.add(garageComboBox);
+        garageComboBox.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        garageComboBox.getEditor().getEditorComponent().setBackground(new java.awt.Color(120, 120, 120));
+        garageComboBox.getEditor().getEditorComponent().setForeground(new java.awt.Color(255, 255, 255));
+        ((javax.swing.JComponent) garageComboBox.getEditor().getEditorComponent()).setBorder(new javax.swing.border.EmptyBorder(0, 0, 0, 0));
+        propertyColumn3Panel.add(garageComboBox);
 
-        propertyPanel.add(jPanel5);
+        propertyPanel.add(propertyColumn3Panel);
 
-        getContentPane().add(propertyPanel);
+        backgroundPanel.add(propertyPanel);
 
         bottomMenuPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         bottomMenuPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
+        bottomMenuPanel.setOpaque(false);
         bottomMenuPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
 
+        cancelButton.setBackground(new java.awt.Color(40, 40, 80));
+        cancelButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(255, 255, 255));
         cancelButton.setText("Cancelar");
-        cancelButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        cancelButton.setPreferredSize(new java.awt.Dimension(150, 30));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -168,8 +277,11 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         });
         bottomMenuPanel.add(cancelButton);
 
+        cleanButton.setBackground(new java.awt.Color(40, 40, 80));
+        cleanButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        cleanButton.setForeground(new java.awt.Color(255, 255, 255));
         cleanButton.setText("Limpar");
-        cleanButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        cleanButton.setPreferredSize(new java.awt.Dimension(150, 30));
         cleanButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cleanButtonActionPerformed(evt);
@@ -177,8 +289,11 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         });
         bottomMenuPanel.add(cleanButton);
 
+        saveButton.setBackground(new java.awt.Color(40, 40, 80));
+        saveButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        saveButton.setForeground(new java.awt.Color(255, 255, 255));
         saveButton.setText("Salvar");
-        saveButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        saveButton.setPreferredSize(new java.awt.Dimension(150, 30));
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -186,7 +301,14 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         });
         bottomMenuPanel.add(saveButton);
 
-        getContentPane().add(bottomMenuPanel);
+        backgroundPanel.add(bottomMenuPanel);
+
+        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        backgroundLabel.setMaximumSize(new java.awt.Dimension(0, 0));
+        backgroundLabel.setMinimumSize(new java.awt.Dimension(0, 0));
+        backgroundLabel.setPreferredSize(new java.awt.Dimension(0, 0));
+        getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 6, 1820, 1100));
 
         pack();
         setLocationRelativeTo(null);
@@ -322,9 +444,13 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel addressColumn1Panel;
+    private javax.swing.JPanel addressColumn2Panel;
     private javax.swing.JPanel addressPanel;
     private javax.swing.JTextField addressTextField;
     private javax.swing.JTextField areaTextField;
+    private javax.swing.JLabel backgroundLabel;
+    private javax.swing.JPanel backgroundPanel;
     private javax.swing.JComboBox<String> bathroomsComboBox;
     private javax.swing.JPanel bottomMenuPanel;
     private javax.swing.JButton cancelButton;
@@ -341,13 +467,11 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JTextField neighborhoodTextField;
     private javax.swing.JTextField numberTextField;
+    private javax.swing.JPanel propertyColumn1Panel;
+    private javax.swing.JPanel propertyColumn2Panel;
+    private javax.swing.JPanel propertyColumn3Panel;
     private javax.swing.JPanel propertyPanel;
     private javax.swing.JComboBox<String> roomsComboBox;
     private javax.swing.JButton saveButton;

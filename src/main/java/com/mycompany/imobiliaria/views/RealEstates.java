@@ -497,6 +497,7 @@ public class RealEstates extends javax.swing.JFrame {
             };
             tableModel.addRow(row);
         }
+        
         propertiesTable.repaint();
         propertiesTable.getParent().repaint();
     }
