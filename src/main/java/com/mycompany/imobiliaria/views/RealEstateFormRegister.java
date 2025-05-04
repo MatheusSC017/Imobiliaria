@@ -304,10 +304,6 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         backgroundPanel.add(bottomMenuPanel);
 
         getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        backgroundLabel.setMaximumSize(new java.awt.Dimension(0, 0));
-        backgroundLabel.setMinimumSize(new java.awt.Dimension(0, 0));
-        backgroundLabel.setPreferredSize(new java.awt.Dimension(0, 0));
         getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(3, 6, 1820, 1100));
 
         pack();

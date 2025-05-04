@@ -39,7 +39,7 @@ public class RealEstates extends javax.swing.JFrame {
     private int orderField = 0;
     private int orderDirection = 0;
     private String selection = "All";
-    private Image backgroundImage;
+    private Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
 
     
     /**
@@ -56,8 +56,6 @@ public class RealEstates extends javax.swing.JFrame {
         setLayout(null);
         backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 40);
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
-        
-        backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
         
         Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
         backgroundLabel.setIcon(new ImageIcon(scaledImage));
@@ -105,6 +103,7 @@ public class RealEstates extends javax.swing.JFrame {
         setTitle("imobiliária");
         setFont(new java.awt.Font("Nimbus Sans L", 0, 14)); // NOI18N
         setMinimumSize(new java.awt.Dimension(900, 500));
+        setPreferredSize(new java.awt.Dimension(1200, 650));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
@@ -298,8 +297,8 @@ public class RealEstates extends javax.swing.JFrame {
         propertiesTable.setRowHeight(25);
         propertiesTable.getTableHeader().setReorderingAllowed(false);
         propertiesTable.setOpaque(false);
-        ((DefaultTableCellRenderer)propertiesTable.getDefaultRenderer(Object.class)).setBackground(new java.awt.Color(120, 120, 160, 180));
-        ((DefaultTableCellRenderer)propertiesTable.getDefaultRenderer(Object.class)).setBorder(null);
+        ((DefaultTableCellRenderer) propertiesTable.getDefaultRenderer(Object.class)).setBackground(new java.awt.Color(120, 120, 160, 180));
+        ((DefaultTableCellRenderer) propertiesTable.getDefaultRenderer(Object.class)).setBorder(null);
         propertiesTable.getTableHeader().setFont(new java.awt.Font("Abyssinica SIL", 0, 18)); // NOI18N
         propertiesTable.getTableHeader().setForeground(new java.awt.Color(255, 255, 255));
         propertiesTable.getTableHeader().setBackground(new java.awt.Color(40, 40, 80, 255));
