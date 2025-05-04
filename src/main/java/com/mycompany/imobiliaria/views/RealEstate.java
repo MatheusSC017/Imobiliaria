@@ -17,10 +17,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +33,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -119,10 +124,10 @@ public class RealEstate extends javax.swing.JFrame {
         bathroomsLabel = new javax.swing.JLabel();
         bathroomsComboBox = new javax.swing.JComboBox<>();
         areaLabel = new javax.swing.JLabel();
-        areaTextField = new javax.swing.JTextField();
+        areaTextField = new com.mycompany.imobiliaria.views.components.JNumberTextField();
         propertyThirdColumnPanel = new javax.swing.JPanel();
         valueLabel = new javax.swing.JLabel();
-        valueTextField = new javax.swing.JTextField();
+        valueTextField = new com.mycompany.imobiliaria.views.components.JNumberTextField();
         garageLabel = new javax.swing.JLabel();
         garageComboBox = new javax.swing.JComboBox<>();
         bottomMenuPanel = new javax.swing.JPanel();
@@ -168,7 +173,7 @@ public class RealEstate extends javax.swing.JFrame {
         paymentDayLabel = new javax.swing.JLabel();
         paymentBaseDateTextField = new javax.swing.JFormattedTextField();
         rentValueLabel = new javax.swing.JLabel();
-        rentValueTextField = new javax.swing.JFormattedTextField();
+        rentValueTextField = new com.mycompany.imobiliaria.views.components.JNumberTextField();
         contractSecondColumnPanel = new javax.swing.JPanel();
         durationLabel = new javax.swing.JLabel();
         durationTextField = new javax.swing.JFormattedTextField();
@@ -182,7 +187,6 @@ public class RealEstate extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Atualizar Imóvel");
         setBackground(new java.awt.Color(38, 116, 255));
-        setMaximumSize(new java.awt.Dimension(1000, 650));
         setMinimumSize(new java.awt.Dimension(1000, 650));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -319,8 +323,9 @@ public class RealEstate extends javax.swing.JFrame {
         propertySecondColumnPanel.add(areaLabel);
 
         areaTextField.setBackground(new java.awt.Color(120, 120, 120));
-        areaTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         areaTextField.setForeground(new java.awt.Color(255, 255, 255));
+        areaTextField.setText("jNumberTextField1");
+        areaTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         propertySecondColumnPanel.add(areaTextField);
 
         propertyPanel.add(propertySecondColumnPanel);
@@ -334,8 +339,9 @@ public class RealEstate extends javax.swing.JFrame {
         propertyThirdColumnPanel.add(valueLabel);
 
         valueTextField.setBackground(new java.awt.Color(120, 120, 120));
-        valueTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         valueTextField.setForeground(new java.awt.Color(255, 255, 255));
+        valueTextField.setText("jNumberTextField1");
+        valueTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         propertyThirdColumnPanel.add(valueTextField);
 
         garageLabel.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
@@ -688,8 +694,7 @@ public class RealEstate extends javax.swing.JFrame {
 
         rentValueTextField.setBackground(new java.awt.Color(120, 120, 120));
         rentValueTextField.setForeground(new java.awt.Color(255, 255, 255));
-        rentValueTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#.00"))));
-        rentValueTextField.setToolTipText("");
+        rentValueTextField.setText("jNumberTextField1");
         rentValueTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         contractFirstColumnPanel.add(rentValueTextField);
 
@@ -790,8 +795,8 @@ public class RealEstate extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            areaTextField.setBackground(Color.WHITE);
-            valueTextField.setBackground(Color.WHITE);
+            areaTextField.setBackground(new Color(120, 120, 120));
+            valueTextField.setBackground(new Color(120, 120, 120));
             
             if (addressTextField.getText().length() == 0) {
                 addressTextField.setBackground(Color.RED);
@@ -874,10 +879,10 @@ public class RealEstate extends javax.swing.JFrame {
 
     private void submitRentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitRentButtonActionPerformed
         try {
-            paymentBaseDateTextField.setBackground(Color.WHITE);
-            durationTextField.setBackground(Color.WHITE);
-            rentValueTextField.setBackground(Color.WHITE);
-            contractDateTextField.setBackground(Color.WHITE);
+            paymentBaseDateTextField.setBackground(new Color(120, 120, 120));
+            durationTextField.setBackground(new Color(120, 120, 120));
+            rentValueTextField.setBackground(new Color(120, 120, 120));
+            contractDateTextField.setBackground(new Color(120, 120, 120));
             
             if (!isValidInteger(paymentBaseDateTextField.getText()) ||
                 Integer.parseInt(paymentBaseDateTextField.getText()) < 1 ||
@@ -1067,7 +1072,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JPanel addressSecondColumnPanel;
     private javax.swing.JTextField addressTextField;
     private javax.swing.JLabel areaLabel;
-    private javax.swing.JTextField areaTextField;
+    private com.mycompany.imobiliaria.views.components.JNumberTextField areaTextField;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JComboBox<String> bathroomsComboBox;
@@ -1118,7 +1123,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JScrollPane rentScrollPanel;
     private javax.swing.JTable rentTable;
     private javax.swing.JLabel rentValueLabel;
-    private javax.swing.JFormattedTextField rentValueTextField;
+    private com.mycompany.imobiliaria.views.components.JNumberTextField rentValueTextField;
     private javax.swing.JPanel rentalPanel;
     private javax.swing.JButton returnButton;
     private javax.swing.JComboBox<String> roomsComboBox;
@@ -1141,7 +1146,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> typeComboBox;
     private javax.swing.JLabel typeLabel;
     private javax.swing.JLabel valueLabel;
-    private javax.swing.JTextField valueTextField;
+    private com.mycompany.imobiliaria.views.components.JNumberTextField valueTextField;
     // End of variables declaration//GEN-END:variables
 }
 

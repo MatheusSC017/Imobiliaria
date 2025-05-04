@@ -104,7 +104,6 @@ public class PaymentRegister extends javax.swing.JFrame {
         setTitle("Pagamentos");
         setMaximumSize(new java.awt.Dimension(700, 400));
         setMinimumSize(new java.awt.Dimension(700, 400));
-        setPreferredSize(new java.awt.Dimension(700, 400));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

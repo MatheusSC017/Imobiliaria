@@ -10,7 +10,10 @@ import javax.swing.JOptionPane;
 import com.mycompany.imobiliaria.models.RealEstateModel;
 import com.mycompany.imobiliaria.controllers.RealEstateController;
 import java.awt.Image;
+import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -66,10 +69,10 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         bathroomsComboBox = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        areaTextField = new javax.swing.JTextField();
+        areaTextField = new com.mycompany.imobiliaria.views.components.JNumberTextField();
         propertyColumn3Panel = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        valueTextField = new javax.swing.JTextField();
+        valueTextField = new com.mycompany.imobiliaria.views.components.JNumberTextField();
         jLabel10 = new javax.swing.JLabel();
         garageComboBox = new javax.swing.JComboBox<>();
         bottomMenuPanel = new javax.swing.JPanel();
@@ -166,7 +169,6 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         propertyColumn1Panel.add(jLabel5);
 
         typeComboBox.setBackground(new java.awt.Color(120, 120, 120));
-        typeComboBox.setEditable(true);
         typeComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         typeComboBox.setForeground(new java.awt.Color(255, 255, 255));
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Casa", "Terreno", "Apartamento", "Chácara" }));
@@ -182,7 +184,6 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         propertyColumn1Panel.add(jLabel6);
 
         roomsComboBox.setBackground(new java.awt.Color(120, 120, 120));
-        roomsComboBox.setEditable(true);
         roomsComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         roomsComboBox.setForeground(new java.awt.Color(255, 255, 255));
         roomsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 Quartos", "1 Quarto", "2 Quartos", "3 Quartos", "+4 Quartos" }));
@@ -203,7 +204,6 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         propertyColumn2Panel.add(jLabel7);
 
         bathroomsComboBox.setBackground(new java.awt.Color(120, 120, 120));
-        bathroomsComboBox.setEditable(true);
         bathroomsComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         bathroomsComboBox.setForeground(new java.awt.Color(255, 255, 255));
         bathroomsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 Banheiros", "1 Banheiro", "2 Banheiros", "3 Banheiros", "+4 Banheiros" }));
@@ -219,9 +219,9 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         propertyColumn2Panel.add(jLabel8);
 
         areaTextField.setBackground(new java.awt.Color(120, 120, 120));
-        areaTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         areaTextField.setForeground(new java.awt.Color(255, 255, 255));
-        areaTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        areaTextField.setText("jNumberTextField1");
+        areaTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         propertyColumn2Panel.add(areaTextField);
 
         propertyPanel.add(propertyColumn2Panel);
@@ -235,9 +235,9 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         propertyColumn3Panel.add(jLabel9);
 
         valueTextField.setBackground(new java.awt.Color(120, 120, 120));
-        valueTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         valueTextField.setForeground(new java.awt.Color(255, 255, 255));
-        valueTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        valueTextField.setText("jNumberTextField1");
+        valueTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         propertyColumn3Panel.add(valueTextField);
 
         jLabel10.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
@@ -246,7 +246,6 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         propertyColumn3Panel.add(jLabel10);
 
         garageComboBox.setBackground(new java.awt.Color(120, 120, 120));
-        garageComboBox.setEditable(true);
         garageComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         garageComboBox.setForeground(new java.awt.Color(255, 255, 255));
         garageComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Não", "1 Carro", "2 Carros", "3 Carros", "+4 Carros" }));
@@ -312,11 +311,11 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
-            addressTextField.setBackground(Color.WHITE);
-            neighborhoodTextField.setBackground(Color.WHITE);
-            cityTextField.setBackground(Color.WHITE);
-            areaTextField.setBackground(Color.WHITE);
-            valueTextField.setBackground(Color.WHITE);
+            addressTextField.setBackground(new Color(120, 120, 120));
+            neighborhoodTextField.setBackground(new Color(120, 120, 120));
+            cityTextField.setBackground(new Color(120, 120, 120));
+            areaTextField.setBackground(new Color(120, 120, 120));
+            valueTextField.setBackground(new Color(120, 120, 120));
             
             if (addressTextField.getText().length() == 0) {
                 addressTextField.setBackground(Color.RED);
@@ -444,7 +443,7 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
     private javax.swing.JPanel addressColumn2Panel;
     private javax.swing.JPanel addressPanel;
     private javax.swing.JTextField addressTextField;
-    private javax.swing.JTextField areaTextField;
+    private com.mycompany.imobiliaria.views.components.JNumberTextField areaTextField;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel backgroundPanel;
     private javax.swing.JComboBox<String> bathroomsComboBox;
@@ -472,6 +471,6 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> roomsComboBox;
     private javax.swing.JButton saveButton;
     private javax.swing.JComboBox<String> typeComboBox;
-    private javax.swing.JTextField valueTextField;
+    private com.mycompany.imobiliaria.views.components.JNumberTextField valueTextField;
     // End of variables declaration//GEN-END:variables
 }

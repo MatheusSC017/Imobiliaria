@@ -7,9 +7,6 @@
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="74" red="26" type="rgb"/>
     </Property>
-    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1000, 650]"/>
-    </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[1000, 650]"/>
     </Property>
@@ -395,16 +392,17 @@
                         <Property name="text" type="java.lang.String" value="&#xc1;rea do imovel"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="areaTextField">
+                    <Component class="com.mycompany.imobiliaria.views.components.JNumberTextField" name="areaTextField">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="78" green="78" red="78" type="rgb"/>
                         </Property>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Abyssinica SIL" size="14" style="0"/>
-                        </Property>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="jNumberTextField1"/>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Abyssinica SIL" size="14" style="0"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -432,16 +430,17 @@
                         <Property name="text" type="java.lang.String" value="Valor"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="valueTextField">
+                    <Component class="com.mycompany.imobiliaria.views.components.JNumberTextField" name="valueTextField">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="78" green="78" red="78" type="rgb"/>
                         </Property>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Abyssinica SIL" size="14" style="0"/>
-                        </Property>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="jNumberTextField1"/>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Abyssinica SIL" size="14" style="0"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -1174,7 +1173,7 @@
                             <Property name="toolTipText" type="java.lang.String" value=""/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JFormattedTextField" name="rentValueTextField">
+                        <Component class="com.mycompany.imobiliaria.views.components.JNumberTextField" name="rentValueTextField">
                           <Properties>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="78" green="78" red="78" type="rgb"/>
@@ -1182,10 +1181,7 @@
                             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ff" green="ff" red="ff" type="rgb"/>
                             </Property>
-                            <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor">
-                              <Format format="#.00" subtype="-1" type="0"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value=""/>
+                            <Property name="text" type="java.lang.String" value="jNumberTextField1"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Abyssinica SIL" size="14" style="0"/>
                             </Property>
