@@ -12,8 +12,11 @@ import com.mycompany.imobiliaria.controllers.RealEstateController;
 import com.mycompany.imobiliaria.models.PaymentModel;
 import com.mycompany.imobiliaria.models.RentalModel;
 import com.mycompany.imobiliaria.models.RealEstateModel;
+import java.awt.Image;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
@@ -29,6 +32,9 @@ public class PaymentRegister extends javax.swing.JFrame {
     public PaymentRegister(int rentalId) {
         initComponents();
         
+        setLayout(null);
+        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+        
         RentalController rentalController = new RentalController();   
         this.rental = rentalController.getRentalById(rentalId);
         
@@ -43,14 +49,9 @@ public class PaymentRegister extends javax.swing.JFrame {
     }
     
     private void updateTable() {
-        String[] columnNames = {"ID", "Data do Pagamento", "Data de Referência"};
-        DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0)  {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        
+        DefaultTableModel tableModel = (DefaultTableModel) paymentTable.getModel();
+        tableModel.setRowCount(0);
+            
         for (PaymentModel payment : paymentController.getAllPayments(this.rental.getId())) {
             String paymentDate = String.format(
                 "%02d/%02d/%04d", 
@@ -73,14 +74,7 @@ public class PaymentRegister extends javax.swing.JFrame {
             };
             tableModel.addRow(row);
         }
-        
-        paymentTable.setModel(tableModel);
 
-        
-        int[] preferredWidths = {40, 100, 100};
-        for (int i = 0; i < preferredWidths.length; i++) {
-            paymentTable.getColumnModel().getColumn(i).setPreferredWidth(preferredWidths[i]);
-        }
     }
 
     /**
@@ -92,24 +86,48 @@ public class PaymentRegister extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        backgroundPanel = new javax.swing.JPanel();
+        paymentScrollPanel = new javax.swing.JScrollPane();
         paymentTable = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        formPanel = new javax.swing.JPanel();
+        realEstatePanel = new javax.swing.JPanel();
         addressTextArea = new javax.swing.JTextArea();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        paymentFormPanel = new javax.swing.JPanel();
+        paymentTitlePanel = new javax.swing.JPanel();
+        paymentTitleLabel = new javax.swing.JLabel();
         paymentDateTextField = new javax.swing.JFormattedTextField();
-        jPanel4 = new javax.swing.JPanel();
+        paymentMenuPanel = new javax.swing.JPanel();
         registerButton = new javax.swing.JButton();
+        backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pagamentos");
+        setMaximumSize(new java.awt.Dimension(700, 400));
         setMinimumSize(new java.awt.Dimension(700, 400));
         setPreferredSize(new java.awt.Dimension(700, 400));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+        setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        backgroundPanel.setMaximumSize(new java.awt.Dimension(700, 400));
+        backgroundPanel.setMinimumSize(new java.awt.Dimension(700, 400));
+        backgroundPanel.setPreferredSize(new java.awt.Dimension(700, 400));
+        backgroundPanel.setBackground(new java.awt.Color(40, 40, 40, 160));
+        backgroundPanel.setBorder(null);
+        backgroundPanel.setLayout(new javax.swing.BoxLayout(backgroundPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        paymentScrollPanel.setOpaque(false);
+        paymentScrollPanel.getViewport().setBackground(new java.awt.Color(40, 40, 40, 180));
+        paymentScrollPanel.getViewport().setBorder(null);
+
+        paymentTable.setOpaque(false);
+        ((DefaultTableCellRenderer) paymentTable.getDefaultRenderer(Object.class)).setBackground(new java.awt.Color(120, 120, 160, 180));
+        ((DefaultTableCellRenderer) paymentTable.getDefaultRenderer(Object.class)).setBorder(null);
+        paymentTable.getTableHeader().setFont(new java.awt.Font("Abyssinica SIL", 0, 18)); // NOI18N
+        paymentTable.getTableHeader().setForeground(new java.awt.Color(255, 255, 255));
+        paymentTable.getTableHeader().setBackground(new java.awt.Color(40, 40, 80, 255));
+        paymentTable.getTableHeader().setBorder(null);
+        paymentTable.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        paymentTable.setForeground(new java.awt.Color(255, 255, 255));
         paymentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -118,7 +136,7 @@ public class PaymentRegister extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Id", "Data do Pagament", "Data de Referência"
+                "Id", "Pagament", "Referência"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -129,23 +147,31 @@ public class PaymentRegister extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        paymentTable.setMinimumSize(new java.awt.Dimension(400, 400));
-        paymentTable.setPreferredSize(new java.awt.Dimension(400, 400));
-        jScrollPane1.setViewportView(paymentTable);
+        paymentTable.setMaximumSize(new java.awt.Dimension(400, 300));
+        paymentTable.setMinimumSize(new java.awt.Dimension(400, 300));
+        paymentTable.setPreferredSize(new java.awt.Dimension(400, 300));
+        paymentTable.setRowHeight(25);
+        paymentScrollPanel.setViewportView(paymentTable);
+        if (paymentTable.getColumnModel().getColumnCount() > 0) {
+            paymentTable.getColumnModel().getColumn(0).setPreferredWidth(40);
+        }
 
-        getContentPane().add(jScrollPane1);
+        backgroundPanel.add(paymentScrollPanel);
 
-        jPanel1.setLayout(new java.awt.GridLayout(2, 0));
+        formPanel.setOpaque(false);
+        formPanel.setLayout(new java.awt.GridLayout(2, 0));
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel2.setMaximumSize(new java.awt.Dimension(300, 200));
-        jPanel2.setMinimumSize(new java.awt.Dimension(300, 100));
-        jPanel2.setPreferredSize(new java.awt.Dimension(300, 100));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+        realEstatePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        realEstatePanel.setMaximumSize(new java.awt.Dimension(300, 200));
+        realEstatePanel.setMinimumSize(new java.awt.Dimension(300, 100));
+        realEstatePanel.setOpaque(false);
+        realEstatePanel.setPreferredSize(new java.awt.Dimension(300, 100));
+        realEstatePanel.setLayout(new javax.swing.BoxLayout(realEstatePanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         addressTextArea.setEditable(false);
         addressTextArea.setColumns(5);
-        addressTextArea.setFont(new java.awt.Font("Liberation Sans", 0, 18)); // NOI18N
+        addressTextArea.setFont(new java.awt.Font("Abyssinica SIL", 1, 24)); // NOI18N
+        addressTextArea.setForeground(new java.awt.Color(255, 255, 255));
         addressTextArea.setLineWrap(true);
         addressTextArea.setRows(4);
         addressTextArea.setText("Rua São João Benedito das Areias Cristalinas, 758\n");
@@ -155,32 +181,44 @@ public class PaymentRegister extends javax.swing.JFrame {
         addressTextArea.setMaximumSize(new java.awt.Dimension(250, 100));
         addressTextArea.setMinimumSize(new java.awt.Dimension(250, 40));
         addressTextArea.setOpaque(false);
-        jPanel2.add(addressTextArea);
+        realEstatePanel.add(addressTextArea);
 
-        jPanel1.add(jPanel2);
+        formPanel.add(realEstatePanel);
 
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
+        paymentFormPanel.setOpaque(false);
+        paymentFormPanel.setLayout(new javax.swing.BoxLayout(paymentFormPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jPanel5.setMaximumSize(new java.awt.Dimension(10000, 30));
-        jPanel5.setMinimumSize(new java.awt.Dimension(100, 30));
-        jPanel5.setPreferredSize(new java.awt.Dimension(100, 30));
+        paymentTitlePanel.setMaximumSize(new java.awt.Dimension(10000, 30));
+        paymentTitlePanel.setMinimumSize(new java.awt.Dimension(100, 30));
+        paymentTitlePanel.setOpaque(false);
+        paymentTitlePanel.setPreferredSize(new java.awt.Dimension(100, 30));
 
-        jLabel1.setText("Novo Pagamento");
-        jPanel5.add(jLabel1);
+        paymentTitleLabel.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        paymentTitleLabel.setForeground(new java.awt.Color(255, 255, 255));
+        paymentTitleLabel.setText("Novo Pagamento");
+        paymentTitlePanel.add(paymentTitleLabel);
 
-        jPanel3.add(jPanel5);
+        paymentFormPanel.add(paymentTitlePanel);
 
+        paymentDateTextField.setBackground(new java.awt.Color(120, 120, 120));
+        paymentDateTextField.setForeground(new java.awt.Color(255, 255, 255));
         try {
             paymentDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        paymentDateTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         paymentDateTextField.setMaximumSize(new java.awt.Dimension(250, 30));
         paymentDateTextField.setMinimumSize(new java.awt.Dimension(250, 30));
         paymentDateTextField.setName(""); // NOI18N
         paymentDateTextField.setPreferredSize(new java.awt.Dimension(250, 30));
-        jPanel3.add(paymentDateTextField);
+        paymentFormPanel.add(paymentDateTextField);
 
+        paymentMenuPanel.setOpaque(false);
+
+        registerButton.setBackground(new java.awt.Color(40, 40, 80));
+        registerButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        registerButton.setForeground(new java.awt.Color(255, 255, 255));
         registerButton.setText("Cadastrar");
         registerButton.setMaximumSize(new java.awt.Dimension(150, 30));
         registerButton.setMinimumSize(new java.awt.Dimension(150, 30));
@@ -190,13 +228,20 @@ public class PaymentRegister extends javax.swing.JFrame {
                 registerButtonActionPerformed(evt);
             }
         });
-        jPanel4.add(registerButton);
+        paymentMenuPanel.add(registerButton);
 
-        jPanel3.add(jPanel4);
+        paymentFormPanel.add(paymentMenuPanel);
 
-        jPanel1.add(jPanel3);
+        formPanel.add(paymentFormPanel);
 
-        getContentPane().add(jPanel1);
+        backgroundPanel.add(formPanel);
+
+        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 400));
+
+        Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
+        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
+        getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -290,15 +335,17 @@ public class PaymentRegister extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea addressTextArea;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel backgroundLabel;
+    private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JPanel formPanel;
     private javax.swing.JFormattedTextField paymentDateTextField;
+    private javax.swing.JPanel paymentFormPanel;
+    private javax.swing.JPanel paymentMenuPanel;
+    private javax.swing.JScrollPane paymentScrollPanel;
     private javax.swing.JTable paymentTable;
+    private javax.swing.JLabel paymentTitleLabel;
+    private javax.swing.JPanel paymentTitlePanel;
+    private javax.swing.JPanel realEstatePanel;
     private javax.swing.JButton registerButton;
     // End of variables declaration//GEN-END:variables
 }
