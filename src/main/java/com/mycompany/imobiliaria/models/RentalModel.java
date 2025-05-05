@@ -27,11 +27,12 @@ public class RentalModel {
     private int dueYear;
     private int propertyId;
     private String status;
+    private String contract;
 
     public RentalModel(int contractMonth, int contractYear, int paymentBaseDate, double rentValue,
                             String landlordName, String landlordCpf, String landlordPhone, String landlordEmail,
                             String tenantName, String tenantCpf, String tenantPhone, String tenantEmail,
-                            int durationMonths, int dueMonth, int dueYear, int propertyId, String status) {
+                            int durationMonths, int dueMonth, int dueYear, int propertyId, String status, String contract) {
         setContractMonth(contractMonth);
         setContractYear(contractYear);
         setPaymentBaseDate(paymentBaseDate);
@@ -49,12 +50,13 @@ public class RentalModel {
         setDueYear(dueYear);
         setPropertyId(propertyId);
         setStatus(status);
+        setContract(contract);
     }
     
     public RentalModel(int id, int contractMonth, int contractYear, int paymentBaseDate, double rentValue,
                             String landlordName, String landlordCpf, String landlordPhone, String landlordEmail,
                             String tenantName, String tenantCpf, String tenantPhone, String tenantEmail,
-                            int durationMonths, int dueMonth, int dueYear, int propertyId, String status) {
+                            int durationMonths, int dueMonth, int dueYear, int propertyId, String status, String contract) {
         setId(id);
         setContractMonth(contractMonth);
         setContractYear(contractYear);
@@ -73,6 +75,7 @@ public class RentalModel {
         setDueYear(dueYear);
         setPropertyId(propertyId);
         setStatus(status);
+        setContract(contract);
     }
 
     public void setId(int id) {
@@ -146,6 +149,10 @@ public class RentalModel {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public void setContract(String contract) {
+        this.contract = contract;
+    }
     
     public int getId() {
         return id;
@@ -217,6 +224,10 @@ public class RentalModel {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getContract() {
+        return contract;
     }
 
 }

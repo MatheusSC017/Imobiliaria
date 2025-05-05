@@ -10,10 +10,7 @@ import javax.swing.JOptionPane;
 import com.mycompany.imobiliaria.models.RealEstateModel;
 import com.mycompany.imobiliaria.controllers.RealEstateController;
 import java.awt.Image;
-import java.text.DecimalFormat;
 import javax.swing.ImageIcon;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 
 /**
  *

@@ -26,6 +26,10 @@ public class RentalController {
     public void updateRental(RentalModel rental) {
         dao.update(rental);
     }
+    
+    public void addContract(int id, String contract) {
+        dao.add_contract(id, contract);
+    }
 
     public List<RentalModel> getAllRentalsByPropertyId(int propertyId) {
         return dao.getAllByPropertyId(propertyId);

@@ -69,6 +69,7 @@ public class InitDatabase {
                 due_year INTEGER,
                 property_id INTEGER,
                 status TEXT DEFAULT 'ativo',
+                contract TEXT,
                 FOREIGN KEY (property_id) REFERENCES properties(id)
             );
         """;

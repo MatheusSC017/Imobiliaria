@@ -92,6 +92,23 @@ public class RentalDAO {
             e.printStackTrace();
         }
     }
+    
+    public void add_contract(int id, String contract) {
+        String sql = """
+            UPDATE rental_contracts SET contract = ? WHERE id = ?
+        """;
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, contract);
+            stmt.setInt(2, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<RentalModel> getAllByPropertyId(int propertyId) {
         List<RentalModel> contracts = new ArrayList<>();
@@ -121,7 +138,8 @@ public class RentalDAO {
                     rs.getInt("due_month"),
                     rs.getInt("due_year"),
                     rs.getInt("property_id"),
-                    rs.getString("status")
+                    rs.getString("status"),
+                    rs.getString("contract")
                 );
                 contracts.add(rental);
             }
@@ -213,7 +231,8 @@ public class RentalDAO {
             rs.getInt("due_month"),
             rs.getInt("due_year"),
             rs.getInt("property_id"),
-            rs.getString("status")
+            rs.getString("status"),
+            rs.getString("contract")
         );
         
         return rental;

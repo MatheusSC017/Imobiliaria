@@ -17,24 +17,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -142,6 +144,7 @@ public class RealEstate extends javax.swing.JFrame {
         rentTable = new javax.swing.JTable();
         actionPanel = new javax.swing.JPanel();
         openRentFormButton = new javax.swing.JButton();
+        documentButton = new javax.swing.JButton();
         rentFormPanel = new javax.swing.JPanel();
         titleRentRegisterPanel = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
@@ -453,9 +456,16 @@ public class RealEstate extends javax.swing.JFrame {
                 "ID", "Data", "Vencimento", "Status", "Editar", "Aluguel"
             }
         ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, true, true
             };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -496,6 +506,20 @@ public class RealEstate extends javax.swing.JFrame {
             }
         });
         actionPanel.add(openRentFormButton);
+
+        documentButton.setBackground(new java.awt.Color(40, 40, 80));
+        documentButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        documentButton.setForeground(new java.awt.Color(255, 255, 255));
+        documentButton.setText("Contrato");
+        documentButton.setMaximumSize(new java.awt.Dimension(120, 25));
+        documentButton.setMinimumSize(new java.awt.Dimension(120, 25));
+        documentButton.setPreferredSize(new java.awt.Dimension(120, 25));
+        documentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                documentButtonActionPerformed(evt);
+            }
+        });
+        actionPanel.add(documentButton);
 
         rentPanel.add(actionPanel);
 
@@ -939,7 +963,8 @@ public class RealEstate extends javax.swing.JFrame {
                 Integer.valueOf(dueDateParts[1]),
                 Integer.valueOf(dueDateParts[2]),
                 this.propertyId,
-                statusComboBox.getSelectedItem().toString()
+                statusComboBox.getSelectedItem().toString(),
+                ""
             );
             
             if (this.rentFormStatus.equals("Register")) {
@@ -957,6 +982,49 @@ public class RealEstate extends javax.swing.JFrame {
             System.err.println("Error: " + e);
         }
     }//GEN-LAST:event_submitRentButtonActionPerformed
+
+    private void documentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_documentButtonActionPerformed
+        int row = rentTable.getSelectedRow();
+        if (row == -1) return;
+        
+        String id = String.valueOf(rentTable.getValueAt(row, 0));
+        
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            
+            String fileName = selectedFile.getName();
+            String extension = "";
+            int dotIndex = fileName.lastIndexOf('.');
+            if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+                extension = fileName.substring(dotIndex);
+            }
+            
+            File internalStorage = new File("internal_storage/contracts");
+            if (!internalStorage.exists()) {
+                internalStorage.mkdirs();
+            }
+            
+            File destFile = new File(internalStorage, id + extension);
+
+            try (InputStream in = new FileInputStream(selectedFile);
+                 OutputStream out = new FileOutputStream(destFile)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+                
+                rentalController.addContract(Integer.parseInt(id), destFile.getAbsolutePath());
+                JOptionPane.showMessageDialog(null, "Contrato salvo com sucesso");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_documentButtonActionPerformed
 
     public void openUpdateForm(int rentalId) {
         this.rentalCardLayout.show(rentalPanel, "rentForm");
@@ -1089,6 +1157,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JLabel contractsTitleLabel;
     private javax.swing.JPanel contractsTitlePanel;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton documentButton;
     private javax.swing.JLabel durationLabel;
     private javax.swing.JFormattedTextField durationTextField;
     private javax.swing.JComboBox<String> garageComboBox;
