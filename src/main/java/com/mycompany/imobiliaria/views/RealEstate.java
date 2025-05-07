@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -37,6 +38,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 /**
  *
@@ -49,6 +52,7 @@ public class RealEstate extends javax.swing.JFrame {
     private int propertyId;
     private int rentalId;
     private CardLayout rentalCardLayout;
+    private RentalModel selectedRent;
     
     /**
      * Creates new form RealEstate
@@ -185,11 +189,19 @@ public class RealEstate extends javax.swing.JFrame {
         rentOptionsPanel = new javax.swing.JPanel();
         closeRentFormButton = new javax.swing.JButton();
         submitRentButton = new javax.swing.JButton();
+        contractPanel = new javax.swing.JPanel();
+        contractImagePanel = new javax.swing.JPanel();
+        imageScrollPanel = new java.awt.ScrollPane();
+        contractImageLabel = new javax.swing.JLabel();
+        contractMenuPanel = new javax.swing.JPanel();
+        returnRentsButton = new javax.swing.JButton();
+        changeDocumentButton = new javax.swing.JButton();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Atualizar Imóvel");
         setBackground(new java.awt.Color(38, 116, 255));
+        setMaximumSize(new java.awt.Dimension(1000, 650));
         setMinimumSize(new java.awt.Dimension(1000, 650));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -200,7 +212,7 @@ public class RealEstate extends javax.swing.JFrame {
         backgroundPanel.setBorder(null);
         backgroundPanel.setLayout(new javax.swing.BoxLayout(backgroundPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        realEstatePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        realEstatePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 30, 0, 30));
         realEstatePanel.setMaximumSize(new java.awt.Dimension(600, 440));
         realEstatePanel.setMinimumSize(new java.awt.Dimension(600, 440));
         realEstatePanel.setOpaque(false);
@@ -793,6 +805,61 @@ public class RealEstate extends javax.swing.JFrame {
 
         rentalPanel.add(rentFormPanel, "rentForm");
 
+        contractPanel.setOpaque(false);
+        contractPanel.setLayout(new javax.swing.BoxLayout(contractPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        contractImagePanel.setMaximumSize(new java.awt.Dimension(350, 550));
+        contractImagePanel.setMinimumSize(new java.awt.Dimension(350, 550));
+        contractImagePanel.setOpaque(false);
+        contractImagePanel.setPreferredSize(new java.awt.Dimension(350, 550));
+        contractImagePanel.setLayout(new java.awt.BorderLayout());
+
+        imageScrollPanel.setMaximumSize(new java.awt.Dimension(350, 550));
+        imageScrollPanel.setMinimumSize(new java.awt.Dimension(350, 550));
+
+        contractImageLabel.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        imageScrollPanel.add(contractImageLabel);
+
+        contractImagePanel.add(imageScrollPanel, java.awt.BorderLayout.CENTER);
+
+        contractPanel.add(contractImagePanel);
+
+        contractMenuPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
+        contractMenuPanel.setMinimumSize(new java.awt.Dimension(255, 100));
+        contractMenuPanel.setOpaque(false);
+
+        returnRentsButton.setBackground(new java.awt.Color(40, 40, 80));
+        returnRentsButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        returnRentsButton.setForeground(new java.awt.Color(255, 255, 255));
+        returnRentsButton.setText("Voltar");
+        returnRentsButton.setMaximumSize(new java.awt.Dimension(120, 25));
+        returnRentsButton.setMinimumSize(new java.awt.Dimension(120, 25));
+        returnRentsButton.setPreferredSize(new java.awt.Dimension(120, 25));
+        returnRentsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnRentsButtonActionPerformed(evt);
+            }
+        });
+        contractMenuPanel.add(returnRentsButton);
+
+        changeDocumentButton.setBackground(new java.awt.Color(40, 40, 80));
+        changeDocumentButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        changeDocumentButton.setForeground(new java.awt.Color(255, 255, 255));
+        changeDocumentButton.setText("Substituir");
+        changeDocumentButton.setMaximumSize(new java.awt.Dimension(120, 25));
+        changeDocumentButton.setMinimumSize(new java.awt.Dimension(120, 25));
+        changeDocumentButton.setPreferredSize(new java.awt.Dimension(120, 25));
+        changeDocumentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeDocumentButtonActionPerformed(evt);
+            }
+        });
+        contractMenuPanel.add(changeDocumentButton);
+
+        contractPanel.add(contractMenuPanel);
+
+        rentalPanel.add(contractPanel, "contractImage");
+
         backgroundPanel.add(rentalPanel);
 
         getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 650));
@@ -989,25 +1056,40 @@ public class RealEstate extends javax.swing.JFrame {
         
         String id = String.valueOf(rentTable.getValueAt(row, 0));
         
+        selectedRent = rentalController.getRentalById(Integer.parseInt(id));
+        
+        if (selectedRent.getContract() == null) {
+            this.addDocument(id);
+        } else {
+            this.rentalCardLayout.show(rentalPanel, "contractImage");
+            this.loadContract(selectedRent.getContract());
+        }
+    }//GEN-LAST:event_documentButtonActionPerformed
+    
+    private void returnRentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnRentsButtonActionPerformed
+        this.rentalCardLayout.show(rentalPanel, "rentContracts");
+    }//GEN-LAST:event_returnRentsButtonActionPerformed
+
+    private void changeDocumentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDocumentButtonActionPerformed
+        this.addDocument(String.valueOf(selectedRent.getId()));
+        
+    }//GEN-LAST:event_changeDocumentButtonActionPerformed
+
+    public void addDocument(String id) {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             
-            String fileName = selectedFile.getName();
-            String extension = "";
-            int dotIndex = fileName.lastIndexOf('.');
-            if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
-                extension = fileName.substring(dotIndex);
-            }
-            
+            String extension = getFileExtension(selectedFile.getName());
+  
             File internalStorage = new File("internal_storage/contracts");
             if (!internalStorage.exists()) {
                 internalStorage.mkdirs();
             }
             
-            File destFile = new File(internalStorage, id + extension);
+            File destFile = new File(internalStorage, id + "." + extension);
 
             try (InputStream in = new FileInputStream(selectedFile);
                  OutputStream out = new FileOutputStream(destFile)) {
@@ -1024,8 +1106,46 @@ public class RealEstate extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
-    }//GEN-LAST:event_documentButtonActionPerformed
+    }
+    
+    public void loadContract(String contractPath) {
+        String extension = getFileExtension(contractPath).toLowerCase();
+        
+        switch (extension) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+                ImageIcon contractImage = new ImageIcon(contractPath);
+                contractImageLabel.setIcon(contractImage);
+                break;
+            case "pdf":
+                try {
+                    File file = new File(contractPath);
+                    PDDocument document = PDDocument.load(file);
+                    PDFRenderer renderer = new PDFRenderer(document);
 
+                    BufferedImage contractPageBuffer = renderer.renderImageWithDPI(0, 150);
+                    
+                    ImageIcon defaultImage = new ImageIcon(contractPageBuffer);
+                    contractImageLabel.setIcon(defaultImage);
+                } catch (Exception e) {
+                    System.out.println(e);
+                    ImageIcon defaultImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png"));
+                    contractImageLabel.setIcon(defaultImage);
+                }
+                break;
+            default:
+                ImageIcon defaultImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png"));
+                contractImageLabel.setIcon(defaultImage);
+                break;
+        }
+    }
+    
+    public String getFileExtension(String filePath) {
+        int dotIndex = filePath.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : filePath.substring(dotIndex + 1);
+    }
+    
     public void openUpdateForm(int rentalId) {
         this.rentalCardLayout.show(rentalPanel, "rentForm");
         this.rentalId = rentalId;
@@ -1146,13 +1266,18 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> bathroomsComboBox;
     private javax.swing.JLabel bathroomsLabel;
     private javax.swing.JPanel bottomMenuPanel;
+    private javax.swing.JButton changeDocumentButton;
     private javax.swing.JLabel cityLabel;
     private javax.swing.JTextField cityTextField;
     private javax.swing.JButton closeRentFormButton;
     private javax.swing.JLabel contractDateLabel;
     private javax.swing.JFormattedTextField contractDateTextField;
     private javax.swing.JPanel contractFirstColumnPanel;
+    private javax.swing.JLabel contractImageLabel;
+    private javax.swing.JPanel contractImagePanel;
+    private javax.swing.JPanel contractMenuPanel;
     private javax.swing.JPanel contractPane;
+    private javax.swing.JPanel contractPanel;
     private javax.swing.JPanel contractSecondColumnPanel;
     private javax.swing.JLabel contractsTitleLabel;
     private javax.swing.JPanel contractsTitlePanel;
@@ -1162,6 +1287,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField durationTextField;
     private javax.swing.JComboBox<String> garageComboBox;
     private javax.swing.JLabel garageLabel;
+    private java.awt.ScrollPane imageScrollPanel;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel landLordCPFLabel;
     private javax.swing.JFormattedTextField landLordCPFTextField;
@@ -1195,6 +1321,7 @@ public class RealEstate extends javax.swing.JFrame {
     private com.mycompany.imobiliaria.views.components.JNumberTextField rentValueTextField;
     private javax.swing.JPanel rentalPanel;
     private javax.swing.JButton returnButton;
+    private javax.swing.JButton returnRentsButton;
     private javax.swing.JComboBox<String> roomsComboBox;
     private javax.swing.JLabel roomsLabel;
     private javax.swing.JButton saveButton;

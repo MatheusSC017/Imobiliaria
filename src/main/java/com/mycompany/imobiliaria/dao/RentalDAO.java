@@ -93,7 +93,7 @@ public class RentalDAO {
         }
     }
     
-    public void add_contract(int id, String contract) {
+    public void addContract(int id, String contract) {
         String sql = """
             UPDATE rental_contracts SET contract = ? WHERE id = ?
         """;

@@ -29,11 +29,13 @@ com/mycompany/imobiliaria/views/RealEstates$6.class
 com/mycompany/imobiliaria/views/RealEstates.class
 com/mycompany/imobiliaria/views/RealEstate$5.class
 com/mycompany/imobiliaria/views/RealEstate$8.class
+com/mycompany/imobiliaria/views/RealEstate$11.class
 com/mycompany/imobiliaria/dao/RealEstateDAO.class
 com/mycompany/imobiliaria/views/RentalButtonRenderer.class
 com/mycompany/imobiliaria/views/PaymentButtonEditor$2.class
 com/mycompany/imobiliaria/views/RentalButtonEditor.class
 com/mycompany/imobiliaria/views/PaymentButtonEditor.class
+com/mycompany/imobiliaria/views/RealEstate$10.class
 com/mycompany/imobiliaria/views/RealEstate$2.class
 com/mycompany/imobiliaria/views/PropertyButtonEditor$2.class
 com/mycompany/imobiliaria/views/PaymentRegister$2.class
