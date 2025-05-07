@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
@@ -196,6 +197,7 @@ public class RealEstate extends javax.swing.JFrame {
         contractMenuPanel = new javax.swing.JPanel();
         returnRentsButton = new javax.swing.JButton();
         changeDocumentButton = new javax.swing.JButton();
+        downloadButton = new javax.swing.JButton();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -856,6 +858,20 @@ public class RealEstate extends javax.swing.JFrame {
         });
         contractMenuPanel.add(changeDocumentButton);
 
+        downloadButton.setBackground(new java.awt.Color(40, 40, 80));
+        downloadButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        downloadButton.setForeground(new java.awt.Color(255, 255, 255));
+        downloadButton.setText("Download");
+        downloadButton.setMaximumSize(new java.awt.Dimension(120, 25));
+        downloadButton.setMinimumSize(new java.awt.Dimension(120, 25));
+        downloadButton.setPreferredSize(new java.awt.Dimension(120, 25));
+        downloadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadButtonActionPerformed(evt);
+            }
+        });
+        contractMenuPanel.add(downloadButton);
+
         contractPanel.add(contractMenuPanel);
 
         rentalPanel.add(contractPanel, "contractImage");
@@ -1075,6 +1091,28 @@ public class RealEstate extends javax.swing.JFrame {
         
     }//GEN-LAST:event_changeDocumentButtonActionPerformed
 
+    private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
+
+        if (selectedRent.getContract() == null) return;
+
+        String extention = getFileExtension(selectedRent.getContract());
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Onde deseja salvar o arquivo?");
+        fileChooser.setSelectedFile(new File("contrato." + extention));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File saveFile = fileChooser.getSelectedFile();
+            try {
+                Files.copy(new File(selectedRent.getContract()).toPath(), saveFile.toPath());
+                JOptionPane.showMessageDialog(this, "Contrato baixado com sucesso.");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_downloadButtonActionPerformed
+
     public void addDocument(String id) {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
@@ -1128,8 +1166,8 @@ public class RealEstate extends javax.swing.JFrame {
                     
                     ImageIcon defaultImage = new ImageIcon(contractPageBuffer);
                     contractImageLabel.setIcon(defaultImage);
-                } catch (Exception e) {
-                    System.out.println(e);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                     ImageIcon defaultImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png"));
                     contractImageLabel.setIcon(defaultImage);
                 }
@@ -1283,6 +1321,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JPanel contractsTitlePanel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton documentButton;
+    private javax.swing.JButton downloadButton;
     private javax.swing.JLabel durationLabel;
     private javax.swing.JFormattedTextField durationTextField;
     private javax.swing.JComboBox<String> garageComboBox;
