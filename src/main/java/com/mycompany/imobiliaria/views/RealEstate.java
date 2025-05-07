@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -54,6 +53,8 @@ public class RealEstate extends javax.swing.JFrame {
     private int rentalId;
     private CardLayout rentalCardLayout;
     private RentalModel selectedRent;
+    private Image contractImage;
+    private double contractImageScale = 1.0;
     
     /**
      * Creates new form RealEstate
@@ -194,6 +195,9 @@ public class RealEstate extends javax.swing.JFrame {
         contractImagePanel = new javax.swing.JPanel();
         imageScrollPanel = new java.awt.ScrollPane();
         contractImageLabel = new javax.swing.JLabel();
+        imageManipulateMenuPanel = new javax.swing.JPanel();
+        lessZoomButton = new javax.swing.JButton();
+        moreZoomButton = new javax.swing.JButton();
         contractMenuPanel = new javax.swing.JPanel();
         returnRentsButton = new javax.swing.JButton();
         changeDocumentButton = new javax.swing.JButton();
@@ -826,6 +830,42 @@ public class RealEstate extends javax.swing.JFrame {
 
         contractPanel.add(contractImagePanel);
 
+        imageManipulateMenuPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
+        imageManipulateMenuPanel.setMinimumSize(new java.awt.Dimension(10, 100));
+        imageManipulateMenuPanel.setOpaque(false);
+
+        lessZoomButton.setToolTipText("Menos zoom");
+        ImageIcon lessZoomIcon = new ImageIcon(getClass().getResource("/static/icons/less-glass.png"));
+        lessZoomButton.setIcon(lessZoomIcon);
+        lessZoomButton.setText("");
+        lessZoomButton.setHorizontalAlignment(SwingConstants.CENTER);
+        lessZoomButton.setBorderPainted(false);
+        lessZoomButton.setContentAreaFilled(false);
+        lessZoomButton.setBorderPainted(true);
+        lessZoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lessZoomButtonActionPerformed(evt);
+            }
+        });
+        imageManipulateMenuPanel.add(lessZoomButton);
+
+        moreZoomButton.setToolTipText("Mais zoom");
+        ImageIcon moreZoomIcon = new ImageIcon(getClass().getResource("/static/icons/more-glass.png"));
+        moreZoomButton.setIcon(moreZoomIcon);
+        moreZoomButton.setText("");
+        moreZoomButton.setHorizontalAlignment(SwingConstants.CENTER);
+        moreZoomButton.setBorderPainted(false);
+        moreZoomButton.setContentAreaFilled(false);
+        moreZoomButton.setBorderPainted(true);
+        moreZoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moreZoomButtonActionPerformed(evt);
+            }
+        });
+        imageManipulateMenuPanel.add(moreZoomButton);
+
+        contractPanel.add(imageManipulateMenuPanel);
+
         contractMenuPanel.setMaximumSize(new java.awt.Dimension(32767, 100));
         contractMenuPanel.setMinimumSize(new java.awt.Dimension(255, 100));
         contractMenuPanel.setOpaque(false);
@@ -1113,6 +1153,16 @@ public class RealEstate extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_downloadButtonActionPerformed
 
+    private void lessZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lessZoomButtonActionPerformed
+        this.contractImageScale -= 0.25;
+        this.plotImage();
+    }//GEN-LAST:event_lessZoomButtonActionPerformed
+
+    private void moreZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreZoomButtonActionPerformed
+        this.contractImageScale += 0.25;
+        this.plotImage();
+    }//GEN-LAST:event_moreZoomButtonActionPerformed
+    
     public void addDocument(String id) {
         JFileChooser fileChooser = new JFileChooser();
         int result = fileChooser.showOpenDialog(null);
@@ -1153,8 +1203,7 @@ public class RealEstate extends javax.swing.JFrame {
             case "jpg":
             case "jpeg":
             case "png":
-                ImageIcon contractImage = new ImageIcon(contractPath);
-                contractImageLabel.setIcon(contractImage);
+                this.contractImage = new ImageIcon(contractPath).getImage();
                 break;
             case "pdf":
                 try {
@@ -1162,21 +1211,24 @@ public class RealEstate extends javax.swing.JFrame {
                     PDDocument document = PDDocument.load(file);
                     PDFRenderer renderer = new PDFRenderer(document);
 
-                    BufferedImage contractPageBuffer = renderer.renderImageWithDPI(0, 150);
-                    
-                    ImageIcon defaultImage = new ImageIcon(contractPageBuffer);
-                    contractImageLabel.setIcon(defaultImage);
+                    this.contractImage = renderer.renderImageWithDPI(0, 150);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    ImageIcon defaultImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png"));
-                    contractImageLabel.setIcon(defaultImage);
+                    this.contractImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
                 }
                 break;
             default:
-                ImageIcon defaultImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png"));
-                contractImageLabel.setIcon(defaultImage);
+                this.contractImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
                 break;
         }
+        plotImage();
+    }
+    
+    public void plotImage() {
+        int width = (int) (this.contractImage.getWidth(null) * this.contractImageScale);
+        int height = (int) (this.contractImage.getHeight(null) * this.contractImageScale);
+        Image scaledImage = this.contractImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        contractImageLabel.setIcon(new ImageIcon(scaledImage));
     }
     
     public String getFileExtension(String filePath) {
@@ -1326,6 +1378,7 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField durationTextField;
     private javax.swing.JComboBox<String> garageComboBox;
     private javax.swing.JLabel garageLabel;
+    private javax.swing.JPanel imageManipulateMenuPanel;
     private java.awt.ScrollPane imageScrollPanel;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel landLordCPFLabel;
@@ -1338,6 +1391,8 @@ public class RealEstate extends javax.swing.JFrame {
     private javax.swing.JPanel landLordPanel;
     private javax.swing.JLabel landLordPhoneLabel;
     private javax.swing.JFormattedTextField landLordPhoneTextField;
+    private javax.swing.JButton lessZoomButton;
+    private javax.swing.JButton moreZoomButton;
     private javax.swing.JLabel neighborhoodLabel;
     private javax.swing.JTextField neighborhoodTextField;
     private javax.swing.JLabel numberLabel;

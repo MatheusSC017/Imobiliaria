@@ -1422,6 +1422,37 @@
                     </Container>
                   </SubComponents>
                 </Container>
+                <Container class="javax.swing.JPanel" name="imageManipulateMenuPanel">
+                  <Properties>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[32767, 100]"/>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[10, 100]"/>
+                    </Property>
+                    <Property name="opaque" type="boolean" value="false"/>
+                  </Properties>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JButton" name="lessZoomButton">
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lessZoomButtonActionPerformed"/>
+                      </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lessZoomButton.setToolTipText(&quot;Menos zoom&quot;);&#xa;ImageIcon lessZoomIcon = new ImageIcon(getClass().getResource(&quot;/static/icons/less-glass.png&quot;));&#xa;lessZoomButton.setIcon(lessZoomIcon);&#xa;lessZoomButton.setText(&quot;&quot;);&#xa;lessZoomButton.setHorizontalAlignment(SwingConstants.CENTER);&#xa;lessZoomButton.setBorderPainted(false);&#xa;lessZoomButton.setContentAreaFilled(false);&#xa;lessZoomButton.setBorderPainted(true);"/>
+                      </AuxValues>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="moreZoomButton">
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="moreZoomButtonActionPerformed"/>
+                      </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="moreZoomButton.setToolTipText(&quot;Mais zoom&quot;);&#xa;ImageIcon moreZoomIcon = new ImageIcon(getClass().getResource(&quot;/static/icons/more-glass.png&quot;));&#xa;moreZoomButton.setIcon(moreZoomIcon);&#xa;moreZoomButton.setText(&quot;&quot;);&#xa;moreZoomButton.setHorizontalAlignment(SwingConstants.CENTER);&#xa;moreZoomButton.setBorderPainted(false);&#xa;moreZoomButton.setContentAreaFilled(false);&#xa;moreZoomButton.setBorderPainted(true);"/>
+                      </AuxValues>
+                    </Component>
+                  </SubComponents>
+                </Container>
                 <Container class="javax.swing.JPanel" name="contractMenuPanel">
                   <Properties>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
