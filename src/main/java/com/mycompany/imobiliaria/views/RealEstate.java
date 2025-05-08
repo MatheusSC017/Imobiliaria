@@ -12,11 +12,13 @@ import java.awt.CardLayout;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,6 +30,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -823,6 +827,7 @@ public class RealEstate extends javax.swing.JFrame {
         imageScrollPanel.setMaximumSize(new java.awt.Dimension(350, 550));
         imageScrollPanel.setMinimumSize(new java.awt.Dimension(350, 550));
 
+        contractImageLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png"))); // NOI18N
         contractImageLabel.setMaximumSize(new java.awt.Dimension(32767, 32767));
         imageScrollPanel.add(contractImageLabel);
 
@@ -1128,7 +1133,8 @@ public class RealEstate extends javax.swing.JFrame {
 
     private void changeDocumentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDocumentButtonActionPerformed
         this.addDocument(String.valueOf(selectedRent.getId()));
-        
+        selectedRent = rentalController.getRentalById(selectedRent.getId());
+        this.loadContract(selectedRent.getContract());
     }//GEN-LAST:event_changeDocumentButtonActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
@@ -1211,7 +1217,48 @@ public class RealEstate extends javax.swing.JFrame {
                     PDDocument document = PDDocument.load(file);
                     PDFRenderer renderer = new PDFRenderer(document);
 
-                    this.contractImage = renderer.renderImageWithDPI(0, 150);
+                    int numPages = document.getNumberOfPages();
+                    int dpi = 150;
+
+                    List<BufferedImage> contractPages = new ArrayList<>();
+                    int totalHeight = 0;
+                    int width = 0;
+                    int separatorHeight = 5;
+
+                    for (int pageIndex = 0; pageIndex < numPages; pageIndex++) {
+                        contractPages.add(renderer.renderImageWithDPI(pageIndex, dpi));
+
+                        totalHeight += contractPages.get(pageIndex).getHeight();
+                        if (pageIndex != numPages - 1) {
+                            totalHeight += separatorHeight;
+                        }
+
+                        width = Math.max(width, contractPages.get(pageIndex).getWidth());
+                    }
+                    
+                    BufferedImage fullContractImage = new BufferedImage(width, totalHeight, BufferedImage.TYPE_INT_RGB);
+                    Graphics2D g2d = fullContractImage.createGraphics();
+
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillRect(0, 0, width, totalHeight);
+
+                    int y = 0;
+                    for (int i = 0; i < contractPages.size(); i++) {
+                        BufferedImage page = contractPages.get(i);
+                        g2d.drawImage(page, 0, y, null);
+                        y += page.getHeight();
+
+                        if (i != contractPages.size() - 1) {
+                            g2d.setColor(Color.BLACK);
+                            g2d.fillRect(0, y, width, separatorHeight);
+                            y += separatorHeight;
+                        }
+                    }
+                    
+                    g2d.dispose();
+                    document.close();
+
+                    this.contractImage = fullContractImage;
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     this.contractImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
