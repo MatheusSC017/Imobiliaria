@@ -57,6 +57,25 @@ public class PaymentDAO {
 
         return payments;
     }
+    
+    public PaymentModel get(int id) {
+        String sql = "SELECT * FROM payments WHERE id = ?";
+        PaymentModel payment = null;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                payment = mapResultSetToPayment(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return payment;
+    }
 
     private PaymentModel mapResultSetToPayment(ResultSet rs) throws SQLException {
         PaymentModel payment = new PaymentModel(
@@ -66,7 +85,8 @@ public class PaymentDAO {
             rs.getInt("payment_year"),
             rs.getInt("reference_month"),
             rs.getInt("reference_year"),
-            rs.getInt("rental_id")
+            rs.getInt("rental_id"),
+            rs.getString("contract")
         );
         return payment;
     }

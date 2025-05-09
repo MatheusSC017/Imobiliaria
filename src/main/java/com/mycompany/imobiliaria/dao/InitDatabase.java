@@ -91,6 +91,7 @@ public class InitDatabase {
                 payment_year INTEGER,
                 reference_month INTEGER,
                 reference_year INTEGER,
+                receipt TEXT,
                 rental_id INTEGER,
                 FOREIGN KEY (rental_id) REFERENCES rental_contracts(id)
             );

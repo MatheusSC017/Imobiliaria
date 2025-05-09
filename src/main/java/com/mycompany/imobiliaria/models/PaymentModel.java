@@ -16,8 +16,9 @@ public class PaymentModel {
     private int reference_month;
     private int reference_year;
     private int rentalId;
+    private String contract;
 
-    public PaymentModel(int id, int payment_day, int payment_month, int payment_year, int reference_month, int reference_year, int rentalId) {
+    public PaymentModel(int id, int payment_day, int payment_month, int payment_year, int reference_month, int reference_year, int rentalId, String contract) {
         setId(id);
         setPayment_day(payment_day);
         setPayment_month(payment_month);
@@ -25,15 +26,17 @@ public class PaymentModel {
         setReference_month(reference_month);
         setReference_year(reference_year);
         setRentalId(rentalId);
+        setContract(contract);
     }
     
-    public PaymentModel(int payment_day, int payment_month, int payment_year, int reference_month, int reference_year, int rentalId) {
+    public PaymentModel(int payment_day, int payment_month, int payment_year, int reference_month, int reference_year, int rentalId, String contract) {
         setPayment_day(payment_day);
         setPayment_month(payment_month);
         setPayment_year(payment_year);
         setReference_month(reference_month);
         setReference_year(reference_year);
         setRentalId(rentalId);
+        setContract(contract);
     }
 
     public int getId() {
@@ -64,6 +67,10 @@ public class PaymentModel {
         return rentalId;
     }
 
+    public String getContract() {
+        return contract;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -90,6 +97,10 @@ public class PaymentModel {
 
     public void setRentalId(int rentalId) {
         this.rentalId = rentalId;
+    }
+
+    public void setContract(String contract) {
+        this.contract = contract;
     }
 
 }

@@ -12,6 +12,7 @@ import com.mycompany.imobiliaria.controllers.RealEstateController;
 import com.mycompany.imobiliaria.models.PaymentModel;
 import com.mycompany.imobiliaria.models.RentalModel;
 import com.mycompany.imobiliaria.models.RealEstateModel;
+import java.awt.CardLayout;
 import java.awt.Image;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -25,12 +26,16 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class PaymentRegister extends javax.swing.JFrame {
     private static final PaymentController paymentController = new PaymentController();
     private RentalModel rental;
+    private PaymentModel selectedPayment;
+    private CardLayout paymentCardLayout;
     
     /**
      * Creates new form PaymentRegister
      */
     public PaymentRegister(int rentalId) {
         initComponents();
+        
+        this.paymentCardLayout = ((CardLayout) paymentPanel.getLayout());
         
         setLayout(null);
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
@@ -89,6 +94,7 @@ public class PaymentRegister extends javax.swing.JFrame {
         backgroundPanel = new javax.swing.JPanel();
         paymentScrollPanel = new javax.swing.JScrollPane();
         paymentTable = new javax.swing.JTable();
+        paymentPanel = new javax.swing.JPanel();
         formPanel = new javax.swing.JPanel();
         realEstatePanel = new javax.swing.JPanel();
         addressTextArea = new javax.swing.JTextArea();
@@ -98,6 +104,14 @@ public class PaymentRegister extends javax.swing.JFrame {
         paymentDateTextField = new javax.swing.JFormattedTextField();
         paymentMenuPanel = new javax.swing.JPanel();
         registerButton = new javax.swing.JButton();
+        contractPanel = new javax.swing.JPanel();
+        contractButton = new javax.swing.JButton();
+        ContractImagePanel = new javax.swing.JPanel();
+        contractImageScrollPanel = new javax.swing.JScrollPane();
+        contractImageLabel = new javax.swing.JLabel();
+        menu = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -156,6 +170,8 @@ public class PaymentRegister extends javax.swing.JFrame {
         }
 
         backgroundPanel.add(paymentScrollPanel);
+
+        paymentPanel.setLayout(new java.awt.CardLayout());
 
         formPanel.setOpaque(false);
         formPanel.setLayout(new java.awt.GridLayout(2, 0));
@@ -231,9 +247,65 @@ public class PaymentRegister extends javax.swing.JFrame {
 
         paymentFormPanel.add(paymentMenuPanel);
 
+        contractButton.setBackground(new java.awt.Color(40, 40, 80));
+        contractButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
+        contractButton.setForeground(new java.awt.Color(255, 255, 255));
+        contractButton.setText("Contrato");
+        contractButton.setMaximumSize(new java.awt.Dimension(150, 30));
+        contractButton.setMinimumSize(new java.awt.Dimension(150, 30));
+        contractButton.setPreferredSize(new java.awt.Dimension(150, 30));
+        contractButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contractButtonActionPerformed(evt);
+            }
+        });
+        contractPanel.add(contractButton);
+
+        paymentFormPanel.add(contractPanel);
+
         formPanel.add(paymentFormPanel);
 
-        backgroundPanel.add(formPanel);
+        paymentPanel.add(formPanel, "paymentForm");
+
+        ContractImagePanel.setMaximumSize(new java.awt.Dimension(300, 400));
+        ContractImagePanel.setMinimumSize(new java.awt.Dimension(300, 400));
+        ContractImagePanel.setPreferredSize(new java.awt.Dimension(300, 400));
+        ContractImagePanel.setLayout(new javax.swing.BoxLayout(ContractImagePanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        contractImageScrollPanel.setMaximumSize(new java.awt.Dimension(300, 350));
+        contractImageScrollPanel.setMinimumSize(new java.awt.Dimension(300, 350));
+        contractImageScrollPanel.setPreferredSize(new java.awt.Dimension(300, 350));
+        contractImageScrollPanel.setViewportView(contractImageLabel);
+
+        ContractImagePanel.add(contractImageScrollPanel);
+
+        menu.setMaximumSize(new java.awt.Dimension(300, 50));
+        menu.setMinimumSize(new java.awt.Dimension(300, 50));
+        menu.setPreferredSize(new java.awt.Dimension(300, 50));
+
+        jButton1.setBackground(new java.awt.Color(40, 40, 80));
+        jButton1.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Voltar");
+        jButton1.setMaximumSize(new java.awt.Dimension(100, 30));
+        jButton1.setMinimumSize(new java.awt.Dimension(100, 30));
+        jButton1.setPreferredSize(new java.awt.Dimension(100, 30));
+        menu.add(jButton1);
+
+        jButton2.setBackground(new java.awt.Color(40, 40, 80));
+        jButton2.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Substituir");
+        jButton2.setMaximumSize(new java.awt.Dimension(100, 30));
+        jButton2.setMinimumSize(new java.awt.Dimension(100, 30));
+        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
+        menu.add(jButton2);
+
+        ContractImagePanel.add(menu);
+
+        paymentPanel.add(ContractImagePanel, "paymentReceipt");
+
+        backgroundPanel.add(paymentPanel);
 
         getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 400));
 
@@ -287,7 +359,8 @@ public class PaymentRegister extends javax.swing.JFrame {
                 Integer.parseInt(paymentDate[2]),
                 referenceMonth,
                 referenceYear,
-                rental.getId()
+                rental.getId(),
+                ""
             );
             
         paymentController.addPayment(payment);
@@ -296,6 +369,23 @@ public class PaymentRegister extends javax.swing.JFrame {
         this.updateTable();
         paymentDateTextField.setText("");
     }//GEN-LAST:event_registerButtonActionPerformed
+
+    private void contractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contractButtonActionPerformed
+        int row = paymentTable.getSelectedRow();
+        if (row == -1) return;
+        
+        String id = String.valueOf(paymentTable.getValueAt(row, 0));
+        
+        selectedPayment = paymentController.getPaymentById(Integer.parseInt(id));
+        
+        if (selectedPayment.getContract() == null) {
+            // Add document
+        } else {
+            this.paymentCardLayout.show(paymentPanel, "paymentReceipt");
+            
+            // Show Contract
+        }
+    }//GEN-LAST:event_contractButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,13 +423,22 @@ public class PaymentRegister extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ContractImagePanel;
     private javax.swing.JTextArea addressTextArea;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton contractButton;
+    private javax.swing.JLabel contractImageLabel;
+    private javax.swing.JScrollPane contractImageScrollPanel;
+    private javax.swing.JPanel contractPanel;
     private javax.swing.JPanel formPanel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel menu;
     private javax.swing.JFormattedTextField paymentDateTextField;
     private javax.swing.JPanel paymentFormPanel;
     private javax.swing.JPanel paymentMenuPanel;
+    private javax.swing.JPanel paymentPanel;
     private javax.swing.JScrollPane paymentScrollPanel;
     private javax.swing.JTable paymentTable;
     private javax.swing.JLabel paymentTitleLabel;

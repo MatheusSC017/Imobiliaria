@@ -26,5 +26,9 @@ public class PaymentController {
     public List<PaymentModel> getAllPayments(int rentalId) {
         return dao.getAll(rentalId);
     }
+    
+    public PaymentModel getPaymentById(int paymentId) {
+        return dao.get(paymentId);
+    }
 
 }
