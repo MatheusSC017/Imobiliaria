@@ -1138,7 +1138,6 @@ public class RealEstate extends javax.swing.JFrame {
     }//GEN-LAST:event_changeDocumentButtonActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
-
         if (selectedRent.getContract() == null) return;
 
         String extention = getFileExtension(selectedRent.getContract());

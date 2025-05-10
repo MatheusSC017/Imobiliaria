@@ -7,16 +7,19 @@ com/mycompany/imobiliaria/views/PropertyButtonRenderer.class
 com/mycompany/imobiliaria/views/RealEstate$3.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister$4.class
 com/mycompany/imobiliaria/controllers/RealEstateController.class
+com/mycompany/imobiliaria/views/PaymentRegister$8.class
 com/mycompany/imobiliaria/views/PropertyButtonEditor.class
 com/mycompany/imobiliaria/views/PaymentRegister$4.class
 com/mycompany/imobiliaria/views/RealEstates$4.class
 com/mycompany/imobiliaria/views/RealEstate$7.class
 com/mycompany/imobiliaria/controllers/PaymentController.class
 com/mycompany/imobiliaria/views/RealEstates$5.class
+com/mycompany/imobiliaria/views/PaymentRegister$5.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister$1.class
 com/mycompany/imobiliaria/views/RealEstate$13.class
 com/mycompany/imobiliaria/models/PaymentModel.class
 com/mycompany/imobiliaria/views/components/JNumberTextField.class
+com/mycompany/imobiliaria/views/PaymentRegister$7.class
 com/mycompany/imobiliaria/dao/PaymentDAO.class
 com/mycompany/imobiliaria/views/PropertyButtonEditor$1.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister.class
@@ -47,6 +50,7 @@ com/mycompany/imobiliaria/views/RentalButtonEditor$1.class
 com/mycompany/imobiliaria/views/RealEstates$7.class
 com/mycompany/imobiliaria/models/RealEstateModel.class
 com/mycompany/imobiliaria/views/RealEstate.class
+com/mycompany/imobiliaria/views/PaymentRegister$9.class
 com/mycompany/imobiliaria/Imobiliaria.class
 com/mycompany/imobiliaria/views/RealEstate$4.class
 com/mycompany/imobiliaria/views/RealEstateFormRegister$3.class
@@ -55,4 +59,5 @@ com/mycompany/imobiliaria/views/PaymentButtonEditor$1.class
 com/mycompany/imobiliaria/views/RealEstate$12.class
 com/mycompany/imobiliaria/controllers/RentalController.class
 com/mycompany/imobiliaria/views/PaymentRegister$3.class
+com/mycompany/imobiliaria/views/PaymentRegister$6.class
 com/mycompany/imobiliaria/views/PaymentButtonRenderer.class

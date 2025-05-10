@@ -22,6 +22,10 @@ public class PaymentController {
     public void addPayment(PaymentModel payment) {
         dao.insert(payment);
     }
+    
+    public void addReceipt(int id, String receipt) {
+        dao.addReceipt(id, receipt);
+    }
 
     public List<PaymentModel> getAllPayments(int rentalId) {
         return dao.getAll(rentalId);

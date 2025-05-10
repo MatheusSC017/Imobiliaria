@@ -36,6 +36,23 @@ public class PaymentDAO {
             e.printStackTrace();
         }
     }
+    
+    public void addReceipt(int id, String receipt) {
+        String sql = """
+            UPDATE payments SET receipt = ? WHERE id = ?
+        """;
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, receipt);
+            stmt.setInt(2, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<PaymentModel> getAll(int rentalId) {
         String sql = "SELECT * FROM payments WHERE rental_id = ? ORDER BY reference_year DESC, reference_month DESC";
@@ -86,7 +103,7 @@ public class PaymentDAO {
             rs.getInt("reference_month"),
             rs.getInt("reference_year"),
             rs.getInt("rental_id"),
-            rs.getString("contract")
+            rs.getString("receipt")
         );
         return payment;
     }

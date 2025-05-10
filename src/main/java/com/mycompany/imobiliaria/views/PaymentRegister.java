@@ -13,11 +13,26 @@ import com.mycompany.imobiliaria.models.PaymentModel;
 import com.mycompany.imobiliaria.models.RentalModel;
 import com.mycompany.imobiliaria.models.RealEstateModel;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 /**
  *
@@ -28,6 +43,8 @@ public class PaymentRegister extends javax.swing.JFrame {
     private RentalModel rental;
     private PaymentModel selectedPayment;
     private CardLayout paymentCardLayout;
+    private Image receiptImage;
+    private double receiptImageScale = 1.0;
     
     /**
      * Creates new form PaymentRegister
@@ -106,28 +123,37 @@ public class PaymentRegister extends javax.swing.JFrame {
         registerButton = new javax.swing.JButton();
         contractPanel = new javax.swing.JPanel();
         contractButton = new javax.swing.JButton();
-        ContractImagePanel = new javax.swing.JPanel();
-        contractImageScrollPanel = new javax.swing.JScrollPane();
-        contractImageLabel = new javax.swing.JLabel();
-        menu = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        receiptImagePanel = new javax.swing.JPanel();
+        receiptImageScrollPanel = new javax.swing.JScrollPane();
+        receiptImageLabel = new javax.swing.JLabel();
+        receiptMenuPanel = new javax.swing.JPanel();
+        lessZoomButton = new javax.swing.JButton();
+        moreZoomButton = new javax.swing.JButton();
+        menuPanel = new javax.swing.JPanel();
+        returnButton = new javax.swing.JButton();
+        changeButton = new javax.swing.JButton();
+        downloadButton = new javax.swing.JButton();
         backgroundLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pagamentos");
-        setMaximumSize(new java.awt.Dimension(700, 400));
-        setMinimumSize(new java.awt.Dimension(700, 400));
+        setMaximumSize(new java.awt.Dimension(800, 500));
+        setMinimumSize(new java.awt.Dimension(800, 500));
+        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        backgroundPanel.setMaximumSize(new java.awt.Dimension(700, 400));
-        backgroundPanel.setMinimumSize(new java.awt.Dimension(700, 400));
-        backgroundPanel.setPreferredSize(new java.awt.Dimension(700, 400));
+        backgroundPanel.setMaximumSize(new java.awt.Dimension(800, 500));
+        backgroundPanel.setMinimumSize(new java.awt.Dimension(800, 500));
+        backgroundPanel.setName(""); // NOI18N
+        backgroundPanel.setPreferredSize(new java.awt.Dimension(800, 500));
         backgroundPanel.setBackground(new java.awt.Color(40, 40, 40, 160));
         backgroundPanel.setBorder(null);
         backgroundPanel.setLayout(new javax.swing.BoxLayout(backgroundPanel, javax.swing.BoxLayout.LINE_AXIS));
 
+        paymentScrollPanel.setMaximumSize(new java.awt.Dimension(400, 500));
+        paymentScrollPanel.setMinimumSize(new java.awt.Dimension(400, 500));
+        paymentScrollPanel.setPreferredSize(new java.awt.Dimension(400, 500));
         paymentScrollPanel.setOpaque(false);
         paymentScrollPanel.getViewport().setBackground(new java.awt.Color(40, 40, 40, 180));
         paymentScrollPanel.getViewport().setBorder(null);
@@ -160,9 +186,9 @@ public class PaymentRegister extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        paymentTable.setMaximumSize(new java.awt.Dimension(400, 300));
-        paymentTable.setMinimumSize(new java.awt.Dimension(400, 300));
-        paymentTable.setPreferredSize(new java.awt.Dimension(400, 300));
+        paymentTable.setMaximumSize(new java.awt.Dimension(400, 500));
+        paymentTable.setMinimumSize(new java.awt.Dimension(400, 500));
+        paymentTable.setPreferredSize(new java.awt.Dimension(400, 500));
         paymentTable.setRowHeight(25);
         paymentScrollPanel.setViewportView(paymentTable);
         if (paymentTable.getColumnModel().getColumnCount() > 0) {
@@ -171,6 +197,10 @@ public class PaymentRegister extends javax.swing.JFrame {
 
         backgroundPanel.add(paymentScrollPanel);
 
+        paymentPanel.setMaximumSize(new java.awt.Dimension(400, 500));
+        paymentPanel.setMinimumSize(new java.awt.Dimension(400, 500));
+        paymentPanel.setOpaque(false);
+        paymentPanel.setPreferredSize(new java.awt.Dimension(400, 500));
         paymentPanel.setLayout(new java.awt.CardLayout());
 
         formPanel.setOpaque(false);
@@ -247,6 +277,8 @@ public class PaymentRegister extends javax.swing.JFrame {
 
         paymentFormPanel.add(paymentMenuPanel);
 
+        contractPanel.setOpaque(false);
+
         contractButton.setBackground(new java.awt.Color(40, 40, 80));
         contractButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
         contractButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -267,47 +299,110 @@ public class PaymentRegister extends javax.swing.JFrame {
 
         paymentPanel.add(formPanel, "paymentForm");
 
-        ContractImagePanel.setMaximumSize(new java.awt.Dimension(300, 400));
-        ContractImagePanel.setMinimumSize(new java.awt.Dimension(300, 400));
-        ContractImagePanel.setPreferredSize(new java.awt.Dimension(300, 400));
-        ContractImagePanel.setLayout(new javax.swing.BoxLayout(ContractImagePanel, javax.swing.BoxLayout.PAGE_AXIS));
+        receiptImagePanel.setMaximumSize(new java.awt.Dimension(300, 400));
+        receiptImagePanel.setMinimumSize(new java.awt.Dimension(300, 400));
+        receiptImagePanel.setOpaque(false);
+        receiptImagePanel.setPreferredSize(new java.awt.Dimension(300, 400));
+        receiptImagePanel.setLayout(new javax.swing.BoxLayout(receiptImagePanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-        contractImageScrollPanel.setMaximumSize(new java.awt.Dimension(300, 350));
-        contractImageScrollPanel.setMinimumSize(new java.awt.Dimension(300, 350));
-        contractImageScrollPanel.setPreferredSize(new java.awt.Dimension(300, 350));
-        contractImageScrollPanel.setViewportView(contractImageLabel);
+        receiptImageScrollPanel.setMaximumSize(new java.awt.Dimension(400, 350));
+        receiptImageScrollPanel.setMinimumSize(new java.awt.Dimension(400, 350));
+        receiptImageScrollPanel.setPreferredSize(new java.awt.Dimension(400, 350));
+        receiptImageScrollPanel.setViewportView(receiptImageLabel);
 
-        ContractImagePanel.add(contractImageScrollPanel);
+        receiptImagePanel.add(receiptImageScrollPanel);
 
-        menu.setMaximumSize(new java.awt.Dimension(300, 50));
-        menu.setMinimumSize(new java.awt.Dimension(300, 50));
-        menu.setPreferredSize(new java.awt.Dimension(300, 50));
+        receiptMenuPanel.setMaximumSize(new java.awt.Dimension(32767, 50));
+        receiptMenuPanel.setMinimumSize(new java.awt.Dimension(167, 50));
+        receiptMenuPanel.setOpaque(false);
+        receiptMenuPanel.setPreferredSize(new java.awt.Dimension(100, 50));
 
-        jButton1.setBackground(new java.awt.Color(40, 40, 80));
-        jButton1.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Voltar");
-        jButton1.setMaximumSize(new java.awt.Dimension(100, 30));
-        jButton1.setMinimumSize(new java.awt.Dimension(100, 30));
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 30));
-        menu.add(jButton1);
+        lessZoomButton.setToolTipText("Menos zoom");
+        ImageIcon lessZoomIcon = new ImageIcon(getClass().getResource("/static/icons/less-glass.png"));
+        lessZoomButton.setIcon(lessZoomIcon);
+        lessZoomButton.setText("");
+        lessZoomButton.setHorizontalAlignment(SwingConstants.CENTER);
+        lessZoomButton.setBorderPainted(false);
+        lessZoomButton.setContentAreaFilled(false);
+        lessZoomButton.setBorderPainted(true);
+        lessZoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lessZoomButtonActionPerformed(evt);
+            }
+        });
+        receiptMenuPanel.add(lessZoomButton);
 
-        jButton2.setBackground(new java.awt.Color(40, 40, 80));
-        jButton2.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Substituir");
-        jButton2.setMaximumSize(new java.awt.Dimension(100, 30));
-        jButton2.setMinimumSize(new java.awt.Dimension(100, 30));
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 30));
-        menu.add(jButton2);
+        moreZoomButton.setToolTipText("Mais zoom");
+        ImageIcon moreZoomIcon = new ImageIcon(getClass().getResource("/static/icons/more-glass.png"));
+        moreZoomButton.setIcon(moreZoomIcon);
+        moreZoomButton.setText("");
+        moreZoomButton.setHorizontalAlignment(SwingConstants.CENTER);
+        moreZoomButton.setBorderPainted(false);
+        moreZoomButton.setContentAreaFilled(false);
+        moreZoomButton.setBorderPainted(true);
+        moreZoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moreZoomButtonActionPerformed(evt);
+            }
+        });
+        receiptMenuPanel.add(moreZoomButton);
 
-        ContractImagePanel.add(menu);
+        receiptImagePanel.add(receiptMenuPanel);
 
-        paymentPanel.add(ContractImagePanel, "paymentReceipt");
+        menuPanel.setMaximumSize(new java.awt.Dimension(400, 50));
+        menuPanel.setMinimumSize(new java.awt.Dimension(400, 50));
+        menuPanel.setOpaque(false);
+        menuPanel.setPreferredSize(new java.awt.Dimension(400, 50));
+
+        returnButton.setBackground(new java.awt.Color(40, 40, 80));
+        returnButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        returnButton.setForeground(new java.awt.Color(255, 255, 255));
+        returnButton.setText("Voltar");
+        returnButton.setMaximumSize(new java.awt.Dimension(100, 30));
+        returnButton.setMinimumSize(new java.awt.Dimension(100, 30));
+        returnButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnButtonActionPerformed(evt);
+            }
+        });
+        menuPanel.add(returnButton);
+
+        changeButton.setBackground(new java.awt.Color(40, 40, 80));
+        changeButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        changeButton.setForeground(new java.awt.Color(255, 255, 255));
+        changeButton.setText("Substituir");
+        changeButton.setMaximumSize(new java.awt.Dimension(100, 30));
+        changeButton.setMinimumSize(new java.awt.Dimension(100, 30));
+        changeButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        changeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeButtonActionPerformed(evt);
+            }
+        });
+        menuPanel.add(changeButton);
+
+        downloadButton.setBackground(new java.awt.Color(40, 40, 80));
+        downloadButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
+        downloadButton.setForeground(new java.awt.Color(255, 255, 255));
+        downloadButton.setText("Download");
+        downloadButton.setMaximumSize(new java.awt.Dimension(100, 30));
+        downloadButton.setMinimumSize(new java.awt.Dimension(100, 30));
+        downloadButton.setPreferredSize(new java.awt.Dimension(100, 30));
+        downloadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadButtonActionPerformed(evt);
+            }
+        });
+        menuPanel.add(downloadButton);
+
+        receiptImagePanel.add(menuPanel);
+
+        paymentPanel.add(receiptImagePanel, "paymentReceipt");
 
         backgroundPanel.add(paymentPanel);
 
-        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 700, 400));
+        getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 500));
 
         Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
         Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
@@ -379,14 +474,168 @@ public class PaymentRegister extends javax.swing.JFrame {
         selectedPayment = paymentController.getPaymentById(Integer.parseInt(id));
         
         if (selectedPayment.getContract() == null) {
-            // Add document
+            this.addDocument(id);
         } else {
             this.paymentCardLayout.show(paymentPanel, "paymentReceipt");
-            
-            // Show Contract
+            this.loadReceipt(selectedPayment.getContract());
         }
     }//GEN-LAST:event_contractButtonActionPerformed
 
+    private void lessZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lessZoomButtonActionPerformed
+        this.receiptImageScale -= 0.25;
+        this.plotImage();
+    }//GEN-LAST:event_lessZoomButtonActionPerformed
+
+    private void moreZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreZoomButtonActionPerformed
+        this.receiptImageScale += 0.25;
+        this.plotImage();
+    }//GEN-LAST:event_moreZoomButtonActionPerformed
+
+    private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
+        this.addDocument(String.valueOf(selectedPayment.getId()));
+        selectedPayment = paymentController.getPaymentById(selectedPayment.getId());
+        this.loadReceipt(selectedPayment.getContract());
+    }//GEN-LAST:event_changeButtonActionPerformed
+
+    private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
+        if (selectedPayment.getContract() == null) return;
+
+        String extention = getFileExtension(selectedPayment.getContract());
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Onde deseja salvar o arquivo?");
+        fileChooser.setSelectedFile(new File("recibo." + extention));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File saveFile = fileChooser.getSelectedFile();
+            try {
+                Files.copy(new File(selectedPayment.getContract()).toPath(), saveFile.toPath());
+                JOptionPane.showMessageDialog(this, "Recibo baixado com sucesso.");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_downloadButtonActionPerformed
+
+    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+        this.paymentCardLayout.show(paymentPanel, "paymentForm");
+    }//GEN-LAST:event_returnButtonActionPerformed
+
+    public void addDocument(String id) {
+        JFileChooser fileChooser = new JFileChooser();
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            
+            String extension = getFileExtension(selectedFile.getName());
+  
+            File internalStorage = new File("internal_storage/receipts");
+            if (!internalStorage.exists()) {
+                internalStorage.mkdirs();
+            }
+            
+            File destFile = new File(internalStorage, id + "." + extension);
+
+            try (InputStream in = new FileInputStream(selectedFile);
+                 OutputStream out = new FileOutputStream(destFile)) {
+
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+                
+                paymentController.addReceipt(Integer.parseInt(id), destFile.getAbsolutePath());
+                JOptionPane.showMessageDialog(null, "Recibo salvo com sucesso");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void loadReceipt(String contractPath) {
+        String extension = getFileExtension(contractPath).toLowerCase();
+        
+        switch (extension) {
+            case "jpg":
+            case "jpeg":
+            case "png":
+                this.receiptImage = new ImageIcon(contractPath).getImage();
+                break;
+            case "pdf":
+                try {
+                    File file = new File(contractPath);
+                    PDDocument document = PDDocument.load(file);
+                    PDFRenderer renderer = new PDFRenderer(document);
+
+                    int numPages = document.getNumberOfPages();
+                    int dpi = 150;
+
+                    List<BufferedImage> contractPages = new ArrayList<>();
+                    int totalHeight = 0;
+                    int width = 0;
+                    int separatorHeight = 5;
+
+                    for (int pageIndex = 0; pageIndex < numPages; pageIndex++) {
+                        contractPages.add(renderer.renderImageWithDPI(pageIndex, dpi));
+
+                        totalHeight += contractPages.get(pageIndex).getHeight();
+                        if (pageIndex != numPages - 1) {
+                            totalHeight += separatorHeight;
+                        }
+
+                        width = Math.max(width, contractPages.get(pageIndex).getWidth());
+                    }
+                    
+                    BufferedImage fullContractImage = new BufferedImage(width, totalHeight, BufferedImage.TYPE_INT_RGB);
+                    Graphics2D g2d = fullContractImage.createGraphics();
+
+                    g2d.setColor(Color.WHITE);
+                    g2d.fillRect(0, 0, width, totalHeight);
+
+                    int y = 0;
+                    for (int i = 0; i < contractPages.size(); i++) {
+                        BufferedImage page = contractPages.get(i);
+                        g2d.drawImage(page, 0, y, null);
+                        y += page.getHeight();
+
+                        if (i != contractPages.size() - 1) {
+                            g2d.setColor(Color.BLACK);
+                            g2d.fillRect(0, y, width, separatorHeight);
+                            y += separatorHeight;
+                        }
+                    }
+                    
+                    g2d.dispose();
+                    document.close();
+
+                    this.receiptImage = fullContractImage;
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    this.receiptImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
+                }
+                break;
+            default:
+                this.receiptImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
+                break;
+        }
+        plotImage();
+    }
+    
+    public void plotImage() {
+        int width = (int) (this.receiptImage.getWidth(null) * this.receiptImageScale);
+        int height = (int) (this.receiptImage.getHeight(null) * this.receiptImageScale);
+        Image scaledImage = this.receiptImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        receiptImageLabel.setIcon(new ImageIcon(scaledImage));
+    }
+    
+    public String getFileExtension(String filePath) {
+        int dotIndex = filePath.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : filePath.substring(dotIndex + 1);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -423,18 +672,17 @@ public class PaymentRegister extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel ContractImagePanel;
     private javax.swing.JTextArea addressTextArea;
     private javax.swing.JLabel backgroundLabel;
     private javax.swing.JPanel backgroundPanel;
+    private javax.swing.JButton changeButton;
     private javax.swing.JButton contractButton;
-    private javax.swing.JLabel contractImageLabel;
-    private javax.swing.JScrollPane contractImageScrollPanel;
     private javax.swing.JPanel contractPanel;
+    private javax.swing.JButton downloadButton;
     private javax.swing.JPanel formPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JPanel menu;
+    private javax.swing.JButton lessZoomButton;
+    private javax.swing.JPanel menuPanel;
+    private javax.swing.JButton moreZoomButton;
     private javax.swing.JFormattedTextField paymentDateTextField;
     private javax.swing.JPanel paymentFormPanel;
     private javax.swing.JPanel paymentMenuPanel;
@@ -444,6 +692,11 @@ public class PaymentRegister extends javax.swing.JFrame {
     private javax.swing.JLabel paymentTitleLabel;
     private javax.swing.JPanel paymentTitlePanel;
     private javax.swing.JPanel realEstatePanel;
+    private javax.swing.JLabel receiptImageLabel;
+    private javax.swing.JPanel receiptImagePanel;
+    private javax.swing.JScrollPane receiptImageScrollPanel;
+    private javax.swing.JPanel receiptMenuPanel;
     private javax.swing.JButton registerButton;
+    private javax.swing.JButton returnButton;
     // End of variables declaration//GEN-END:variables
 }
