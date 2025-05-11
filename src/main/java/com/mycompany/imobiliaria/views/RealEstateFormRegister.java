@@ -27,12 +27,7 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         
         setLayout(null);
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
-        
-        
-        Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
-        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-  
-        backgroundLabel.setIcon(new ImageIcon(scaledImage));
+
     }
 
     /**
@@ -77,6 +72,9 @@ public class RealEstateFormRegister extends javax.swing.JFrame {
         cleanButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         backgroundLabel = new javax.swing.JLabel();
+        Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
+        Image scaledImage = backgroundImage.getScaledInstance(700, 440, Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrar Imóvel");

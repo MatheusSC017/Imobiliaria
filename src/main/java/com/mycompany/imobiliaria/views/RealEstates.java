@@ -54,12 +54,9 @@ public class RealEstates extends javax.swing.JFrame {
         propertiesTable.getColumn("Ações").setCellEditor(new PropertyButtonEditor(new JCheckBox(), propertiesTable, this));
         
         setLayout(null);
-        backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 40);
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
-        
-        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-        backgroundLabel.setIcon(new ImageIcon(scaledImage));
-          
+        backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 30);
+
         updateTable();
     }
 
@@ -111,7 +108,9 @@ public class RealEstates extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        backgroundPanel.setOpaque(false);
+        backgroundPanel.setMinimumSize(new java.awt.Dimension(900, 500));
+        backgroundPanel.setBackground(new java.awt.Color(40, 40, 40, 160));
+        backgroundPanel.setBorder(null);
         backgroundPanel.setLayout(new javax.swing.BoxLayout(backgroundPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         filtersPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -127,8 +126,9 @@ public class RealEstates extends javax.swing.JFrame {
 
         orderLabel.setBackground(new java.awt.Color(0, 0, 0));
         orderLabel.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        orderLabel.setForeground(new java.awt.Color(0, 0, 51));
+        orderLabel.setForeground(new java.awt.Color(255, 255, 255));
         orderLabel.setText("Ordenar por: ");
+        orderLabel.setToolTipText("");
         orderPanel.add(orderLabel);
 
         orderFieldPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
@@ -136,8 +136,9 @@ public class RealEstates extends javax.swing.JFrame {
         orderFieldPanel.setLayout(new javax.swing.BoxLayout(orderFieldPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         orderFieldComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        orderFieldComboBox.setForeground(new java.awt.Color(0, 0, 51));
+        orderFieldComboBox.setForeground(new java.awt.Color(255, 255, 255));
         orderFieldComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem" }));
+        orderFieldComboBox.setToolTipText("");
         orderFieldComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
         orderFieldComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
         orderFieldComboBox.setPreferredSize(new java.awt.Dimension(150, 30));
@@ -148,8 +149,9 @@ public class RealEstates extends javax.swing.JFrame {
         orderPanel.add(orderFieldPanel);
 
         orderDirectionComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        orderDirectionComboBox.setForeground(new java.awt.Color(0, 0, 51));
+        orderDirectionComboBox.setForeground(new java.awt.Color(255, 255, 255));
         orderDirectionComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Crescente", "Decrescente" }));
+        orderDirectionComboBox.setToolTipText("");
         orderDirectionComboBox.setLightWeightPopupEnabled(false);
         orderDirectionComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
         orderDirectionComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
@@ -161,8 +163,9 @@ public class RealEstates extends javax.swing.JFrame {
 
         selectLabel.setBackground(new java.awt.Color(0, 0, 0));
         selectLabel.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        selectLabel.setForeground(new java.awt.Color(0, 0, 51));
+        selectLabel.setForeground(new java.awt.Color(255, 255, 255));
         selectLabel.setText("Selicionar Imóveis");
+        selectLabel.setToolTipText("");
         filtersPanel.add(selectLabel);
 
         rentedFilterPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 50));
@@ -171,29 +174,32 @@ public class RealEstates extends javax.swing.JFrame {
 
         rentedFilterButtonGroup.add(selectAllRadioButton);
         selectAllRadioButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        selectAllRadioButton.setForeground(new java.awt.Color(0, 0, 51));
+        selectAllRadioButton.setForeground(new java.awt.Color(255, 255, 255));
         selectAllRadioButton.setSelected(true);
         selectAllRadioButton.setText("Todos");
+        selectAllRadioButton.setToolTipText("");
         selectAllRadioButton.setContentAreaFilled(false);
         rentedFilterPanel.add(selectAllRadioButton);
 
         rentedFilterButtonGroup.add(selectRentedRadioButton);
         selectRentedRadioButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        selectRentedRadioButton.setForeground(new java.awt.Color(0, 0, 51));
+        selectRentedRadioButton.setForeground(new java.awt.Color(255, 255, 255));
         selectRentedRadioButton.setText("Alugados");
+        selectRentedRadioButton.setToolTipText("");
         selectRentedRadioButton.setContentAreaFilled(false);
         rentedFilterPanel.add(selectRentedRadioButton);
 
         rentedFilterButtonGroup.add(selectFreeRadioButton);
         selectFreeRadioButton.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
-        selectFreeRadioButton.setForeground(new java.awt.Color(0, 0, 51));
+        selectFreeRadioButton.setForeground(new java.awt.Color(255, 255, 255));
         selectFreeRadioButton.setText("Livres");
+        selectFreeRadioButton.setToolTipText("");
         selectFreeRadioButton.setContentAreaFilled(false);
         rentedFilterPanel.add(selectFreeRadioButton);
 
         filtersPanel.add(rentedFilterPanel);
 
-        searchPanel.setBackground(new java.awt.Color(12, 120, 200, 40));
+        searchPanel.setBackground(new java.awt.Color(200, 200, 200, 200));
         searchPanel.setBorder(null);
         searchPanel.setMaximumSize(new java.awt.Dimension(36, 36));
         searchPanel.setMinimumSize(new java.awt.Dimension(36, 36));
@@ -230,7 +236,7 @@ public class RealEstates extends javax.swing.JFrame {
         alertPanel.setLayout(new javax.swing.BoxLayout(alertPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         alertButtonPanel.setMaximumSize(new java.awt.Dimension(36, 36));
-        alertButtonPanel.setBackground(new java.awt.Color(12, 120, 200, 40));
+        alertButtonPanel.setBackground(new java.awt.Color(200, 200, 200, 200));
         alertButtonPanel.setBorder(null);
         alertButtonPanel.setLayout(new java.awt.BorderLayout());
 
@@ -263,6 +269,7 @@ public class RealEstates extends javax.swing.JFrame {
 
         contentPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 25, 0, 25));
         contentPanel.setOpaque(false);
+        contentPanel.setPreferredSize(new java.awt.Dimension(506, 760));
         contentPanel.setLayout(new java.awt.BorderLayout());
 
         propertiesScrollPanel.setOpaque(false);
@@ -324,8 +331,10 @@ public class RealEstates extends javax.swing.JFrame {
 
         backgroundPanel.add(contentPanel);
 
-        menuPanel.setMaximumSize(new java.awt.Dimension(32767, 40));
+        menuPanel.setMaximumSize(new java.awt.Dimension(32767, 60));
+        menuPanel.setMinimumSize(new java.awt.Dimension(700, 60));
         menuPanel.setOpaque(false);
+        menuPanel.setPreferredSize(new java.awt.Dimension(315, 60));
 
         updateButton.setBackground(new java.awt.Color(40, 40, 80));
         updateButton.setFont(new java.awt.Font("Abyssinica SIL", 1, 18)); // NOI18N
@@ -361,6 +370,8 @@ public class RealEstates extends javax.swing.JFrame {
 
         backgroundLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/static/icons/background.png"))); // NOI18N
         backgroundLabel.setName("backgroundLabel"); // NOI18N
+        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
         getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
@@ -456,7 +467,7 @@ public class RealEstates extends javax.swing.JFrame {
         Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
         backgroundLabel.setIcon(new ImageIcon(scaledImage));
         
-        backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 40);
+        backgroundPanel.setBounds(0, 0, getWidth(), getHeight() - 30);
         backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
         
         backgroundPanel.revalidate();

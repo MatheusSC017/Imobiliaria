@@ -70,11 +70,6 @@ public class RealEstate extends javax.swing.JFrame {
         this.rentalCardLayout = ((CardLayout) rentalPanel.getLayout());
         
         setLayout(null);
-        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
-        
-        Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
-        Image scaledImage = backgroundImage.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
-        backgroundLabel.setIcon(new ImageIcon(scaledImage));
 
         try {
             RealEstateModel realEstate = realEstateController.getPropertyById(propertyId);
@@ -924,7 +919,14 @@ public class RealEstate extends javax.swing.JFrame {
         backgroundPanel.add(rentalPanel);
 
         getContentPane().add(backgroundPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 650));
-        getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, -1, -1));
+
+        backgroundLabel.setMaximumSize(new java.awt.Dimension(1000, 650));
+        backgroundLabel.setMinimumSize(new java.awt.Dimension(1000, 650));
+        backgroundLabel.setPreferredSize(new java.awt.Dimension(1000, 650));
+        Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
+        Image scaledImage = backgroundImage.getScaledInstance(1000, 650, Image.SCALE_SMOOTH);
+        backgroundLabel.setIcon(new ImageIcon(scaledImage));
+        getContentPane().add(backgroundLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
         setLocationRelativeTo(null);

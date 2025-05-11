@@ -55,7 +55,6 @@ public class PaymentRegister extends javax.swing.JFrame {
         this.paymentCardLayout = ((CardLayout) paymentPanel.getLayout());
         
         setLayout(null);
-        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
         
         RentalController rentalController = new RentalController();   
         this.rental = rentalController.getRentalById(rentalId);
@@ -139,7 +138,6 @@ public class PaymentRegister extends javax.swing.JFrame {
         setTitle("Pagamentos");
         setMaximumSize(new java.awt.Dimension(800, 500));
         setMinimumSize(new java.awt.Dimension(800, 500));
-        setPreferredSize(new java.awt.Dimension(800, 500));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
