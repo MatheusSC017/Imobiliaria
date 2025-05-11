@@ -16,7 +16,7 @@ import javax.swing.text.NumberFormatter;
 public class JNumberTextField extends JFormattedTextField{
     
     public JNumberTextField() {
-        DecimalFormat decimal = new DecimalFormat("#,###,###.00");
+        DecimalFormat decimal = new DecimalFormat("#.00");
         NumberFormatter numFormatter = new NumberFormatter(decimal);
         numFormatter.setFormat(decimal);
         numFormatter.setAllowsInvalid(false);
