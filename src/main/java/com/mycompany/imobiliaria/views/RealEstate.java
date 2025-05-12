@@ -722,7 +722,7 @@ public class RealEstate extends javax.swing.JFrame {
 
         paymentBaseDateTextField.setBackground(new java.awt.Color(120, 120, 120));
         paymentBaseDateTextField.setForeground(new java.awt.Color(255, 255, 255));
-        paymentBaseDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("###0"))));
+        paymentBaseDateTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         paymentBaseDateTextField.setToolTipText("");
         paymentBaseDateTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         contractFirstColumnPanel.add(paymentBaseDateTextField);
@@ -751,7 +751,7 @@ public class RealEstate extends javax.swing.JFrame {
 
         durationTextField.setBackground(new java.awt.Color(120, 120, 120));
         durationTextField.setForeground(new java.awt.Color(255, 255, 255));
-        durationTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        durationTextField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         durationTextField.setToolTipText("");
         durationTextField.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         contractSecondColumnPanel.add(durationTextField);
@@ -1161,12 +1161,16 @@ public class RealEstate extends javax.swing.JFrame {
     }//GEN-LAST:event_downloadButtonActionPerformed
 
     private void lessZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lessZoomButtonActionPerformed
-        this.contractImageScale -= 0.25;
+        if (this.contractImageScale <= 0.1) return;
+        this.contractImageScale -= 0.1;
+        this.contractImageScale = Math.round(this.contractImageScale * 10) / 10.0;
         this.plotImage();
     }//GEN-LAST:event_lessZoomButtonActionPerformed
 
     private void moreZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreZoomButtonActionPerformed
-        this.contractImageScale += 0.25;
+        if (this.contractImageScale >= 2.0) return;
+        this.contractImageScale += 0.1;
+        this.contractImageScale = Math.round(this.contractImageScale * 10) / 10.0;
         this.plotImage();
     }//GEN-LAST:event_moreZoomButtonActionPerformed
     

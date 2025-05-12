@@ -480,12 +480,16 @@ public class PaymentRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_contractButtonActionPerformed
 
     private void lessZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lessZoomButtonActionPerformed
-        this.receiptImageScale -= 0.25;
+        if (this.receiptImageScale <= 0.1) return;
+        this.receiptImageScale -= 0.1;
+        this.receiptImageScale = Math.round(this.receiptImageScale * 10) / 10.0;
         this.plotImage();
     }//GEN-LAST:event_lessZoomButtonActionPerformed
 
     private void moreZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moreZoomButtonActionPerformed
-        this.receiptImageScale += 0.25;
+        if (this.receiptImageScale >= 2.0) return;
+        this.receiptImageScale += 0.1;
+        this.receiptImageScale = Math.round(this.receiptImageScale * 10) / 10.0;
         this.plotImage();
     }//GEN-LAST:event_moreZoomButtonActionPerformed
 
