@@ -16,7 +16,6 @@ import java.time.LocalDate;
  * @author user
  */
 public class RentalDAO {
-    private static final String DB_URL = "jdbc:sqlite:realestate.db";
     
     public void insert(RentalModel contract) {
         String sql = """
@@ -28,7 +27,7 @@ public class RentalDAO {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, contract.getContractMonth());
@@ -51,7 +50,7 @@ public class RentalDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error inserting rental contract data", e);
         }
     }
     
@@ -65,7 +64,7 @@ public class RentalDAO {
             WHERE id = ?
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, contract.getContractMonth());
@@ -89,7 +88,7 @@ public class RentalDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error updating rental contract data", e);
         }
     }
     
@@ -98,7 +97,7 @@ public class RentalDAO {
             UPDATE rental_contracts SET contract = ? WHERE id = ?
         """;
         
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, contract);
@@ -106,7 +105,7 @@ public class RentalDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error adding contract document to rental", e);
         }
     }
 
@@ -114,37 +113,37 @@ public class RentalDAO {
         List<RentalModel> contracts = new ArrayList<>();
         String sql = "SELECT * FROM rental_contracts WHERE property_id = ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, propertyId);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                RentalModel rental = new RentalModel(
-                    rs.getInt("id"),
-                    rs.getInt("contract_month"),
-                    rs.getInt("contract_year"),
-                    rs.getInt("payment_base_date"),
-                    rs.getDouble("rent_value"),
-                    rs.getString("landlord_name"),
-                    rs.getString("landlord_cpf"),
-                    rs.getString("landlord_phone"),
-                    rs.getString("landlord_email"),
-                    rs.getString("tenant_name"),
-                    rs.getString("tenant_cpf"),
-                    rs.getString("tenant_phone"),
-                    rs.getString("tenant_email"),
-                    rs.getInt("duration_months"),
-                    rs.getInt("due_month"),
-                    rs.getInt("due_year"),
-                    rs.getInt("property_id"),
-                    rs.getString("status"),
-                    rs.getString("contract")
-                );
-                contracts.add(rental);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    RentalModel rental = new RentalModel(
+                        rs.getInt("id"),
+                        rs.getInt("contract_month"),
+                        rs.getInt("contract_year"),
+                        rs.getInt("payment_base_date"),
+                        rs.getDouble("rent_value"),
+                        rs.getString("landlord_name"),
+                        rs.getString("landlord_cpf"),
+                        rs.getString("landlord_phone"),
+                        rs.getString("landlord_email"),
+                        rs.getString("tenant_name"),
+                        rs.getString("tenant_cpf"),
+                        rs.getString("tenant_phone"),
+                        rs.getString("tenant_email"),
+                        rs.getInt("duration_months"),
+                        rs.getInt("due_month"),
+                        rs.getInt("due_year"),
+                        rs.getInt("property_id"),
+                        rs.getString("status"),
+                        rs.getString("contract")
+                    );
+                    contracts.add(rental);
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving all rental contracts by property ID", e);
         }
 
         return contracts;
@@ -154,18 +153,18 @@ public class RentalDAO {
         RentalModel rental = null;
         String sql = "SELECT * FROM rental_contracts WHERE property_id = ? AND status = ? ORDER BY due_year, due_month DESC";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, propertyId);
             stmt.setString(2, "Ativo");
-            ResultSet rs = stmt.executeQuery();
-
-            rs.next();
-            rental = generateRentalModel(rs);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    rental = generateRentalModel(rs);
+                }
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving the last active rental contract", e);
         }
-
         return rental;
     }
 
@@ -173,16 +172,16 @@ public class RentalDAO {
         String sql = "SELECT * FROM rental_contracts WHERE id = ?";
         RentalModel rental = null;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                rental = generateRentalModel(rs);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    rental = generateRentalModel(rs);
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving rental contract by ID", e);
         }
 
         return rental;
@@ -198,7 +197,7 @@ public class RentalDAO {
         String sql = "SELECT * FROM rental_contracts "
                 + "WHERE (due_year * 12 + due_month) BETWEEN " + ((year * 12 + month) - 3) + " AND " + ((year * 12 + month) + 3) + ";";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -206,7 +205,7 @@ public class RentalDAO {
                 contracts.add(generateRentalModel(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving rental contracts with close due dates", e);
         }
 
         return contracts;

@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDate;
@@ -44,6 +43,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import com.mycompany.imobiliaria.services.ContractFileService;
+import com.mycompany.imobiliaria.utils.ValidationUtils;
 
 /**
  *
@@ -52,6 +53,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
 public class RealEstate extends javax.swing.JFrame {
     private static final RealEstateController realEstateController = new RealEstateController();
     private static final RentalController rentalController = new RentalController();
+    private final ContractFileService contractFileService = new ContractFileService();
     private String rentFormStatus = "Register";
     private int propertyId;
     private int rentalId;
@@ -973,14 +975,14 @@ public class RealEstate extends javax.swing.JFrame {
                 return;
             }
             
-            if (!isValidDouble(areaTextField.getText().replace(",", "."))) {
+            if (!ValidationUtils.isValidDouble(areaTextField.getText().replace(",", "."))) {
                 areaTextField.setBackground(Color.RED);
                 areaTextField.setToolTipText("Valor invalido, formato: 0,00");
                 System.err.println("Invalid area value");
                 return;
             }
             
-            if (!isValidDouble(valueTextField.getText().replace(",", "."))) {
+            if (!ValidationUtils.isValidDouble(valueTextField.getText().replace(",", "."))) {
                 valueTextField.setBackground(Color.RED);
                 valueTextField.setToolTipText("Valor invalido, formato: 0,00");
                 System.err.println("Invalid value");
@@ -1038,7 +1040,7 @@ public class RealEstate extends javax.swing.JFrame {
             rentValueTextField.setBackground(new Color(120, 120, 120));
             contractDateTextField.setBackground(new Color(120, 120, 120));
             
-            if (!isValidInteger(paymentBaseDateTextField.getText()) ||
+            if (!ValidationUtils.isValidInteger(paymentBaseDateTextField.getText()) ||
                 Integer.parseInt(paymentBaseDateTextField.getText()) < 1 ||
                 Integer.parseInt(paymentBaseDateTextField.getText()) > 28) {
                 paymentBaseDateTextField.setBackground(Color.RED);
@@ -1047,14 +1049,14 @@ public class RealEstate extends javax.swing.JFrame {
                 return;
             }
             
-            if (!isValidInteger(durationTextField.getText())) {
+            if (!ValidationUtils.isValidInteger(durationTextField.getText())) {
                 durationTextField.setBackground(Color.RED);
                 durationTextField.setToolTipText("Campo númerico");
                 System.err.println("Duration field must be an integer");
                 return;
             }
             
-            if (!isValidDouble(rentValueTextField.getText())) {
+            if (!ValidationUtils.isValidDouble(rentValueTextField.getText())) {
                 rentValueTextField.setBackground(Color.RED);
                 rentValueTextField.setToolTipText("Campo númerico, use o formato 0,00");
                 System.err.println("Rent Value field must be a double");
@@ -1121,8 +1123,20 @@ public class RealEstate extends javax.swing.JFrame {
         
         selectedRent = rentalController.getRentalById(Integer.parseInt(id));
         
-        if (selectedRent.getContract() == null) {
-            this.addDocument(id);
+        if (selectedRent.getContract() == null || selectedRent.getContract().trim().isEmpty()) {
+            String newContractPath = contractFileService.saveContractFile(this, id);
+            if (newContractPath != null) {
+                rentalController.addContract(Integer.parseInt(id), newContractPath);
+                selectedRent = rentalController.getRentalById(Integer.parseInt(id));
+                if(selectedRent.getContract() != null && !selectedRent.getContract().trim().isEmpty()){
+                    this.rentalCardLayout.show(rentalPanel, "contractImage");
+                    this.loadContract(selectedRent.getContract()); 
+                } else {
+                     JOptionPane.showMessageDialog(this, "Não foi possível associar o contrato ao aluguel.", "Erro de Contrato", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleção de contrato cancelada ou falhou.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+            }
         } else {
             this.rentalCardLayout.show(rentalPanel, "contractImage");
             this.loadContract(selectedRent.getContract());
@@ -1134,29 +1148,35 @@ public class RealEstate extends javax.swing.JFrame {
     }//GEN-LAST:event_returnRentsButtonActionPerformed
 
     private void changeDocumentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDocumentButtonActionPerformed
-        this.addDocument(String.valueOf(selectedRent.getId()));
-        selectedRent = rentalController.getRentalById(selectedRent.getId());
-        this.loadContract(selectedRent.getContract());
+        if (selectedRent == null) {
+            JOptionPane.showMessageDialog(this, "Nenhum contrato selecionado para substituir.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String newContractPath = contractFileService.saveContractFile(this, String.valueOf(selectedRent.getId()));
+        if (newContractPath != null) {
+            rentalController.addContract(selectedRent.getId(), newContractPath);
+            selectedRent = rentalController.getRentalById(selectedRent.getId());
+            if (selectedRent.getContract() != null && !selectedRent.getContract().trim().isEmpty()) {
+                this.loadContract(selectedRent.getContract());
+                JOptionPane.showMessageDialog(this, "Contrato substituído com sucesso.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Falha ao associar o novo contrato.", "Erro de Contrato", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+             JOptionPane.showMessageDialog(this, "Substituição do contrato falhou ou foi cancelada.");
+        }
     }//GEN-LAST:event_changeDocumentButtonActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
-        if (selectedRent.getContract() == null) return;
-
-        String extention = getFileExtension(selectedRent.getContract());
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Onde deseja salvar o arquivo?");
-        fileChooser.setSelectedFile(new File("contrato." + extention));
-
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File saveFile = fileChooser.getSelectedFile();
-            try {
-                Files.copy(new File(selectedRent.getContract()).toPath(), saveFile.toPath());
-                JOptionPane.showMessageDialog(this, "Contrato baixado com sucesso.");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        if (selectedRent == null || selectedRent.getContract() == null || selectedRent.getContract().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nenhum contrato selecionado ou válido para baixar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        boolean success = contractFileService.downloadContractFile(this, selectedRent.getContract());
+        if (success) {
+            JOptionPane.showMessageDialog(this, "Contrato baixado com sucesso.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Download do contrato falhou ou foi cancelado.");
         }
     }//GEN-LAST:event_downloadButtonActionPerformed
 
@@ -1209,7 +1229,6 @@ public class RealEstate extends javax.swing.JFrame {
     
     public void loadContract(String contractPath) {
         String extension = getFileExtension(contractPath).toLowerCase();
-        
         switch (extension) {
             case "jpg":
             case "jpeg":
@@ -1332,25 +1351,6 @@ public class RealEstate extends javax.swing.JFrame {
         rentTable.repaint();
         rentTable.getParent().repaint();
     }
-    
-    private boolean isValidInteger(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-    
-    private boolean isValidDouble(String input) {
-        try {
-            Double.parseDouble(input);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
 
     public static String addMonthsToDate(String dateStr, int monthsToAdd) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

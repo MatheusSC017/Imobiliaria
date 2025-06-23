@@ -9,13 +9,21 @@ import com.mycompany.imobiliaria.models.RealEstateModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Arrays;
 
 /**
  *
  * @author user
  */
 public class RealEstateDAO {
-    private static final String DB_URL = "jdbc:sqlite:realestate.db";
+    
+    private static final Set<String> VALID_COLUMNS = Set.of(
+        "id", "address", "neighborhood", "number", "city", "type", 
+        "rooms", "bathrooms", "area", "value", "garage"
+    );
+    private static final Set<String> VALID_DIRECTIONS = Set.of("ASC", "DESC");
+
 
     public void insert(RealEstateModel property) {
         String sql = """
@@ -23,7 +31,7 @@ public class RealEstateDAO {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, property.getAddress());
@@ -39,7 +47,7 @@ public class RealEstateDAO {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error inserting real estate data", e);
         }
     }
 
@@ -50,7 +58,7 @@ public class RealEstateDAO {
             WHERE id = ?
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, property.getAddress());
@@ -67,27 +75,37 @@ public class RealEstateDAO {
 
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error updating real estate data", e);
         }
     }
 
     public void delete(int id) {
         String sql = "DELETE FROM properties WHERE id = ?";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error deleting real estate data", e);
         }
     }
 
     public List<RealEstateModel> getAll(String order_field, String order_direction) {
-        List<RealEstateModel> properties = new ArrayList<>();
-        String sql = "SELECT * FROM properties ORDER BY " + order_field + " " + order_direction;
+        String validatedOrderField = "id";
+        if (order_field != null && VALID_COLUMNS.contains(order_field.toLowerCase())) {
+            validatedOrderField = order_field;
+        }
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        String validatedOrderDirection = "ASC";
+        if (order_direction != null && VALID_DIRECTIONS.contains(order_direction.toUpperCase())) {
+            validatedOrderDirection = order_direction.toUpperCase();
+        }
+
+        List<RealEstateModel> properties = new ArrayList<>();
+        String sql = "SELECT * FROM properties ORDER BY " + validatedOrderField + " " + validatedOrderDirection;
+
+        try (Connection conn = DataSource.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -108,9 +126,8 @@ public class RealEstateDAO {
                 properties.add(p);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving all real estate data", e);
         }
-
         return properties;
     }
 
@@ -119,28 +136,28 @@ public class RealEstateDAO {
         String sql = "SELECT * FROM properties WHERE id = ?";
         RealEstateModel property = null;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                property = new RealEstateModel(
-                    rs.getInt("id"),
-                    rs.getString("address"),
-                    rs.getString("neighborhood"),
-                    rs.getString("number"),
-                    rs.getString("city"),
-                    rs.getString("type"),
-                    rs.getInt("rooms"),
-                    rs.getInt("bathrooms"),
-                    rs.getDouble("area"),
-                    rs.getDouble("value"),
-                    rs.getInt("garage")
-                );
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    property = new RealEstateModel(
+                        rs.getInt("id"),
+                        rs.getString("address"),
+                        rs.getString("neighborhood"),
+                        rs.getString("number"),
+                        rs.getString("city"),
+                        rs.getString("type"),
+                        rs.getInt("rooms"),
+                        rs.getInt("bathrooms"),
+                        rs.getDouble("area"),
+                        rs.getDouble("value"),
+                        rs.getInt("garage")
+                    );
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving real estate data by ID", e);
         }
 
         return property;

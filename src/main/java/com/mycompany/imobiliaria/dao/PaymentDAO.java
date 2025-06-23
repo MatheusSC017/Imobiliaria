@@ -15,13 +15,12 @@ import com.mycompany.imobiliaria.models.PaymentModel;
  * @author user
  */
 public class PaymentDAO {
-    private static final String DB_URL = "jdbc:sqlite:realestate.db";
 
     public void insert(PaymentModel payment) {
         String sql = "INSERT INTO payments (payment_day, payment_month, payment_year, reference_month, reference_year, rental_id) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, payment.getPayment_day());
@@ -33,7 +32,7 @@ public class PaymentDAO {
             
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error inserting payment data", e);
         }
     }
     
@@ -42,7 +41,7 @@ public class PaymentDAO {
             UPDATE payments SET receipt = ? WHERE id = ?
         """;
         
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, receipt);
@@ -50,7 +49,7 @@ public class PaymentDAO {
 
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error adding receipt to payment", e);
         }
     }
 
@@ -58,18 +57,18 @@ public class PaymentDAO {
         String sql = "SELECT * FROM payments WHERE rental_id = ? ORDER BY reference_year DESC, reference_month DESC";
         List<PaymentModel> payments = new ArrayList<>();
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setInt(1, rentalId);
-            ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()) {
-                payments.add(mapResultSetToPayment(rs));
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    payments.add(mapResultSetToPayment(rs));
+                }
             }
             
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving all payments for a rental", e);
         }
 
         return payments;
@@ -79,16 +78,16 @@ public class PaymentDAO {
         String sql = "SELECT * FROM payments WHERE id = ?";
         PaymentModel payment = null;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                payment = mapResultSetToPayment(rs);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    payment = mapResultSetToPayment(rs);
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error retrieving payment by ID", e);
         }
 
         return payment;

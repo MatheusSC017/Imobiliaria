@@ -195,9 +195,9 @@ public class PaymentRegister extends javax.swing.JFrame {
 
         backgroundPanel.add(paymentScrollPanel);
 
+        paymentPanel.setBackground(new java.awt.Color(60, 60, 60));
         paymentPanel.setMaximumSize(new java.awt.Dimension(400, 500));
         paymentPanel.setMinimumSize(new java.awt.Dimension(400, 500));
-        paymentPanel.setOpaque(false);
         paymentPanel.setPreferredSize(new java.awt.Dimension(400, 500));
         paymentPanel.setLayout(new java.awt.CardLayout());
 

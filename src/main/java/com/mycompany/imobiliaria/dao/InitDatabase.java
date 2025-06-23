@@ -14,7 +14,6 @@ import java.sql.Statement;
  * @author user
  */
 public class InitDatabase {
-    private static final String DB_URL = "jdbc:sqlite:realestate.db";
 
     public InitDatabase() {
         createRealEstateTableIfNotExists();
@@ -39,11 +38,11 @@ public class InitDatabase {
             );
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error initializing table: properties", e);
         }
     }
 
@@ -74,11 +73,11 @@ public class InitDatabase {
             );
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error initializing table: rental_contracts", e);
         }
     }
     
@@ -97,11 +96,11 @@ public class InitDatabase {
             );
         """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DataSource.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("Error initializing table: payments", e);
         }
     }
     

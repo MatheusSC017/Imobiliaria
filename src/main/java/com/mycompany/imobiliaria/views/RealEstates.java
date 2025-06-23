@@ -480,11 +480,14 @@ public class RealEstates extends javax.swing.JFrame {
         
         for (RealEstateModel realEstate : realEstateController.getAllProperties(this.orderField, this.orderDirection)) {
             RentalModel rent = rentalController.getLastActiveContract(realEstate.getId());
-            String rentedProperty = (rent.getId() != 0) ? "Sim" : "Não";
+            
+            boolean isRented = rent != null && rent.getId() != 0;
+            String rentedProperty = isRented ? "Sim" : "Não";
             String dueDate = "";
-            if (rent.getId() != 0) {
+
+            if (isRented) {
                 if ("Free".equals(selection)) continue;
-                dueDate =  String.format("%02d/%04d", rent.getDueMonth(), rent.getDueYear());
+                dueDate = String.format("%02d/%04d", rent.getDueMonth(), rent.getDueYear());
             } else {
                 if ("Rented".equals(selection)) continue;
             }
