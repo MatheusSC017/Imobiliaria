@@ -1130,7 +1130,8 @@ public class RealEstate extends javax.swing.JFrame {
                 selectedRent = rentalController.getRentalById(Integer.parseInt(id));
                 if(selectedRent.getContract() != null && !selectedRent.getContract().trim().isEmpty()){
                     this.rentalCardLayout.show(rentalPanel, "contractImage");
-                    this.loadContract(selectedRent.getContract()); 
+                    contractImage = contractFileService.loadContractImage(selectedRent.getContract()); 
+                    plotImage();
                 } else {
                      JOptionPane.showMessageDialog(this, "Não foi possível associar o contrato ao aluguel.", "Erro de Contrato", JOptionPane.ERROR_MESSAGE);
                 }
@@ -1139,7 +1140,8 @@ public class RealEstate extends javax.swing.JFrame {
             }
         } else {
             this.rentalCardLayout.show(rentalPanel, "contractImage");
-            this.loadContract(selectedRent.getContract());
+            contractImage = contractFileService.loadContractImage(selectedRent.getContract());
+            plotImage();
         }
     }//GEN-LAST:event_documentButtonActionPerformed
     
@@ -1157,7 +1159,8 @@ public class RealEstate extends javax.swing.JFrame {
             rentalController.addContract(selectedRent.getId(), newContractPath);
             selectedRent = rentalController.getRentalById(selectedRent.getId());
             if (selectedRent.getContract() != null && !selectedRent.getContract().trim().isEmpty()) {
-                this.loadContract(selectedRent.getContract());
+                contractImage = contractFileService.loadContractImage(selectedRent.getContract());
+                plotImage();
                 JOptionPane.showMessageDialog(this, "Contrato substituído com sucesso.");
             } else {
                 JOptionPane.showMessageDialog(this, "Falha ao associar o novo contrato.", "Erro de Contrato", JOptionPane.ERROR_MESSAGE);
@@ -1168,16 +1171,7 @@ public class RealEstate extends javax.swing.JFrame {
     }//GEN-LAST:event_changeDocumentButtonActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
-        if (selectedRent == null || selectedRent.getContract() == null || selectedRent.getContract().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nenhum contrato selecionado ou válido para baixar.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        boolean success = contractFileService.downloadContractFile(this, selectedRent.getContract());
-        if (success) {
-            JOptionPane.showMessageDialog(this, "Contrato baixado com sucesso.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Download do contrato falhou ou foi cancelado.");
-        }
+        contractFileService.downloadContractFile(this, selectedRent.getContract());
     }//GEN-LAST:event_downloadButtonActionPerformed
 
     private void lessZoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lessZoomButtonActionPerformed
@@ -1193,107 +1187,6 @@ public class RealEstate extends javax.swing.JFrame {
         this.contractImageScale = Math.round(this.contractImageScale * 10) / 10.0;
         this.plotImage();
     }//GEN-LAST:event_moreZoomButtonActionPerformed
-    
-    public void addDocument(String id) {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            
-            String extension = getFileExtension(selectedFile.getName());
-  
-            File internalStorage = new File("internal_storage/contracts");
-            if (!internalStorage.exists()) {
-                internalStorage.mkdirs();
-            }
-            
-            File destFile = new File(internalStorage, id + "." + extension);
-
-            try (InputStream in = new FileInputStream(selectedFile);
-                 OutputStream out = new FileOutputStream(destFile)) {
-
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, length);
-                }
-                
-                rentalController.addContract(Integer.parseInt(id), destFile.getAbsolutePath());
-                JOptionPane.showMessageDialog(null, "Contrato salvo com sucesso");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
-    
-    public void loadContract(String contractPath) {
-        String extension = getFileExtension(contractPath).toLowerCase();
-        switch (extension) {
-            case "jpg":
-            case "jpeg":
-            case "png":
-                this.contractImage = new ImageIcon(contractPath).getImage();
-                break;
-            case "pdf":
-                try {
-                    File file = new File(contractPath);
-                    PDDocument document = PDDocument.load(file);
-                    PDFRenderer renderer = new PDFRenderer(document);
-
-                    int numPages = document.getNumberOfPages();
-                    int dpi = 150;
-
-                    List<BufferedImage> contractPages = new ArrayList<>();
-                    int totalHeight = 0;
-                    int width = 0;
-                    int separatorHeight = 5;
-
-                    for (int pageIndex = 0; pageIndex < numPages; pageIndex++) {
-                        contractPages.add(renderer.renderImageWithDPI(pageIndex, dpi));
-
-                        totalHeight += contractPages.get(pageIndex).getHeight();
-                        if (pageIndex != numPages - 1) {
-                            totalHeight += separatorHeight;
-                        }
-
-                        width = Math.max(width, contractPages.get(pageIndex).getWidth());
-                    }
-                    
-                    BufferedImage fullContractImage = new BufferedImage(width, totalHeight, BufferedImage.TYPE_INT_RGB);
-                    Graphics2D g2d = fullContractImage.createGraphics();
-
-                    g2d.setColor(Color.WHITE);
-                    g2d.fillRect(0, 0, width, totalHeight);
-
-                    int y = 0;
-                    for (int i = 0; i < contractPages.size(); i++) {
-                        BufferedImage page = contractPages.get(i);
-                        g2d.drawImage(page, 0, y, null);
-                        y += page.getHeight();
-
-                        if (i != contractPages.size() - 1) {
-                            g2d.setColor(Color.BLACK);
-                            g2d.fillRect(0, y, width, separatorHeight);
-                            y += separatorHeight;
-                        }
-                    }
-                    
-                    g2d.dispose();
-                    document.close();
-
-                    this.contractImage = fullContractImage;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    this.contractImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
-                }
-                break;
-            default:
-                this.contractImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
-                break;
-        }
-        plotImage();
-    }
     
     public void plotImage() {
         int width = (int) (this.contractImage.getWidth(null) * this.contractImageScale);

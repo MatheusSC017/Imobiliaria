@@ -76,29 +76,19 @@ public class ContractFileService {
         }
         return null;
     }
-
-    private static class PdfLoaderWorker extends SwingWorker<Image, Void> {
-        private final String contractPath;
-        private final Consumer<Image> onComplete;
-        private final Consumer<Exception> onError;
-
-        public PdfLoaderWorker(String contractPath, Consumer<Image> onComplete, Consumer<Exception> onError) {
-            this.contractPath = contractPath;
-            this.onComplete = onComplete;
-            this.onError = onError;
-        }
-
-        @Override
-        protected Image doInBackground() throws Exception {
+    
+    public Image pdfLoader(String contractPath) {
+        try {
             File file = new File(contractPath);
             if (!file.exists()) {
                 throw new IOException("Arquivo PDF não encontrado em: " + contractPath);
             }
+            
             PDDocument document = PDDocument.load(file);
             PDFRenderer renderer = new PDFRenderer(document);
 
             int numPages = document.getNumberOfPages();
-            int dpi = 150; // Adjust DPI as needed for quality/performance
+            int dpi = 150;
             List<BufferedImage> contractPages = new ArrayList<>();
             int totalHeight = 0;
             int maxWidth = 0;
@@ -113,7 +103,7 @@ public class ContractFileService {
                 }
                 maxWidth = Math.max(maxWidth, pageImage.getWidth());
             }
-
+            
             if (numPages > 0 && (maxWidth == 0 || totalHeight == 0 && contractPages.stream().allMatch(p -> p.getWidth() == 0 || p.getHeight() == 0))) {
                  System.err.println("Renderização do PDF resultou em imagem vazia para " + contractPath);
                  document.close();
@@ -123,7 +113,6 @@ public class ContractFileService {
                 document.close();
                 return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             }
-
 
             BufferedImage fullContractImage = new BufferedImage(maxWidth, totalHeight, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = fullContractImage.createGraphics();
@@ -143,51 +132,41 @@ public class ContractFileService {
             g2d.dispose();
             document.close();
             return fullContractImage;
-        }
 
-        @Override
-        protected void done() {
-            try {
-                Image result = get();
-                onComplete.accept(result);
-            } catch (Exception e) {
-                onError.accept(e);
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 
-    public void loadContractImage(String contractPath, Consumer<Image> onComplete, Consumer<Exception> onError) {
+    public Image loadContractImage(String contractPath) {
         Image defaultErrorImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
 
         if (contractPath == null || contractPath.trim().isEmpty()) {
-            onComplete.accept(defaultErrorImage);
-            return;
+            return defaultErrorImage;
         }
 
         String extension = getFileExtension(contractPath).toLowerCase();
-
+        
+        Image loadedImage = defaultErrorImage;
         try {
             switch (extension) {
                 case "jpg":
                 case "jpeg":
                 case "png":
-                    Image loadedImage = new ImageIcon(contractPath).getImage();
-                    System.out.println("Image found");
+                    loadedImage = new ImageIcon(contractPath).getImage();
                     if (loadedImage.getWidth(null) == -1) {
                         throw new IOException("Falha ao carregar imagem: " + contractPath);
                     }
-                    onComplete.accept(loadedImage);
                     break;
                 case "pdf":
-                    new PdfLoaderWorker(contractPath, onComplete, onError).execute();
-                    break;
-                default:
-                    onComplete.accept(defaultErrorImage);
+                    loadedImage = pdfLoader(contractPath);
                     break;
             }
         } catch (Exception ex) {
-            onError.accept(ex);
+            return defaultErrorImage;
         }
+        return loadedImage;
     }
 
     public boolean downloadContractFile(Component parentComponent, String currentContractPath) {
@@ -219,6 +198,6 @@ public class ContractFileService {
                 return false;
             }
         }
-        return false; // User cancelled
+        return false;
     }
 }
