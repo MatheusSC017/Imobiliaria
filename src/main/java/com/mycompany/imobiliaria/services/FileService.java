@@ -22,19 +22,21 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.SwingWorker;
-import java.util.function.Consumer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
-public class ContractFileService {
+/**
+ *
+ * @author user
+ */
+public class FileService {
+    private String storageDir;
 
-    private static final String CONTRACTS_DIR = "internal_storage/contracts";
-
-    public ContractFileService() {
-        File storageDir = new File(CONTRACTS_DIR);
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
+    public FileService(String storageDir) {
+        this.storageDir = storageDir;
+        File storageDirFile = new File(storageDir);
+        if (!storageDirFile.exists()) {
+            storageDirFile.mkdirs();
         }
     }
 
@@ -43,9 +45,9 @@ public class ContractFileService {
         return (dotIndex == -1) ? "" : filePath.substring(dotIndex + 1);
     }
 
-    public String saveContractFile(Component parentComponent, String contractId) {
+    public String saveFile(Component parentComponent, String fileId) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Selecione o arquivo do contrato");
+        fileChooser.setDialogTitle("Selecione o arquivo");
         int result = fileChooser.showOpenDialog(parentComponent);
 
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -56,7 +58,7 @@ public class ContractFileService {
                 return null;
             }
 
-            File destFile = new File(CONTRACTS_DIR, contractId + "." + extension);
+            File destFile = new File(this.storageDir, fileId + "." + extension);
 
             try (InputStream in = new FileInputStream(selectedFile);
                  OutputStream out = new FileOutputStream(destFile)) {
@@ -66,22 +68,22 @@ public class ContractFileService {
                 while ((length = in.read(buffer)) > 0) {
                     out.write(buffer, 0, length);
                 }
-                JOptionPane.showMessageDialog(parentComponent, "Contrato salvo com sucesso!");
+                JOptionPane.showMessageDialog(parentComponent, "Arquivo salvo com sucesso!");
                 return destFile.getAbsolutePath();
             } catch (IOException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(parentComponent, "Erro ao salvar o contrato: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent, "Erro ao salvar o arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
         }
         return null;
     }
     
-    public Image pdfLoader(String contractPath) {
+    public Image pdfLoader(String filePath) {
         try {
-            File file = new File(contractPath);
+            File file = new File(filePath);
             if (!file.exists()) {
-                throw new IOException("Arquivo PDF não encontrado em: " + contractPath);
+                throw new IOException("Arquivo PDF não encontrado em: " + filePath);
             }
             
             PDDocument document = PDDocument.load(file);
@@ -89,14 +91,14 @@ public class ContractFileService {
 
             int numPages = document.getNumberOfPages();
             int dpi = 150;
-            List<BufferedImage> contractPages = new ArrayList<>();
+            List<BufferedImage> filePages = new ArrayList<>();
             int totalHeight = 0;
             int maxWidth = 0;
             int separatorHeight = 5;
 
             for (int pageIndex = 0; pageIndex < numPages; pageIndex++) {
                 BufferedImage pageImage = renderer.renderImageWithDPI(pageIndex, dpi);
-                contractPages.add(pageImage);
+                filePages.add(pageImage);
                 totalHeight += pageImage.getHeight();
                 if (pageIndex != numPages - 1) {
                     totalHeight += separatorHeight;
@@ -104,8 +106,8 @@ public class ContractFileService {
                 maxWidth = Math.max(maxWidth, pageImage.getWidth());
             }
             
-            if (numPages > 0 && (maxWidth == 0 || totalHeight == 0 && contractPages.stream().allMatch(p -> p.getWidth() == 0 || p.getHeight() == 0))) {
-                 System.err.println("Renderização do PDF resultou em imagem vazia para " + contractPath);
+            if (numPages > 0 && (maxWidth == 0 || totalHeight == 0 && filePages.stream().allMatch(p -> p.getWidth() == 0 || p.getHeight() == 0))) {
+                 System.err.println("Renderização do PDF resultou em imagem vazia para " + filePath);
                  document.close();
                  throw new IOException("PDF rendering resulted in an empty image.");
             }
@@ -114,13 +116,13 @@ public class ContractFileService {
                 return new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             }
 
-            BufferedImage fullContractImage = new BufferedImage(maxWidth, totalHeight, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g2d = fullContractImage.createGraphics();
+            BufferedImage fullDocumentImage = new BufferedImage(maxWidth, totalHeight, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g2d = fullDocumentImage.createGraphics();
             g2d.setColor(Color.WHITE);
             g2d.fillRect(0, 0, maxWidth, totalHeight);
 
             int currentY = 0;
-            for (BufferedImage page : contractPages) {
+            for (BufferedImage page : filePages) {
                 g2d.drawImage(page, 0, currentY, null);
                 currentY += page.getHeight();
                 if (currentY < totalHeight && (currentY - page.getHeight() + separatorHeight) < totalHeight ) {
@@ -131,7 +133,7 @@ public class ContractFileService {
             }
             g2d.dispose();
             document.close();
-            return fullContractImage;
+            return fullDocumentImage;
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -139,14 +141,14 @@ public class ContractFileService {
         }
     }
 
-    public Image loadContractImage(String contractPath) {
+    public Image loadImage(String filePath) {
         Image defaultErrorImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
 
-        if (contractPath == null || contractPath.trim().isEmpty()) {
+        if (filePath == null || filePath.trim().isEmpty()) {
             return defaultErrorImage;
         }
 
-        String extension = getFileExtension(contractPath).toLowerCase();
+        String extension = getFileExtension(filePath).toLowerCase();
         
         Image loadedImage = defaultErrorImage;
         try {
@@ -154,13 +156,13 @@ public class ContractFileService {
                 case "jpg":
                 case "jpeg":
                 case "png":
-                    loadedImage = new ImageIcon(contractPath).getImage();
+                    loadedImage = new ImageIcon(filePath).getImage();
                     if (loadedImage.getWidth(null) == -1) {
-                        throw new IOException("Falha ao carregar imagem: " + contractPath);
+                        throw new IOException("Falha ao carregar imagem: " + filePath);
                     }
                     break;
                 case "pdf":
-                    loadedImage = pdfLoader(contractPath);
+                    loadedImage = pdfLoader(filePath);
                     break;
             }
         } catch (Exception ex) {
@@ -169,20 +171,20 @@ public class ContractFileService {
         return loadedImage;
     }
 
-    public boolean downloadContractFile(Component parentComponent, String currentContractPath) {
-        if (currentContractPath == null || currentContractPath.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(parentComponent, "Nenhum contrato para baixar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+    public boolean downloadFile(Component parentComponent, String currentFilePath) {
+        if (currentFilePath == null || currentFilePath.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(parentComponent, "Nenhum arquivo para baixar.", "Aviso", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
-        File sourceFile = new File(currentContractPath);
+        File sourceFile = new File(currentFilePath);
         if (!sourceFile.exists()) {
-            JOptionPane.showMessageDialog(parentComponent, "Arquivo do contrato não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(parentComponent, "Arquivo não encontrado.", "Erro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Salvar contrato como...");
+        fileChooser.setDialogTitle("Salvar arquivo como...");
         fileChooser.setSelectedFile(new File(sourceFile.getName()));
 
         int userSelection = fileChooser.showSaveDialog(parentComponent);
@@ -190,11 +192,11 @@ public class ContractFileService {
             File destinationFile = fileChooser.getSelectedFile();
             try {
                 Files.copy(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                JOptionPane.showMessageDialog(parentComponent, "Contrato baixado com sucesso!");
+                JOptionPane.showMessageDialog(parentComponent, "Arquivo baixado com sucesso!");
                 return true;
             } catch (IOException ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(parentComponent, "Erro ao baixar o contrato: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(parentComponent, "Erro ao baixar o arquivo: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }

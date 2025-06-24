@@ -12,6 +12,7 @@ import com.mycompany.imobiliaria.controllers.RealEstateController;
 import com.mycompany.imobiliaria.models.PaymentModel;
 import com.mycompany.imobiliaria.models.RentalModel;
 import com.mycompany.imobiliaria.models.RealEstateModel;
+import com.mycompany.imobiliaria.services.FileService;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -40,6 +41,7 @@ import org.apache.pdfbox.rendering.PDFRenderer;
  */
 public class PaymentRegister extends javax.swing.JFrame {
     private static final PaymentController paymentController = new PaymentController();
+    private final FileService paymentFileService = new FileService("internal_storage/receipts");
     private RentalModel rental;
     private PaymentModel selectedPayment;
     private CardLayout paymentCardLayout;
@@ -475,7 +477,8 @@ public class PaymentRegister extends javax.swing.JFrame {
             this.addDocument(id);
         } else {
             this.paymentCardLayout.show(paymentPanel, "paymentReceipt");
-            this.loadReceipt(selectedPayment.getContract());
+            this.receiptImage = this.paymentFileService.loadImage(this.selectedPayment.getContract());
+            this.plotImage();
         }
     }//GEN-LAST:event_contractButtonActionPerformed
 
@@ -496,28 +499,12 @@ public class PaymentRegister extends javax.swing.JFrame {
     private void changeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButtonActionPerformed
         this.addDocument(String.valueOf(selectedPayment.getId()));
         selectedPayment = paymentController.getPaymentById(selectedPayment.getId());
-        this.loadReceipt(selectedPayment.getContract());
+        this.receiptImage = this.paymentFileService.loadImage(this.selectedPayment.getContract());
+        this.plotImage();
     }//GEN-LAST:event_changeButtonActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
-        if (selectedPayment.getContract() == null) return;
-
-        String extention = getFileExtension(selectedPayment.getContract());
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Onde deseja salvar o arquivo?");
-        fileChooser.setSelectedFile(new File("recibo." + extention));
-
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File saveFile = fileChooser.getSelectedFile();
-            try {
-                Files.copy(new File(selectedPayment.getContract()).toPath(), saveFile.toPath());
-                JOptionPane.showMessageDialog(this, "Recibo baixado com sucesso.");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
+        this.paymentFileService.downloadFile(this, this.selectedPayment.getContract());
     }//GEN-LAST:event_downloadButtonActionPerformed
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
@@ -525,117 +512,16 @@ public class PaymentRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_returnButtonActionPerformed
 
     public void addDocument(String id) {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            
-            String extension = getFileExtension(selectedFile.getName());
-  
-            File internalStorage = new File("internal_storage/receipts");
-            if (!internalStorage.exists()) {
-                internalStorage.mkdirs();
-            }
-            
-            File destFile = new File(internalStorage, id + "." + extension);
-
-            try (InputStream in = new FileInputStream(selectedFile);
-                 OutputStream out = new FileOutputStream(destFile)) {
-
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = in.read(buffer)) > 0) {
-                    out.write(buffer, 0, length);
-                }
-                
-                paymentController.addReceipt(Integer.parseInt(id), destFile.getAbsolutePath());
-                JOptionPane.showMessageDialog(null, "Recibo salvo com sucesso");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
+        String paymentPath = this.paymentFileService.saveFile(this, id);
+        this.paymentController.addReceipt(Integer.parseInt(id), paymentPath);
     }
     
-    public void loadReceipt(String contractPath) {
-        String extension = getFileExtension(contractPath).toLowerCase();
-        
-        switch (extension) {
-            case "jpg":
-            case "jpeg":
-            case "png":
-                this.receiptImage = new ImageIcon(contractPath).getImage();
-                break;
-            case "pdf":
-                try {
-                    File file = new File(contractPath);
-                    PDDocument document = PDDocument.load(file);
-                    PDFRenderer renderer = new PDFRenderer(document);
-
-                    int numPages = document.getNumberOfPages();
-                    int dpi = 150;
-
-                    List<BufferedImage> contractPages = new ArrayList<>();
-                    int totalHeight = 0;
-                    int width = 0;
-                    int separatorHeight = 5;
-
-                    for (int pageIndex = 0; pageIndex < numPages; pageIndex++) {
-                        contractPages.add(renderer.renderImageWithDPI(pageIndex, dpi));
-
-                        totalHeight += contractPages.get(pageIndex).getHeight();
-                        if (pageIndex != numPages - 1) {
-                            totalHeight += separatorHeight;
-                        }
-
-                        width = Math.max(width, contractPages.get(pageIndex).getWidth());
-                    }
-                    
-                    BufferedImage fullContractImage = new BufferedImage(width, totalHeight, BufferedImage.TYPE_INT_RGB);
-                    Graphics2D g2d = fullContractImage.createGraphics();
-
-                    g2d.setColor(Color.WHITE);
-                    g2d.fillRect(0, 0, width, totalHeight);
-
-                    int y = 0;
-                    for (int i = 0; i < contractPages.size(); i++) {
-                        BufferedImage page = contractPages.get(i);
-                        g2d.drawImage(page, 0, y, null);
-                        y += page.getHeight();
-
-                        if (i != contractPages.size() - 1) {
-                            g2d.setColor(Color.BLACK);
-                            g2d.fillRect(0, y, width, separatorHeight);
-                            y += separatorHeight;
-                        }
-                    }
-                    
-                    g2d.dispose();
-                    document.close();
-
-                    this.receiptImage = fullContractImage;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    this.receiptImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
-                }
-                break;
-            default:
-                this.receiptImage = new ImageIcon(getClass().getResource("/static/icons/documentNotSupported.png")).getImage();
-                break;
-        }
-        plotImage();
-    }
     
     public void plotImage() {
         int width = (int) (this.receiptImage.getWidth(null) * this.receiptImageScale);
         int height = (int) (this.receiptImage.getHeight(null) * this.receiptImageScale);
         Image scaledImage = this.receiptImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         receiptImageLabel.setIcon(new ImageIcon(scaledImage));
-    }
-    
-    public String getFileExtension(String filePath) {
-        int dotIndex = filePath.lastIndexOf('.');
-        return (dotIndex == -1) ? "" : filePath.substring(dotIndex + 1);
     }
     
     /**
