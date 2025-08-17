@@ -31,15 +31,59 @@ public class RealEstateController {
     public void deleteProperty(int id) {
         dao.delete(id);
     }
+    
+    public enum SortField {
+        ID("id", "ID"),
+        ADDRESS("address", "Endereço"),
+        NEIGHBORHOOD("neighborhood", "Bairro"),
+        NUMBER("number", "Número"),
+        CITY("city", "Cidade"),
+        TYPE("type", "Tipo"),
+        ROOMS("rooms", "Quartos"),
+        BATHROOMS("bathrooms", "Banheiros"),
+        AREA("area", "Área"),
+        VALUE("value", "Valor"),
+        GARAGE("garage", "Garagem");
 
-    public List<RealEstateModel> getAllProperties(int order_field, int order_direction) {
-        String[] fields = {"id", "address", "neighborhood", "number", "city", "type", "rooms", "bathrooms", "area", "value", "garage"};
-        String[] directions = {"ASC", "DESC"};
-        
-        if (order_field < 0 || order_field >= fields.length) order_field = 0;
-        if (order_direction < 0 || order_direction >= directions.length) order_direction = 0;
-        
-        return dao.getAll(fields[order_field], directions[order_direction]);
+        private final String fieldName;
+        private final String displayName;
+
+        SortField(String fieldName, String displayName) {
+            this.fieldName = fieldName;
+            this.displayName = displayName;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+
+        public static SortField fromFieldName(String fieldName) {
+            for (SortField sf : SortField.values()) {
+                if (sf.getFieldName().equalsIgnoreCase(fieldName)) {
+                    return sf;
+                }
+            }
+            throw new IllegalArgumentException("Unknown field: " + fieldName);
+        }
+
+        @Override
+        public String toString() {
+            return displayName;
+        }
+    }
+
+    public enum SortDirection {
+        ASC,
+        DESC
+    }
+
+    public List<RealEstateModel> getAllProperties(SortField sortField, SortDirection sortDirection) {
+        System.out.println(sortField.getFieldName());
+        return dao.getAll(sortField.getFieldName(), sortDirection.name());
     }
 
     public RealEstateModel getPropertyById(int id) {

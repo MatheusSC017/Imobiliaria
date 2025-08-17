@@ -36,8 +36,8 @@ public class RealEstates extends javax.swing.JFrame {
     private static JFrame propertyRegisterFrame = null;
     private static final RealEstateController realEstateController = new RealEstateController();
     private static final RentalController rentalController = new RentalController();
-    private int orderField = 0;
-    private int orderDirection = 0;
+    private RealEstateController.SortField orderField = RealEstateController.SortField.ID;
+    private RealEstateController.SortDirection orderDirection = RealEstateController.SortDirection.ASC;
     private String selection = "All";
     private Image backgroundImage = new ImageIcon(getClass().getResource("/static/icons/background.png")).getImage();
 
@@ -49,7 +49,7 @@ public class RealEstates extends javax.swing.JFrame {
         new InitDatabase();
         
         initComponents();
-        
+  
         propertiesTable.getColumn("Ações").setCellRenderer(new PropertyButtonRenderer());
         propertiesTable.getColumn("Ações").setCellEditor(new PropertyButtonEditor(new JCheckBox(), propertiesTable, this));
         
@@ -75,7 +75,7 @@ public class RealEstates extends javax.swing.JFrame {
         orderPanel = new javax.swing.JPanel();
         orderLabel = new javax.swing.JLabel();
         orderFieldPanel = new javax.swing.JPanel();
-        orderFieldComboBox = new javax.swing.JComboBox<>();
+        orderFieldComboBox = new javax.swing.JComboBox<>(RealEstateController.SortField.values());
         orderDirectionComboBox = new javax.swing.JComboBox<>();
         selectLabel = new javax.swing.JLabel();
         rentedFilterPanel = new javax.swing.JPanel();
@@ -100,7 +100,6 @@ public class RealEstates extends javax.swing.JFrame {
         setTitle("imobiliária");
         setFont(new java.awt.Font("Nimbus Sans L", 0, 14)); // NOI18N
         setMinimumSize(new java.awt.Dimension(900, 500));
-        setPreferredSize(new java.awt.Dimension(1200, 650));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentResized(java.awt.event.ComponentEvent evt) {
                 formComponentResized(evt);
@@ -137,7 +136,6 @@ public class RealEstates extends javax.swing.JFrame {
 
         orderFieldComboBox.setFont(new java.awt.Font("Abyssinica SIL", 0, 14)); // NOI18N
         orderFieldComboBox.setForeground(new java.awt.Color(255, 255, 255));
-        orderFieldComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Endereço", "Bairro", "Número", "Cidade", "Tipo", "Quartos", "Banheiros", "Área", "Valor", "Garagem" }));
         orderFieldComboBox.setToolTipText("");
         orderFieldComboBox.setMaximumSize(new java.awt.Dimension(150, 30));
         orderFieldComboBox.setMinimumSize(new java.awt.Dimension(150, 30));
@@ -379,7 +377,7 @@ public class RealEstates extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        this.orderField = orderFieldComboBox.getSelectedIndex();
+        this.orderField = (RealEstateController.SortField) orderFieldComboBox.getSelectedItem();
         updateTable();
     }//GEN-LAST:event_updateButtonActionPerformed
 
@@ -405,8 +403,9 @@ public class RealEstates extends javax.swing.JFrame {
     }//GEN-LAST:event_registerButtonActionPerformed
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
-        this.orderField = orderFieldComboBox.getSelectedIndex();
-        this.orderDirection = orderDirectionComboBox.getSelectedIndex();
+        this.orderField = (RealEstateController.SortField) orderFieldComboBox.getSelectedItem();
+        System.out.println("Selected fieldName = " + this.orderField.getFieldName());
+        this.orderDirection = orderDirectionComboBox.getSelectedIndex() == 0 ? RealEstateController.SortDirection.ASC : RealEstateController.SortDirection.DESC;
         
         if (rentedFilterButtonGroup.getSelection() != null) {
             if (selectAllRadioButton.isSelected()) {
@@ -477,7 +476,7 @@ public class RealEstates extends javax.swing.JFrame {
     public void updateTable() {
         DefaultTableModel tableModel = (DefaultTableModel) propertiesTable.getModel();
         tableModel.setRowCount(0);
-        
+
         for (RealEstateModel realEstate : realEstateController.getAllProperties(this.orderField, this.orderDirection)) {
             RentalModel rent = rentalController.getLastActiveContract(realEstate.getId());
             
@@ -561,7 +560,7 @@ public class RealEstates extends javax.swing.JFrame {
     private javax.swing.JPanel filtersPanel;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JComboBox<String> orderDirectionComboBox;
-    private javax.swing.JComboBox<String> orderFieldComboBox;
+    private javax.swing.JComboBox<RealEstateController.SortField> orderFieldComboBox;
     private javax.swing.JPanel orderFieldPanel;
     private javax.swing.JLabel orderLabel;
     private javax.swing.JPanel orderPanel;
